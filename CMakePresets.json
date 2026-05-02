@@ -1,0 +1,36 @@
+﻿{
+    "version": 3,
+    "configurePresets": [
+      {
+        "name": "default",
+        "generator": "Visual Studio 17 2022",
+        "architecture": "Win32",
+        "binaryDir": "${sourceDir}/build",
+        "cacheVariables": {
+          "CMAKE_GENERATOR_PLATFORM": "Win32",
+          "CMAKE_TOOLCHAIN_FILE": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/vcpkg/scripts/buildsystems/vcpkg.cmake",
+          "CMAKE_CXX_STANDARD": "17",
+          "VCPKG_TARGET_TRIPLET": "x86-windows-static",
+          "HEATSIG_DIR": null
+        }
+      },
+      {
+        "name": "x86-debug-base",
+        "displayName": "x86 Debug",
+        "inherits": "default",
+        "cacheVariables": {
+          "CMAKE_BUILD_TYPE": "Debug",
+          "HEATSIG_DIR": null
+        }
+      },
+      {
+          "name": "x86-release-base",
+          "displayName": "x86 Release",
+          "inherits": "x86-debug-base",
+	        "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Release",
+            "HEATSIG_DIR": null
+          }
+      }
+    ]
+}
