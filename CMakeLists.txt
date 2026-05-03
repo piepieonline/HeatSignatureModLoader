@@ -9,6 +9,7 @@ project(HeatSignatureScriptExtender)
 
 add_subdirectory(dinput8)
 add_subdirectory(ScriptExtender)
+add_subdirectory(mods/ScreenRecorder)
 
 set(MISC_FILES 
     README.md
@@ -22,11 +23,17 @@ if (WIN32)
     set(DEBUGGER_WORKDIR "${HEATSIG_DIR}")
     set(DEBUGGER_ARGS "")
 
-    set(USER_FILE "${CMAKE_BINARY_DIR}/ALL_BUILD.vcxproj.user")
-
-    configure_file(
-        "${CMAKE_SOURCE_DIR}/cmake_templates/DebuggerAttach.vcxproj.user.template"
-        "${USER_FILE}"
-        @ONLY
+    set(USER_FILES
+        "${CMAKE_BINARY_DIR}/ALL_BUILD.vcxproj.user"
+        "${CMAKE_BINARY_DIR}/ScriptExtender/ScriptExtender.vcxproj.user"
+        "${CMAKE_BINARY_DIR}/dinput8/dxgi.vcxproj.user"
     )
+
+    foreach(USER_FILE IN LISTS USER_FILES)
+        configure_file(
+            "${CMAKE_SOURCE_DIR}/cmake_templates/DebuggerAttach.vcxproj.user.template"
+            "${USER_FILE}"
+            @ONLY
+        )
+    endforeach()
 endif()

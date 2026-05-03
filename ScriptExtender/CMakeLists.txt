@@ -16,14 +16,12 @@ target_include_directories(ScriptExtender PRIVATE ${LUABRIDGE_INCLUDE_DIRS})
 
 target_compile_features(ScriptExtender PRIVATE cxx_std_17)
 target_link_libraries(ScriptExtender PRIVATE ${LUA_LIBRARIES} minhook::minhook)
-# target_include_directories(ScriptExtender PRIVATE ${LUA_INCLUDE_DIR})
 
 set_target_properties(ScriptExtender PROPERTIES
   OUTPUT_NAME "ScriptExtender"
   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
-# Copy DLL to game
 if(HEATSIG_DIR)
     add_custom_command(TARGET ScriptExtender POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different

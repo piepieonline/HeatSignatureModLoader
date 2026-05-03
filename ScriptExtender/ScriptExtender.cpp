@@ -1,19 +1,17 @@
-#include "ScriptExtender.h";
-
+#include "ScriptExtender.h"
+#include "ModInterface.h"
 
 #include <Windows.h>
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "MinHook.h"
 
 std::map<std::string, HookBase*> ScriptExtender::HookMap{};
 
 using MissionAccept_t = uintptr_t* (__cdecl*)(int a1, int a2, uintptr_t* a3, int a4, int a5);
-MissionAccept_t oMissionAccept = nullptr;
-
 using GenerateMissions_t = uintptr_t* (__cdecl*)(double a1, uintptr_t* a2, int a3, uintptr_t* a4);
-void* oGenerateMissions = nullptr;
 
 ScriptExtender& ScriptExtender::Instance()
 {
@@ -35,11 +33,12 @@ ScriptExtender::ScriptExtender()
     Log("Up");
 
     CreateHooks();
+    LoadMods();
 }
 
-void ScriptExtender::Log(const char* format, ...) {
-    char buffer[1024]; // TODO: temporary buffer for formatted string
-
+void ScriptExtender::Log(const char* format, ...)
+{
+    char buffer[1024];
     va_list args;
     va_start(args, format);
     vsnprintf(buffer, sizeof(buffer), format, args);
@@ -48,12 +47,44 @@ void ScriptExtender::Log(const char* format, ...) {
     std::cout << buffer << std::endl;
 
     std::ofstream logFile("ScriptExtender.log", std::ios::app);
-
-    if (logFile.is_open()) {
+    if (logFile.is_open())
         logFile << buffer << std::endl;
+}
+
+void ScriptExtender::LoadMods()
+{
+    CreateDirectoryA(".\\mods", nullptr);
+
+    WIN32_FIND_DATAA fd;
+    HANDLE h = FindFirstFileA(".\\mods\\*.dll", &fd);
+    if (h == INVALID_HANDLE_VALUE)
+    {
+        Log("[Mods] No mods found in .\\mods\\");
+        return;
     }
 
-    logFile.close();
+    do {
+        std::string path = std::string(".\\mods\\") + fd.cFileName;
+        HMODULE hMod = LoadLibraryA(path.c_str());
+        if (!hMod)
+        {
+            Log("[Mods] Failed to load %s (error %lu)", fd.cFileName, GetLastError());
+            continue;
+        }
+
+        auto modInit = reinterpret_cast<void(*)(SE_LogFn)>(GetProcAddress(hMod, "ModInit"));
+        if (!modInit)
+        {
+            Log("[Mods] %s has no ModInit export, skipping", fd.cFileName);
+            continue;
+        }
+
+        modInit([](const char* msg) { ScriptExtender::Log(msg); });
+        Log("[Mods] Loaded %s", fd.cFileName);
+
+    } while (FindNextFileA(h, &fd));
+
+    FindClose(h);
 }
 
 void ScriptExtender::CreateHooks()
@@ -69,57 +100,6 @@ void ScriptExtender::CreateHooks()
         hook->CreateHook();
         HookMap[hook->hookName] = hook;
     }
-
-    /*
-    if (MH_CreateHook(
-        reinterpret_cast<LPVOID>(0x00B16200),
-        +[](int a1, int a2, uintptr_t* a3, int a4, int a5) -> uintptr_t* {
-            ScriptExtender::Instance().Log("hook: mission accepted");
-
-            // Call original function
-            if (oMissionAccept)
-                return oMissionAccept(a1, a2, a3, a4, a5);
-
-            return nullptr;
-        },
-        reinterpret_cast<LPVOID*>(&oMissionAccept)) != MH_OK)
-    {
-        Log("MH_CreateHook failed: AcceptMission");
-        return;
-    }
-    if (MH_EnableHook(reinterpret_cast<LPVOID>(0x00B16200)) != MH_OK)
-    {
-        Log("MH_EnableHook failed");
-        return;
-    }
-    */
-
-    /*
-    if (MH_CreateHook(
-        reinterpret_cast<LPVOID>(0x01176200),
-        +[](double a1, uintptr_t* a2, int a3, uintptr_t* a4) -> uintptr_t* {
-            ScriptExtender::Instance().Log("hook: mission generation");
-
-            // Call original function
-            if (oGenerateMissions)
-                return oGenerateMissions(a1, a2, a3, a4);
-
-            return nullptr;
-        },
-        reinterpret_cast<LPVOID*>(&oGenerateMissions)) != MH_OK)
-    {
-        Log("MH_CreateHook failed: AcceptMission");
-        return;
-    }
-
-    */
-    /*
-    if (MH_EnableHook(reinterpret_cast<LPVOID>(0x011D9EB0)) != MH_OK)
-    {
-        Log("MH_EnableHook failed");
-        return;
-    }
-    */
 
     Log("Hooks installed");
 }
