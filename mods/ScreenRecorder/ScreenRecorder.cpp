@@ -31,13 +31,9 @@ namespace
     const     GUID   VIDEO_INPUT_FORMAT     = MFVideoFormat_RGB32; // BGRA in memory
 
     SE_LogFn               g_log = nullptr;
+    SE_GetTimeScaleFn      g_getTimeScale = nullptr;
     std::atomic<bool>      g_recording{false};
     std::thread            g_recordThread;
-
-    // 0.0 = paused (no frames written), 0.5 = slowmo, 1.0 = normal.
-    // Pause/slowmo detection writes here; the capture loop scales wall-clock
-    // by this factor so the output video plays at game-time, not wall-time.
-    std::atomic<float>     g_gameSpeed{1.0f};
 
     void Log(const char* fmt, ...)
     {
@@ -373,14 +369,14 @@ namespace
                     ((qpcNow.QuadPart - qpcLast.QuadPart) * 10'000'000LL) / qpcFreq.QuadPart;
                 qpcLast = qpcNow;
 
-                const float speed = g_gameSpeed.load(std::memory_order_acquire);
-                if (speed > 0.0f)
+                const double speed = g_getTimeScale ? g_getTimeScale() : 1.0;
+                if (speed > 0.0)
                     accumulator += static_cast<LONGLONG>(static_cast<double>(wallDt100ns) * speed);
                 if (accumulator > accCap) accumulator = accCap;
 
                 if (accumulator < static_cast<LONGLONG>(VIDEO_FRAME_DURATION))
                 {
-                    Sleep(speed > 0.0f ? 1 : 5);
+                    Sleep(speed > 0.0 ? 1 : 5);
                     continue;
                 }
 
@@ -454,7 +450,7 @@ namespace
 
     void InputLoop()
     {
-        bool f9Down = false, f10Down = false, f11Down = false;
+        bool f9Down = false;
         while (true)
         {
             const bool f9 = (GetAsyncKeyState(VK_F9) & 0x8000) != 0;
@@ -465,48 +461,45 @@ namespace
             }
             f9Down = f9;
 
-            // Test-only manual toggles until pause/slowmo detection lands.
-            const bool f10 = (GetAsyncKeyState(VK_F10) & 0x8000) != 0;
-            if (f10 && !f10Down)
-            {
-                const float cur  = g_gameSpeed.load(std::memory_order_acquire);
-                const float next = (cur == 0.0f) ? 1.0f : 0.0f;
-                g_gameSpeed.store(next, std::memory_order_release);
-                Log("[ScreenRecorder] F10 -> game speed %.2f (%s)",
-                    next, next == 0.0f ? "paused" : "normal");
-            }
-            f10Down = f10;
-
-            const bool f11 = (GetAsyncKeyState(VK_F11) & 0x8000) != 0;
-            if (f11 && !f11Down)
-            {
-                const float cur  = g_gameSpeed.load(std::memory_order_acquire);
-                const float next = (cur == 0.5f) ? 1.0f : 0.5f;
-                g_gameSpeed.store(next, std::memory_order_release);
-                Log("[ScreenRecorder] F11 -> game speed %.2f (%s)",
-                    next, next == 0.5f ? "slowmo" : "normal");
-            }
-            f11Down = f11;
-
             Sleep(50);
         }
     }
 }
 
-extern "C" __declspec(dllexport)
-void ModInit(SE_LogFn logFn)
+namespace
 {
-    g_log = logFn;
-    Log("[ScreenRecorder] Initialized - F9 record, F10 pause, F11 slowmo");
-    std::thread(InputLoop).detach();
+    void OnAcceptMission(const char* /*hookName*/, void* /*userData*/)
+    {
+        if (g_recording.load(std::memory_order_acquire)) return;
+        Log("[ScreenRecorder] AcceptMission -> start recording");
+        ToggleRecording();
+    }
+
+    void OnCompleteMission(const char* /*hookName*/, void* /*userData*/)
+    {
+        if (!g_recording.load(std::memory_order_acquire)) return;
+        Log("[ScreenRecorder] CompleteMission -> stop recording");
+        ToggleRecording();
+    }
+
+    void OnCancelMission(const char* /*hookName*/, void* /*userData*/)
+    {
+        if (!g_recording.load(std::memory_order_acquire)) return;
+        Log("[ScreenRecorder] CancelMission -> stop recording");
+        ToggleRecording();
+    }
 }
 
-// Entry point for future pause/slowmo detection. 0 = paused, 1 = normal,
-// fractional = slowmo factor. Negatives are clamped to 0.
 extern "C" __declspec(dllexport)
-void SE_SetRecordingGameSpeed(float speed)
+void ModInit(const SE_ModApi* api)
 {
-    if (speed < 0.0f) speed = 0.0f;
-    g_gameSpeed.store(speed, std::memory_order_release);
-    Log("[ScreenRecorder] game speed set to %.3f", speed);
+    g_log          = api->Log;
+    g_getTimeScale = api->GetTimeScale;
+    Log("[ScreenRecorder] Initialized - F9 toggle recording");
+
+    api->SubscribeHook("gml_Script_AcceptMission",   &OnAcceptMission,   nullptr);
+    api->SubscribeHook("gml_Script_CompleteMission", &OnCompleteMission, nullptr);
+    api->SubscribeHook("gml_Script_CancelMission", &OnCancelMission, nullptr);
+
+    std::thread(InputLoop).detach();
 }

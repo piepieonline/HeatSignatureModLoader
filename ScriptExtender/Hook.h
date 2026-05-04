@@ -4,8 +4,12 @@
 #include <tuple>
 #include <type_traits>
 #include <mutex>
+#include <vector>
+#include <utility>
 
 #include <MinHook.h>
+
+#include "ModInterface.h"
 
 struct HookReference
 {
@@ -28,6 +32,16 @@ struct HookBase {
     const char* pattern;
     const char* mask;
     bool alwaysLoad;
+
+    // Mods register here via SE_ModApi::SubscribeHook. Subscriptions are added
+    // during single-threaded LoadMods and only read afterwards, so no lock.
+    std::vector<std::pair<SE_HookCallback, void*>> subscribers;
+
+    void NotifySubscribers()
+    {
+        for (auto& sub : subscribers)
+            sub.first(hookName.c_str(), sub.second);
+    }
 
     virtual ~HookBase() = default;
     virtual void CreateHook() = 0;
