@@ -13,6 +13,7 @@
 #include <codecapi.h>
 
 #include <dxcam/dxcam.h>
+#include <dxcam/core/Region.h>
 #include <opencv2/core/mat.hpp>
 
 #include "ModInterface.h"
@@ -42,6 +43,77 @@ namespace
         vsnprintf(buf, sizeof(buf), fmt, args);
         va_end(args);
         g_log(buf);
+    }
+
+    struct FindWindowCtx
+    {
+        DWORD pid       = 0;
+        HWND  bestHwnd  = nullptr;
+        LONG  bestArea  = 0;
+    };
+
+    BOOL CALLBACK FindGameWindowProc(HWND hwnd, LPARAM lparam)
+    {
+        auto* ctx = reinterpret_cast<FindWindowCtx*>(lparam);
+
+        DWORD wndPid = 0;
+        GetWindowThreadProcessId(hwnd, &wndPid);
+        if (wndPid != ctx->pid)            return TRUE;
+        if (!IsWindowVisible(hwnd))        return TRUE;
+        if (GetWindow(hwnd, GW_OWNER))     return TRUE; // skip tool/owned windows
+
+        char cls[64] = {};
+        GetClassNameA(hwnd, cls, sizeof(cls));
+        // Skip the mod-loader's allocated console window.
+        if (lstrcmpiA(cls, "ConsoleWindowClass") == 0) return TRUE;
+
+        RECT r{};
+        if (!GetClientRect(hwnd, &r)) return TRUE;
+        const LONG area = (r.right - r.left) * (r.bottom - r.top);
+        if (area <= 0) return TRUE;
+
+        if (area > ctx->bestArea)
+        {
+            ctx->bestArea = area;
+            ctx->bestHwnd = hwnd;
+        }
+        return TRUE;
+    }
+
+    HWND FindGameWindow()
+    {
+        FindWindowCtx ctx;
+        ctx.pid = GetCurrentProcessId();
+        EnumWindows(&FindGameWindowProc, reinterpret_cast<LPARAM>(&ctx));
+        return ctx.bestHwnd;
+    }
+
+    bool GetGameWindowRegion(DXCam::Region& outRegion, HWND& outHwnd)
+    {
+        HWND hwnd = FindGameWindow();
+        if (!hwnd) return false;
+
+        RECT cr{};
+        if (!GetClientRect(hwnd, &cr)) return false;
+
+        POINT tl{cr.left, cr.top};
+        POINT br{cr.right, cr.bottom};
+        if (!ClientToScreen(hwnd, &tl)) return false;
+        if (!ClientToScreen(hwnd, &br)) return false;
+
+        // H264 requires even dimensions; trim 1 px if odd.
+        int width  = br.x - tl.x;
+        int height = br.y - tl.y;
+        if (width  <= 0 || height <= 0) return false;
+        width  &= ~1;
+        height &= ~1;
+
+        outRegion.left   = tl.x;
+        outRegion.top    = tl.y;
+        outRegion.right  = tl.x + width;
+        outRegion.bottom = tl.y + height;
+        outHwnd          = hwnd;
+        return true;
     }
 
     std::wstring MakeOutputPath()
@@ -175,12 +247,26 @@ namespace
             return;
         }
 
+        DXCam::Region region{};
+        HWND          gameHwnd  = nullptr;
+        const bool    haveRegion = GetGameWindowRegion(region, gameHwnd);
+        if (haveRegion)
+        {
+            Log("[ScreenRecorder] game window 0x%p region = (%d,%d)-(%d,%d) %dx%d",
+                gameHwnd, region.left, region.top, region.right, region.bottom,
+                region.right - region.left, region.bottom - region.top);
+        }
+        else
+        {
+            Log("[ScreenRecorder] game window not found, falling back to full screen");
+        }
+
         Log("[ScreenRecorder] step: DXCam::create");
         std::shared_ptr<DXCam::DXCamera> camera;
         DWORD createSeh = SehGuard([&] {
             try
             {
-                camera = DXCam::create();
+                camera = haveRegion ? DXCam::create(region) : DXCam::create();
             }
             catch (const std::exception& e)
             {
@@ -201,10 +287,20 @@ namespace
             return;
         }
 
-        Log("[ScreenRecorder] step: get_width/height");
-        const UINT32 width  = static_cast<UINT32>(camera->get_width());
-        const UINT32 height = static_cast<UINT32>(camera->get_height());
-        Log("[ScreenRecorder] camera resolution = %ux%u", width, height);
+        UINT32 width  = 0;
+        UINT32 height = 0;
+        if (haveRegion)
+        {
+            width  = static_cast<UINT32>(region.right  - region.left);
+            height = static_cast<UINT32>(region.bottom - region.top);
+        }
+        else
+        {
+            Log("[ScreenRecorder] step: get_width/height");
+            width  = static_cast<UINT32>(camera->get_width());
+            height = static_cast<UINT32>(camera->get_height());
+        }
+        Log("[ScreenRecorder] capture resolution = %ux%u", width, height);
 
         const std::wstring path = MakeOutputPath();
         Log("[ScreenRecorder] step: InitSinkWriter -> %ls", path.c_str());
@@ -252,11 +348,18 @@ namespace
         LONGLONG timestamp = 0;
         int frameCount     = 0;
         DWORD loopSeh = SehGuard([&] {
+            bool loggedSize = false;
             while (g_recording.load(std::memory_order_acquire))
             {
                 cv::Mat frame = camera->get_latest_frame();
                 if (frame.empty()) continue;
                 if (frame.type() != CV_8UC4) continue;
+                if (!loggedSize)
+                {
+                    Log("[ScreenRecorder] first frame = %dx%d (writer expects %ux%u)",
+                        frame.cols, frame.rows, width, height);
+                    loggedSize = true;
+                }
                 if (static_cast<UINT32>(frame.cols) != width || static_cast<UINT32>(frame.rows) != height)
                     continue;
 
