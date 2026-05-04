@@ -16,6 +16,8 @@
 #include <dxcam/core/Region.h>
 #include <opencv2/core/mat.hpp>
 
+#include <imgui.h>
+
 #include "ModInterface.h"
 
 #pragma comment(lib, "mfplat.lib")
@@ -467,6 +469,21 @@ namespace
 
 namespace
 {
+    void DrawImGui(void* /*userData*/)
+    {
+        if (!ImGui::Begin("ScreenRecorder")) { ImGui::End(); return; }
+
+        const bool recording = g_recording.load(std::memory_order_acquire);
+        ImGui::Text("recording: %s", recording ? "yes" : "no");
+        if (g_getTimeScale)
+            ImGui::Text("timescale: %.3f", g_getTimeScale());
+
+        if (ImGui::Button(recording ? "Stop" : "Start"))
+            ToggleRecording();
+
+        ImGui::End();
+    }
+
     void OnAcceptMission(const char* /*hookName*/, void* /*userData*/)
     {
         if (g_recording.load(std::memory_order_acquire)) return;
@@ -499,6 +516,26 @@ void ModInit(const SE_ModApi* api)
     api->SubscribeHook("gml_Script_AcceptMission",   &OnAcceptMission,   nullptr);
     api->SubscribeHook("gml_Script_CompleteMission", &OnCompleteMission, nullptr);
     api->SubscribeHook("gml_Script_CancelMission", &OnCancelMission, nullptr);
+
+    if (api->GetImGuiAllocators && api->GetImGuiContext && api->RegisterImGuiDraw)
+    {
+        // Mirror the host's allocators *first* — required because
+        // ImGui::SetCurrentContext is no-op-safe with a null context but any
+        // subsequent allocation (e.g. during draw) must come from the host heap.
+        void* allocFn = nullptr;
+        void* freeFn  = nullptr;
+        void* userData = nullptr;
+        api->GetImGuiAllocators(&allocFn, &freeFn, &userData);
+        if (allocFn && freeFn)
+        {
+            ImGui::SetAllocatorFunctions(
+                reinterpret_cast<ImGuiMemAllocFunc>(allocFn),
+                reinterpret_cast<ImGuiMemFreeFunc>(freeFn),
+                userData);
+        }
+        ImGui::SetCurrentContext(static_cast<ImGuiContext*>(api->GetImGuiContext()));
+        api->RegisterImGuiDraw(&DrawImGui, nullptr);
+    }
 
     std::thread(InputLoop).detach();
 }

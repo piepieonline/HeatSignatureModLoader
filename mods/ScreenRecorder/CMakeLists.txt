@@ -44,10 +44,12 @@ target_include_directories(ScreenRecorder PRIVATE
 
 find_package(DXCam CONFIG REQUIRED)
 find_package(OpenCV CONFIG REQUIRED)
+find_package(imgui CONFIG REQUIRED)
 
 target_link_libraries(ScreenRecorder PRIVATE
     DXCam::DXCam
     ${OpenCV_LIBS}
+    imgui::imgui
     mf.lib
     mfplat.lib
     mfreadwrite.lib

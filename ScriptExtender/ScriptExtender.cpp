@@ -1,5 +1,6 @@
 #include "ScriptExtender.h"
 #include "ModInterface.h"
+#include "ImGuiHook.h"
 
 #include <Windows.h>
 #include <atomic>
@@ -114,6 +115,7 @@ ScriptExtender::ScriptExtender()
     Log("ModLoader", "Attached");
 
     CreateHooks();
+    ImGuiHook::Install();
     LoadMods();
 }
 
@@ -187,7 +189,12 @@ void ScriptExtender::LoadMods()
             +[](const char* hookName, SE_HookCallback cb, void* userData) {
                 ScriptExtender::SubscribeHook(hookName, cb, userData);
             },
-            &ScriptExtender::GetTimeScale
+            &ScriptExtender::GetTimeScale,
+            +[](SE_ImGuiDrawFn cb, void* userData) {
+                ImGuiHook::RegisterDraw(cb, userData);
+            },
+            +[]() -> void* { return ImGuiHook::GetContext(); },
+            +[](void** a, void** f, void** ud) { ImGuiHook::GetAllocators(a, f, ud); }
         };
 
         modInit(&modApi);

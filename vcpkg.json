@@ -3,7 +3,11 @@
     "lua",
     "luabridge",
     "minhook",
-    "dxcam-cpp"
+    "dxcam-cpp",
+    {
+      "name": "imgui",
+      "features": [ "dx9-binding", "win32-binding" ]
+    }
   ],
   "builtin-baseline": "b1e15efef6758eaa0beb0a8732cfa66f6a68a81d"
 }

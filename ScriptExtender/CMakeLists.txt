@@ -9,13 +9,18 @@ file(GLOB_RECURSE ScriptExtender_SOURCES
 add_library(ScriptExtender SHARED ${ScriptExtender_SOURCES})
 
 find_package(minhook CONFIG REQUIRED)
+find_package(imgui CONFIG REQUIRED)
 
 find_package(Lua REQUIRED)
 find_path(LUABRIDGE_INCLUDE_DIRS "LuaBridge/Array.h")
 target_include_directories(ScriptExtender PRIVATE ${LUABRIDGE_INCLUDE_DIRS})
 
 target_compile_features(ScriptExtender PRIVATE cxx_std_17)
-target_link_libraries(ScriptExtender PRIVATE ${LUA_LIBRARIES} minhook::minhook)
+target_link_libraries(ScriptExtender PRIVATE
+    ${LUA_LIBRARIES}
+    minhook::minhook
+    imgui::imgui
+    d3d9.lib)
 
 set_target_properties(ScriptExtender PROPERTIES
   OUTPUT_NAME "ScriptExtender"
