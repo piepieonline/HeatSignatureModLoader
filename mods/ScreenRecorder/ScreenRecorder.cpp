@@ -34,6 +34,11 @@ namespace
     std::atomic<bool>      g_recording{false};
     std::thread            g_recordThread;
 
+    // 0.0 = paused (no frames written), 0.5 = slowmo, 1.0 = normal.
+    // Pause/slowmo detection writes here; the capture loop scales wall-clock
+    // by this factor so the output video plays at game-time, not wall-time.
+    std::atomic<float>     g_gameSpeed{1.0f};
+
     void Log(const char* fmt, ...)
     {
         if (!g_log) return;
@@ -348,12 +353,40 @@ namespace
         LONGLONG timestamp = 0;
         int frameCount     = 0;
         DWORD loopSeh = SehGuard([&] {
+            LARGE_INTEGER qpcFreq{}, qpcLast{};
+            QueryPerformanceFrequency(&qpcFreq);
+            QueryPerformanceCounter(&qpcLast);
+
+            // Game-time accumulator in 100ns units. The capture loop only emits a
+            // frame once this has accrued one VIDEO_FRAME_DURATION of *game* time —
+            // so pause (speed=0) freezes it and slowmo (speed<1) drains it slower,
+            // making the output video play at "real" game speed.
+            LONGLONG accumulator = 0;
+            const LONGLONG accCap = static_cast<LONGLONG>(VIDEO_FRAME_DURATION) * 2;
+
             bool loggedSize = false;
             while (g_recording.load(std::memory_order_acquire))
             {
+                LARGE_INTEGER qpcNow{};
+                QueryPerformanceCounter(&qpcNow);
+                const LONGLONG wallDt100ns =
+                    ((qpcNow.QuadPart - qpcLast.QuadPart) * 10'000'000LL) / qpcFreq.QuadPart;
+                qpcLast = qpcNow;
+
+                const float speed = g_gameSpeed.load(std::memory_order_acquire);
+                if (speed > 0.0f)
+                    accumulator += static_cast<LONGLONG>(static_cast<double>(wallDt100ns) * speed);
+                if (accumulator > accCap) accumulator = accCap;
+
+                if (accumulator < static_cast<LONGLONG>(VIDEO_FRAME_DURATION))
+                {
+                    Sleep(speed > 0.0f ? 1 : 5);
+                    continue;
+                }
+
                 cv::Mat frame = camera->get_latest_frame();
-                if (frame.empty()) continue;
-                if (frame.type() != CV_8UC4) continue;
+                if (frame.empty())              { Sleep(1); continue; }
+                if (frame.type() != CV_8UC4)    { Sleep(1); continue; }
                 if (!loggedSize)
                 {
                     Log("[ScreenRecorder] first frame = %dx%d (writer expects %ux%u)",
@@ -361,7 +394,7 @@ namespace
                     loggedSize = true;
                 }
                 if (static_cast<UINT32>(frame.cols) != width || static_cast<UINT32>(frame.rows) != height)
-                    continue;
+                    { Sleep(1); continue; }
 
                 HRESULT whr = WriteFrame(writer, streamIndex, frame, timestamp);
                 if (FAILED(whr))
@@ -369,7 +402,8 @@ namespace
                     Log("[ScreenRecorder] WriteFrame failed (hr=0x%08lX)", static_cast<unsigned long>(whr));
                     break;
                 }
-                timestamp += VIDEO_FRAME_DURATION;
+                timestamp   += VIDEO_FRAME_DURATION;
+                accumulator -= static_cast<LONGLONG>(VIDEO_FRAME_DURATION);
                 ++frameCount;
             }
         }, "capture loop");
@@ -420,16 +454,40 @@ namespace
 
     void InputLoop()
     {
-        bool keyWasDown = false;
+        bool f9Down = false, f10Down = false, f11Down = false;
         while (true)
         {
-            const bool keyIsDown = (GetAsyncKeyState(VK_F9) & 0x8000) != 0;
-            if (keyIsDown && !keyWasDown)
+            const bool f9 = (GetAsyncKeyState(VK_F9) & 0x8000) != 0;
+            if (f9 && !f9Down)
             {
                 Log("Recording: F9 toggled (now %s)", g_recording.load() ? "stopping" : "starting");
                 ToggleRecording();
             }
-            keyWasDown = keyIsDown;
+            f9Down = f9;
+
+            // Test-only manual toggles until pause/slowmo detection lands.
+            const bool f10 = (GetAsyncKeyState(VK_F10) & 0x8000) != 0;
+            if (f10 && !f10Down)
+            {
+                const float cur  = g_gameSpeed.load(std::memory_order_acquire);
+                const float next = (cur == 0.0f) ? 1.0f : 0.0f;
+                g_gameSpeed.store(next, std::memory_order_release);
+                Log("[ScreenRecorder] F10 -> game speed %.2f (%s)",
+                    next, next == 0.0f ? "paused" : "normal");
+            }
+            f10Down = f10;
+
+            const bool f11 = (GetAsyncKeyState(VK_F11) & 0x8000) != 0;
+            if (f11 && !f11Down)
+            {
+                const float cur  = g_gameSpeed.load(std::memory_order_acquire);
+                const float next = (cur == 0.5f) ? 1.0f : 0.5f;
+                g_gameSpeed.store(next, std::memory_order_release);
+                Log("[ScreenRecorder] F11 -> game speed %.2f (%s)",
+                    next, next == 0.5f ? "slowmo" : "normal");
+            }
+            f11Down = f11;
+
             Sleep(50);
         }
     }
@@ -439,6 +497,16 @@ extern "C" __declspec(dllexport)
 void ModInit(SE_LogFn logFn)
 {
     g_log = logFn;
-    Log("[ScreenRecorder] Initialized - press F9 to start/stop recording");
+    Log("[ScreenRecorder] Initialized - F9 record, F10 pause, F11 slowmo");
     std::thread(InputLoop).detach();
+}
+
+// Entry point for future pause/slowmo detection. 0 = paused, 1 = normal,
+// fractional = slowmo factor. Negatives are clamped to 0.
+extern "C" __declspec(dllexport)
+void SE_SetRecordingGameSpeed(float speed)
+{
+    if (speed < 0.0f) speed = 0.0f;
+    g_gameSpeed.store(speed, std::memory_order_release);
+    Log("[ScreenRecorder] game speed set to %.3f", speed);
 }
