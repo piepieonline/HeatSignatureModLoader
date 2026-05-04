@@ -10,6 +10,7 @@ project(HeatSignatureScriptExtender)
 add_subdirectory(dinput8)
 add_subdirectory(ScriptExtender)
 add_subdirectory(mods/ScreenRecorder)
+add_subdirectory(mods/DiscordRichPresence)
 
 set(MISC_FILES 
     README.md
