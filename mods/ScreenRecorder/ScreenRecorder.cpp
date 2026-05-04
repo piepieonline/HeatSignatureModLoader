@@ -43,7 +43,7 @@ namespace
         va_start(args, fmt);
         vsnprintf(buf, sizeof(buf), fmt, args);
         va_end(args);
-        g_log(buf);
+        g_log("ScreenRecorder", buf);
     }
 
     struct FindWindowCtx
@@ -228,21 +228,21 @@ namespace
         __except (EXCEPTION_EXECUTE_HANDLER)
         {
             const DWORD code = GetExceptionCode();
-            Log("[ScreenRecorder] SEH 0x%08lX in %s", static_cast<unsigned long>(code), label);
+            Log("SEH 0x%08lX in %s", static_cast<unsigned long>(code), label);
             return code;
         }
     }
 
     void RecordingThreadInner()
     {
-        Log("[ScreenRecorder] step: CoInitializeEx");
+        Log("step: CoInitializeEx");
         HRESULT hrCo = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
-        Log("[ScreenRecorder] step: MFStartup");
+        Log("step: MFStartup");
         HRESULT hrMf = MFStartup(MF_VERSION);
         if (FAILED(hrMf))
         {
-            Log("[ScreenRecorder] MFStartup failed (hr=0x%08lX)", static_cast<unsigned long>(hrMf));
+            Log("MFStartup failed (hr=0x%08lX)", static_cast<unsigned long>(hrMf));
             if (SUCCEEDED(hrCo)) CoUninitialize();
             g_recording = false;
             return;
@@ -253,16 +253,16 @@ namespace
         const bool    haveRegion = GetGameWindowRegion(region, gameHwnd);
         if (haveRegion)
         {
-            Log("[ScreenRecorder] game window 0x%p region = (%d,%d)-(%d,%d) %dx%d",
+            Log("game window 0x%p region = (%d,%d)-(%d,%d) %dx%d",
                 gameHwnd, region.left, region.top, region.right, region.bottom,
                 region.right - region.left, region.bottom - region.top);
         }
         else
         {
-            Log("[ScreenRecorder] game window not found, falling back to full screen");
+            Log("game window not found, falling back to full screen");
         }
 
-        Log("[ScreenRecorder] step: DXCam::create");
+        Log("step: DXCam::create");
         std::shared_ptr<DXCam::DXCamera> camera;
         DWORD createSeh = SehGuard([&] {
             try
@@ -271,17 +271,17 @@ namespace
             }
             catch (const std::exception& e)
             {
-                Log("[ScreenRecorder] DXCam::create threw std::exception: %s", e.what());
+                Log("DXCam::create threw std::exception: %s", e.what());
             }
             catch (...)
             {
-                Log("[ScreenRecorder] DXCam::create threw unknown C++ exception");
+                Log("DXCam::create threw unknown C++ exception");
             }
         }, "DXCam::create");
 
         if (createSeh != 0 || !camera)
         {
-            Log("[ScreenRecorder] Failed to create DXCamera");
+            Log("Failed to create DXCamera");
             MFShutdown();
             if (SUCCEEDED(hrCo)) CoUninitialize();
             g_recording = false;
@@ -297,27 +297,27 @@ namespace
         }
         else
         {
-            Log("[ScreenRecorder] step: get_width/height");
+            Log("step: get_width/height");
             width  = static_cast<UINT32>(camera->get_width());
             height = static_cast<UINT32>(camera->get_height());
         }
-        Log("[ScreenRecorder] capture resolution = %ux%u", width, height);
+        Log("capture resolution = %ux%u", width, height);
 
         const std::wstring path = MakeOutputPath();
-        Log("[ScreenRecorder] step: InitSinkWriter -> %ls", path.c_str());
+        Log("step: InitSinkWriter -> %ls", path.c_str());
         CComPtr<IMFSinkWriter> writer;
         DWORD streamIndex = 0;
         HRESULT hr = InitSinkWriter(path, width, height, writer, streamIndex);
         if (FAILED(hr))
         {
-            Log("[ScreenRecorder] InitSinkWriter failed (hr=0x%08lX)", static_cast<unsigned long>(hr));
+            Log("InitSinkWriter failed (hr=0x%08lX)", static_cast<unsigned long>(hr));
             MFShutdown();
             if (SUCCEEDED(hrCo)) CoUninitialize();
             g_recording = false;
             return;
         }
 
-        Log("[ScreenRecorder] step: camera->start");
+        Log("step: camera->start");
         DWORD startSeh = SehGuard([&] {
             try
             {
@@ -325,11 +325,11 @@ namespace
             }
             catch (const std::exception& e)
             {
-                Log("[ScreenRecorder] camera->start threw: %s", e.what());
+                Log("camera->start threw: %s", e.what());
             }
             catch (...)
             {
-                Log("[ScreenRecorder] camera->start threw unknown");
+                Log("camera->start threw unknown");
             }
         }, "camera->start");
 
@@ -343,7 +343,7 @@ namespace
             return;
         }
 
-        Log("[ScreenRecorder] Recording -> %ls (%ux%u @ %u fps)",
+        Log("Recording -> %ls (%ux%u @ %u fps)",
             path.c_str(), width, height, VIDEO_FPS);
 
         LONGLONG timestamp = 0;
@@ -385,7 +385,7 @@ namespace
                 if (frame.type() != CV_8UC4)    { Sleep(1); continue; }
                 if (!loggedSize)
                 {
-                    Log("[ScreenRecorder] first frame = %dx%d (writer expects %ux%u)",
+                    Log("first frame = %dx%d (writer expects %ux%u)",
                         frame.cols, frame.rows, width, height);
                     loggedSize = true;
                 }
@@ -395,7 +395,7 @@ namespace
                 HRESULT whr = WriteFrame(writer, streamIndex, frame, timestamp);
                 if (FAILED(whr))
                 {
-                    Log("[ScreenRecorder] WriteFrame failed (hr=0x%08lX)", static_cast<unsigned long>(whr));
+                    Log("WriteFrame failed (hr=0x%08lX)", static_cast<unsigned long>(whr));
                     break;
                 }
                 timestamp   += VIDEO_FRAME_DURATION;
@@ -405,20 +405,20 @@ namespace
         }, "capture loop");
         (void)loopSeh;
 
-        Log("[ScreenRecorder] step: camera->stop");
+        Log("step: camera->stop");
         SehGuard([&] { camera->stop(); }, "camera->stop");
         camera.reset();
 
-        Log("[ScreenRecorder] step: writer->Finalize");
+        Log("step: writer->Finalize");
         hr = writer->Finalize();
         if (FAILED(hr))
-            Log("[ScreenRecorder] Finalize failed (hr=0x%08lX)", static_cast<unsigned long>(hr));
+            Log("Finalize failed (hr=0x%08lX)", static_cast<unsigned long>(hr));
         writer.Release();
 
         MFShutdown();
         if (SUCCEEDED(hrCo)) CoUninitialize();
 
-        Log("[ScreenRecorder] Stopped (%d frames, %.2fs)",
+        Log("Stopped (%d frames, %.2fs)",
             frameCount, frameCount / static_cast<double>(VIDEO_FPS));
     }
 
@@ -427,7 +427,7 @@ namespace
         DWORD seh = SehGuard([] { RecordingThreadInner(); }, "RecordingThread");
         if (seh != 0)
         {
-            Log("[ScreenRecorder] RecordingThread aborted by SEH 0x%08lX",
+            Log("RecordingThread aborted by SEH 0x%08lX",
                 static_cast<unsigned long>(seh));
         }
         g_recording = false;
@@ -456,8 +456,7 @@ namespace
             const bool f9 = (GetAsyncKeyState(VK_F9) & 0x8000) != 0;
             if (f9 && !f9Down)
             {
-                Log("Recording: F9 toggled (now %s)", g_recording.load() ? "stopping" : "starting");
-                ToggleRecording();
+                
             }
             f9Down = f9;
 
@@ -471,21 +470,21 @@ namespace
     void OnAcceptMission(const char* /*hookName*/, void* /*userData*/)
     {
         if (g_recording.load(std::memory_order_acquire)) return;
-        Log("[ScreenRecorder] AcceptMission -> start recording");
+        Log("AcceptMission -> start recording");
         ToggleRecording();
     }
 
     void OnCompleteMission(const char* /*hookName*/, void* /*userData*/)
     {
         if (!g_recording.load(std::memory_order_acquire)) return;
-        Log("[ScreenRecorder] CompleteMission -> stop recording");
+        Log("CompleteMission -> stop recording");
         ToggleRecording();
     }
 
     void OnCancelMission(const char* /*hookName*/, void* /*userData*/)
     {
         if (!g_recording.load(std::memory_order_acquire)) return;
-        Log("[ScreenRecorder] CancelMission -> stop recording");
+        Log("CancelMission -> stop recording");
         ToggleRecording();
     }
 }
@@ -495,7 +494,7 @@ void ModInit(const SE_ModApi* api)
 {
     g_log          = api->Log;
     g_getTimeScale = api->GetTimeScale;
-    Log("[ScreenRecorder] Initialized - F9 toggle recording");
+    Log("Initialized");
 
     api->SubscribeHook("gml_Script_AcceptMission",   &OnAcceptMission,   nullptr);
     api->SubscribeHook("gml_Script_CompleteMission", &OnCompleteMission, nullptr);

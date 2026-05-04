@@ -2,7 +2,7 @@
 
 extern "C" {
 
-typedef void (*SE_LogFn)(const char* message);
+typedef void (*SE_LogFn)(const char* prefix, const char* message);
 
 // Fires after a hooked function is invoked by the game. userData is the pointer
 // the mod passed to SubscribeHook. Callbacks run on the game thread that

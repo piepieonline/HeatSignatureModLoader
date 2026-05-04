@@ -129,7 +129,7 @@ public:
         if (moduleBase == 0)
         {
             GetModuleCodeRegion("Heat_Signature.exe", &moduleBase, &moduleSize);
-            ScriptExtender::Log("[Hook] Module base found at 0x%p", moduleBase);
+            ScriptExtender::Log("ModLoader", "Module base found at 0x%p", moduleBase);
         }
 
         if (reference.offset == 0 && pattern)
@@ -145,16 +145,16 @@ public:
         // MinHookManager::Initialize();
 
         if (MH_CreateHook(targetAddr, reference.hookFunction, &reference.originalFunction) != MH_OK) {
-            ScriptExtender::Log("[Hook] Failed to install %s", hookName.c_str());
+            ScriptExtender::Log("ModLoader", "Failed to install %s", hookName.c_str());
             return;
         }
 
         if (MH_EnableHook(targetAddr) != MH_OK)
         {
-            ScriptExtender::Log("[Hook] Failed to enable %s", hookName.c_str());
+            ScriptExtender::Log("ModLoader", "Failed to enable %s", hookName.c_str());
             return;
         }
 
-        ScriptExtender::Log("[Hook] %s installed and enabled at 0x%p (0x%p)", hookName.c_str(), targetAddr, reference.offset);
+        ScriptExtender::Log("ModLoader", "%s installed and enabled at 0x%p (0x%p)", hookName.c_str(), targetAddr, reference.offset);
     };
 };
