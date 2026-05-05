@@ -3,10 +3,10 @@
 #include <mutex>
 #include <string>
 
-#include "ScriptExtender.h";
+#include "ModLoader.h";
 
 DWORD WINAPI HookThread(LPVOID lpParam) {
-    ScriptExtender::Instance();
+    ModLoader::Instance();
     return 0;
 }
 

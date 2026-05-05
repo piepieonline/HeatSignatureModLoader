@@ -7,10 +7,10 @@
 
 #include "Hook.h"
 
-class ScriptExtender
+class ModLoader
 {
 public:
-	static ScriptExtender& Instance();
+	static ModLoader& Instance();
 	static void Log(const char* prefix, const char* format, ...);
 	static void SubscribeHook(const char* hookName, SE_HookCallback callback, void* userData);
 	static double GetTimeScale();
@@ -34,8 +34,8 @@ private:
 			0x566200,
 			+[](int a1, int a2, uintptr_t* a3, int a4, int a5) -> uintptr_t*
 			{
-				auto hook = ScriptExtender::HookMap["gml_Script_AcceptMission"];
-				ScriptExtender::Instance().Log("ModLoader Hook", "gml_Script_AcceptMission");
+				auto hook = ModLoader::HookMap["gml_Script_AcceptMission"];
+				ModLoader::Instance().Log("ModLoader Hook", "gml_Script_AcceptMission");
 				hook->NotifySubscribers();
 				auto originalFn = hook->reference.GetOriginal<MissionAccept_t>();
 				return originalFn(a1, a2, a3, a4, a5);
@@ -47,8 +47,8 @@ private:
 			0x5C9EB0,
 			+[](int self, int other, uintptr_t* result, int argc, uintptr_t** argv) -> uintptr_t*
 			{
-				ScriptExtender::Instance().Log("ModLoader Hook", "gml_Script_GenerateMissions (argc=%d)", argc);
-				auto hook = ScriptExtender::HookMap["gml_Script_GenerateMissions"];
+				ModLoader::Instance().Log("ModLoader Hook", "gml_Script_GenerateMissions (argc=%d)", argc);
+				auto hook = ModLoader::HookMap["gml_Script_GenerateMissions"];
 				hook->NotifySubscribers();
 				auto originalFn = hook->reference.GetOriginal<GenerateMissions_t>();
 				return originalFn(self, other, result, argc, argv);
@@ -60,8 +60,8 @@ private:
 			0x570840,
 			+[](int a1, int a2, uintptr_t* a3, int a4, int a5) -> uintptr_t*
 			{
-				ScriptExtender::Instance().Log("ModLoader Hook", "gml_Script_CompleteMission");
-				auto hook = ScriptExtender::HookMap["gml_Script_CompleteMission"];
+				ModLoader::Instance().Log("ModLoader Hook", "gml_Script_CompleteMission");
+				auto hook = ModLoader::HookMap["gml_Script_CompleteMission"];
 				hook->NotifySubscribers();
 				auto originalFn = hook->reference.GetOriginal<MissionComplete_t>();
 				return originalFn(a1, a2, a3, a4, a5);
@@ -73,8 +73,8 @@ private:
 			0x56DC30,
 			+[](int a1, int a2, uintptr_t* a3) -> uintptr_t*
 			{
-				ScriptExtender::Instance().Log("ModLoader Hook", "gml_Script_CancelMission");
-				auto hook = ScriptExtender::HookMap["gml_Script_CancelMission"];
+				ModLoader::Instance().Log("ModLoader Hook", "gml_Script_CancelMission");
+				auto hook = ModLoader::HookMap["gml_Script_CancelMission"];
 				hook->NotifySubscribers();
 				auto originalFn = hook->reference.GetOriginal<MissionCancel_t>();
 				return originalFn(a1, a2, a3);
@@ -86,7 +86,7 @@ private:
 			0x976800,
 			+[](int self, int other, uintptr_t* result, int argc, uintptr_t** argv) -> uintptr_t*
 			{
-				auto hook = ScriptExtender::HookMap["gml_Script_SetTimeScale"];
+				auto hook = ModLoader::HookMap["gml_Script_SetTimeScale"];
 				hook->NotifySubscribers();
 				auto originalFn = hook->reference.GetOriginal<SetTimeScale_t>();
 				return originalFn(self, other, result, argc, argv);
@@ -98,8 +98,8 @@ private:
 			0x6056B0,
 			+[](uintptr_t* a1, int a2, uintptr_t* a3) -> uintptr_t*
 			{
-				ScriptExtender::Instance().Log("ModLoader Hook", "gml_Script_PauseMission");
-				auto hook = ScriptExtender::HookMap["gml_Script_PauseMission"];
+				ModLoader::Instance().Log("ModLoader Hook", "gml_Script_PauseMission");
+				auto hook = ModLoader::HookMap["gml_Script_PauseMission"];
 				hook->NotifySubscribers();
 				auto originalFn = hook->reference.GetOriginal<PauseMission_t>();
 				return originalFn(a1, a2, a3);
@@ -111,8 +111,8 @@ private:
 			0x9771A0,
 			+[](int a1, int a2, uintptr_t* a3, int a4, uintptr_t** a5) -> uintptr_t*
 			{
-				ScriptExtender::Instance().Log("ModLoader Hook", "gml_Script_PauseFor");
-				auto hook = ScriptExtender::HookMap["gml_Script_PauseFor"];
+				ModLoader::Instance().Log("ModLoader Hook", "gml_Script_PauseFor");
+				auto hook = ModLoader::HookMap["gml_Script_PauseFor"];
 				hook->NotifySubscribers();
 				auto originalFn = hook->reference.GetOriginal<PauseFor_t>();
 				return originalFn(a1, a2, a3, a4, a5);
@@ -121,9 +121,9 @@ private:
 		),
 	};
 
-	ScriptExtender();
-	ScriptExtender(const ScriptExtender&) = delete;
-	ScriptExtender& operator=(const ScriptExtender&) = delete;
+	ModLoader();
+	ModLoader(const ModLoader&) = delete;
+	ModLoader& operator=(const ModLoader&) = delete;
 
 	void CreateHooks();
 	void LoadMods();

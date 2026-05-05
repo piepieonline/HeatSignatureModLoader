@@ -5,10 +5,10 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-project(HeatSignatureScriptExtender)
+project(HeatSignatureModLoader)
 
 add_subdirectory(dinput8)
-add_subdirectory(ScriptExtender)
+add_subdirectory(ModLoader)
 add_subdirectory(mods/ScreenRecorder)
 add_subdirectory(mods/DiscordRichPresence)
 
@@ -16,7 +16,7 @@ set(MISC_FILES
     README.md
     vcpkg.json
 )
-target_sources(ScriptExtender PRIVATE ${MISC_FILES})
+target_sources(ModLoader PRIVATE ${MISC_FILES})
 
 # Run and debug setup for VS
 if (WIN32)
@@ -26,7 +26,7 @@ if (WIN32)
 
     set(USER_FILES
         "${CMAKE_BINARY_DIR}/ALL_BUILD.vcxproj.user"
-        "${CMAKE_BINARY_DIR}/ScriptExtender/ScriptExtender.vcxproj.user"
+        "${CMAKE_BINARY_DIR}/ModLoader/ModLoader.vcxproj.user"
         "${CMAKE_BINARY_DIR}/dinput8/dxgi.vcxproj.user"
     )
 

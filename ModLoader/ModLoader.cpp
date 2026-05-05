@@ -1,4 +1,4 @@
-#include "ScriptExtender.h"
+#include "ModLoader.h"
 #include "ModInterface.h"
 #include "ImGuiHook.h"
 
@@ -10,9 +10,9 @@
 
 #include "MinHook.h"
 
-std::map<std::string, HookBase*> ScriptExtender::HookMap{};
+std::map<std::string, HookBase*> ModLoader::HookMap{};
 
-double ScriptExtender::GetTimeScale()
+double ModLoader::GetTimeScale()
 {
     // Pointer chain identified via Cheat Engine — resolves to the live game
     // timescale double once the time-manager instance exists. Walking it is
@@ -32,7 +32,7 @@ double ScriptExtender::GetTimeScale()
     auto fail = [](const char* reason) -> double {
         if (s_lastFailure == nullptr || strcmp(s_lastFailure, reason) != 0)
         {
-            ScriptExtender::Log("ModLoader", "TimeScale returning 1.0 (% s)", reason);
+            ModLoader::Log("ModLoader", "TimeScale returning 1.0 (% s)", reason);
             s_lastFailure = reason;
         }
         return 1.0;
@@ -81,7 +81,7 @@ double ScriptExtender::GetTimeScale()
 
     if (s_lastFailure != nullptr)
     {
-        ScriptExtender::Log("ModLoader", "TimeScale recovered(was: % s) -> % f", s_lastFailure, result);
+        ModLoader::Log("ModLoader", "TimeScale recovered(was: % s) -> % f", s_lastFailure, result);
         s_lastFailure = nullptr;
     }
     return result;
@@ -95,13 +95,13 @@ using PauseMission_t = uintptr_t* (__cdecl*)(uintptr_t* a1, int a2, uintptr_t* a
 using PauseFor_t = uintptr_t* (__cdecl*)(int a1, int a2, uintptr_t* a3, int a4, uintptr_t** a5);
 using SetSlowMotionEffectStrength_t = uintptr_t* (__cdecl*)(int a1, int a2, uintptr_t* a3, int a4, uintptr_t* a5);
 
-ScriptExtender& ScriptExtender::Instance()
+ModLoader& ModLoader::Instance()
 {
-    static ScriptExtender instance;
+    static ModLoader instance;
     return instance;
 }
 
-ScriptExtender::ScriptExtender()
+ModLoader::ModLoader()
 {
     AllocConsole();
     FILE* fDummy;
@@ -109,7 +109,7 @@ ScriptExtender::ScriptExtender()
     freopen_s(&fDummy, "CONOUT$", "w", stderr);
     freopen_s(&fDummy, "CONIN$", "r", stdin);
 
-    std::ofstream logFile("ScriptExtender.log", std::ios::trunc);
+    std::ofstream logFile("ModLoader.log", std::ios::trunc);
     logFile.close();
 
     Log("ModLoader", "Attached");
@@ -119,7 +119,7 @@ ScriptExtender::ScriptExtender()
     LoadMods();
 }
 
-void ScriptExtender::Log(const char* prefix, const char* format, ...)
+void ModLoader::Log(const char* prefix, const char* format, ...)
 {
     char buffer[1024];
     va_list args;
@@ -129,12 +129,12 @@ void ScriptExtender::Log(const char* prefix, const char* format, ...)
 
     std::cout << "[" << prefix << "] " << buffer << std::endl;
 
-    std::ofstream logFile("ScriptExtender.log", std::ios::app);
+    std::ofstream logFile("ModLoader.log", std::ios::app);
     if (logFile.is_open())
         logFile << "[" << prefix << "] " << buffer << std::endl;
 }
 
-void ScriptExtender::SubscribeHook(const char* hookName, SE_HookCallback callback, void* userData)
+void ModLoader::SubscribeHook(const char* hookName, SE_HookCallback callback, void* userData)
 {
     auto it = HookMap.find(hookName);
     if (it == HookMap.end())
@@ -146,7 +146,7 @@ void ScriptExtender::SubscribeHook(const char* hookName, SE_HookCallback callbac
     Log("ModLoader", "Subscriber registered for %s", hookName);
 }
 
-void ScriptExtender::LoadMods()
+void ModLoader::LoadMods()
 {
     CreateDirectoryA(".\\mods", nullptr);
 
@@ -185,11 +185,11 @@ void ScriptExtender::LoadMods()
         }
 
         SE_ModApi modApi = {
-            +[](const char* prefix, const char* msg) { ScriptExtender::Log(prefix, msg); },
+            +[](const char* prefix, const char* msg) { ModLoader::Log(prefix, msg); },
             +[](const char* hookName, SE_HookCallback cb, void* userData) {
-                ScriptExtender::SubscribeHook(hookName, cb, userData);
+                ModLoader::SubscribeHook(hookName, cb, userData);
             },
-            &ScriptExtender::GetTimeScale,
+            &ModLoader::GetTimeScale,
             +[](SE_ImGuiDrawFn cb, void* userData) {
                 ImGuiHook::RegisterDraw(cb, userData);
             },
@@ -205,7 +205,7 @@ void ScriptExtender::LoadMods()
     FindClose(h);
 }
 
-void ScriptExtender::CreateHooks()
+void ModLoader::CreateHooks()
 {
     if (MH_Initialize() != MH_OK)
     {

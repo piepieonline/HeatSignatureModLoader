@@ -17,7 +17,7 @@ namespace ImGuiHook
     // they want a guaranteed-non-null context.
     void* GetContext();
 
-    // Outputs the allocator pair ImGui is using inside ScriptExtender so mods
+    // Outputs the allocator pair ImGui is using inside ModLoader so mods
     // can mirror them via ImGui::SetAllocatorFunctions.
     void GetAllocators(void** allocFn, void** freeFn, void** userData);
 }

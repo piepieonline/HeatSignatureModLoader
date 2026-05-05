@@ -39,7 +39,7 @@ set(CMAKE_MAP_IMPORTED_CONFIG_MINSIZEREL     Release "")
 set(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO Release "")
 
 target_include_directories(ScreenRecorder PRIVATE
-    ${CMAKE_SOURCE_DIR}/ScriptExtender
+    ${CMAKE_SOURCE_DIR}/ModLoader
 )
 
 find_package(DXCam CONFIG REQUIRED)

@@ -34,7 +34,7 @@ static DWORD WINAPI InitThread(LPVOID)
     while (!GetModuleHandleA("steam_api.dll"))
         Sleep(100);
 
-    LoadLibraryA(".\\ScriptExtender.dll");
+    LoadLibraryA(".\\ModLoader.dll");
     return 0;
 }
 

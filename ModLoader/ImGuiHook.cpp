@@ -1,5 +1,5 @@
 #include "ImGuiHook.h"
-#include "ScriptExtender.h"
+#include "ModLoader.h"
 
 #include <windows.h>
 #include <d3d9.h>
@@ -55,7 +55,7 @@ namespace
         va_start(args, fmt);
         vsnprintf(buf, sizeof(buf), fmt, args);
         va_end(args);
-        ScriptExtender::Log("ImGuiHook", buf);
+        ModLoader::Log("ImGuiHook", buf);
     }
 
     LRESULT CALLBACK HookedWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -214,7 +214,7 @@ namespace
     }
 
     // The dxgi-proxy bootstrap waits for steam_api.dll before loading
-    // ScriptExtender, by which time the game has typically already called
+    // ModLoader, by which time the game has typically already called
     // Direct3DCreate9 and created its device. Hooking Direct3DCreate9 alone is
     // therefore too late. The fix: create a throwaway IDirect3D9 / device
     // ourselves and hook the *function pointers* in their vtables. Those

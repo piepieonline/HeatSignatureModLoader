@@ -22,7 +22,7 @@ target_compile_definitions(DiscordRichPresence PRIVATE
 )
 
 target_include_directories(DiscordRichPresence PRIVATE
-    ${CMAKE_SOURCE_DIR}/ScriptExtender
+    ${CMAKE_SOURCE_DIR}/ModLoader
     ${VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/include
 )
 
