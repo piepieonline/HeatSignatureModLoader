@@ -1,4 +1,5 @@
 #pragma once
+#include <windows.h>
 
 extern "C" {
 
@@ -30,6 +31,11 @@ typedef void* (*SE_GetImGuiContextFn)();
 // ImGui::SetAllocatorFunctions and allocate from the same heap.
 typedef void (*SE_GetImGuiAllocatorsFn)(void** allocFn, void** freeFn, void** userData);
 
+// Returns the game's main window handle — largest visible, unowned,
+// non-console window in the current process. May return nullptr before the
+// game window is created.
+typedef HWND (*SE_GetGameWindowFn)();
+
 struct SE_ModApi
 {
     SE_LogFn                 Log;
@@ -38,6 +44,7 @@ struct SE_ModApi
     SE_RegisterImGuiDrawFn   RegisterImGuiDraw;
     SE_GetImGuiContextFn     GetImGuiContext;
     SE_GetImGuiAllocatorsFn  GetImGuiAllocators;
+    SE_GetGameWindowFn       GetGameWindow;
 };
 
 // Each mod DLL must export:

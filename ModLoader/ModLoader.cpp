@@ -1,6 +1,7 @@
 #include "ModLoader.h"
 #include "ModInterface.h"
 #include "ImGuiHook.h"
+#include "GameWindow.h"
 
 #include <Windows.h>
 #include <atomic>
@@ -194,7 +195,8 @@ void ModLoader::LoadMods()
                 ImGuiHook::RegisterDraw(cb, userData);
             },
             +[]() -> void* { return ImGuiHook::GetContext(); },
-            +[](void** a, void** f, void** ud) { ImGuiHook::GetAllocators(a, f, ud); }
+            +[](void** a, void** f, void** ud) { ImGuiHook::GetAllocators(a, f, ud); },
+            &FindGameWindow
         };
 
         modInit(&modApi);

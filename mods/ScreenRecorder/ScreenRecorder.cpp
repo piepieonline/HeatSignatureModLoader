@@ -34,6 +34,7 @@ namespace
 
     SE_LogFn               g_log = nullptr;
     SE_GetTimeScaleFn      g_getTimeScale = nullptr;
+    SE_GetGameWindowFn     g_getGameWindow = nullptr;
     std::atomic<bool>      g_recording{false};
     std::atomic<bool>      g_recording_enabled{false};
     std::thread            g_recordThread;
@@ -49,52 +50,9 @@ namespace
         g_log("ScreenRecorder", buf);
     }
 
-    struct FindWindowCtx
-    {
-        DWORD pid       = 0;
-        HWND  bestHwnd  = nullptr;
-        LONG  bestArea  = 0;
-    };
-
-    BOOL CALLBACK FindGameWindowProc(HWND hwnd, LPARAM lparam)
-    {
-        auto* ctx = reinterpret_cast<FindWindowCtx*>(lparam);
-
-        DWORD wndPid = 0;
-        GetWindowThreadProcessId(hwnd, &wndPid);
-        if (wndPid != ctx->pid)            return TRUE;
-        if (!IsWindowVisible(hwnd))        return TRUE;
-        if (GetWindow(hwnd, GW_OWNER))     return TRUE; // skip tool/owned windows
-
-        char cls[64] = {};
-        GetClassNameA(hwnd, cls, sizeof(cls));
-        // Skip the mod-loader's allocated console window.
-        if (lstrcmpiA(cls, "ConsoleWindowClass") == 0) return TRUE;
-
-        RECT r{};
-        if (!GetClientRect(hwnd, &r)) return TRUE;
-        const LONG area = (r.right - r.left) * (r.bottom - r.top);
-        if (area <= 0) return TRUE;
-
-        if (area > ctx->bestArea)
-        {
-            ctx->bestArea = area;
-            ctx->bestHwnd = hwnd;
-        }
-        return TRUE;
-    }
-
-    HWND FindGameWindow()
-    {
-        FindWindowCtx ctx;
-        ctx.pid = GetCurrentProcessId();
-        EnumWindows(&FindGameWindowProc, reinterpret_cast<LPARAM>(&ctx));
-        return ctx.bestHwnd;
-    }
-
     bool GetGameWindowRegion(DXCam::Region& outRegion, HWND& outHwnd)
     {
-        HWND hwnd = FindGameWindow();
+        HWND hwnd = g_getGameWindow ? g_getGameWindow() : nullptr;
         if (!hwnd) return false;
 
         RECT cr{};
@@ -517,8 +475,9 @@ namespace
 extern "C" __declspec(dllexport)
 void ModInit(const SE_ModApi* api)
 {
-    g_log          = api->Log;
-    g_getTimeScale = api->GetTimeScale;
+    g_log           = api->Log;
+    g_getTimeScale  = api->GetTimeScale;
+    g_getGameWindow = api->GetGameWindow;
     Log("Initialized");
 
     api->SubscribeHook("gml_Script_AcceptMission",   &OnAcceptMission,   nullptr);
