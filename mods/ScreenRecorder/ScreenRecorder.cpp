@@ -35,6 +35,7 @@ namespace
     SE_LogFn               g_log = nullptr;
     SE_GetTimeScaleFn      g_getTimeScale = nullptr;
     std::atomic<bool>      g_recording{false};
+    std::atomic<bool>      g_recording_enabled{false};
     std::thread            g_recordThread;
 
     void Log(const char* fmt, ...)
@@ -450,6 +451,11 @@ namespace
         }
     }
 
+    void ToggleRecordingEnabled()
+    {
+        g_recording_enabled.store(!g_recording_enabled.load(std::memory_order_acquire), std::memory_order_release);
+	}
+
     void InputLoop()
     {
         bool f9Down = false;
@@ -474,12 +480,13 @@ namespace
         if (!ImGui::Begin("ScreenRecorder")) { ImGui::End(); return; }
 
         const bool recording = g_recording.load(std::memory_order_acquire);
+        const bool recordingEnabled = g_recording_enabled.load(std::memory_order_acquire);
         ImGui::Text("recording: %s", recording ? "yes" : "no");
         if (g_getTimeScale)
             ImGui::Text("timescale: %.3f", g_getTimeScale());
 
-        if (ImGui::Button(recording ? "Stop" : "Start"))
-            ToggleRecording();
+        if (ImGui::Button(recordingEnabled ? "Disable Recording" : "Enable Recording"))
+            ToggleRecordingEnabled();
 
         ImGui::End();
     }
@@ -487,6 +494,7 @@ namespace
     void OnAcceptMission(const char* /*hookName*/, void* /*userData*/)
     {
         if (g_recording.load(std::memory_order_acquire)) return;
+        if (!g_recording_enabled.load(std::memory_order_acquire)) return;
         Log("AcceptMission -> start recording");
         ToggleRecording();
     }

@@ -7,7 +7,7 @@
 #include <ctime>
 #include <thread>
 
-static constexpr const char* DISCORD_APP_ID = "";
+static constexpr const char* DISCORD_APP_ID = "1500846665467166720";
 
 static SE_LogFn g_log = nullptr;
 
