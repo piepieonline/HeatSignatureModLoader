@@ -38,14 +38,38 @@ jobs:
 
       - name: Collect output DLLs
         run: |
-          New-Item -ItemType Directory -Force -Path artifact\mods | Out-Null
-          Copy-Item build\bin\Release\*.dll artifact\
-          Copy-Item build\bin\mods\Release\*.dll artifact\mods\
+          New-Item -ItemType Directory -Force -Path artifact\loader | Out-Null
+          foreach ($dll in Get-ChildItem build\bin\mods\Release\*.dll) {
+            New-Item -ItemType Directory -Force -Path "artifact\mods\$($dll.BaseName)" | Out-Null
+            Copy-Item $dll.FullName "artifact\mods\$($dll.BaseName)\"
+          }
+          Copy-Item build\bin\Release\*.dll artifact\loader\
         shell: pwsh
 
-      - name: Upload artifact
+      - name: Upload loader artifact
         uses: actions/upload-artifact@v4
         with:
           name: HeatSignatureModLoader
-          path: artifact\
+          path: artifact\loader\
           if-no-files-found: error
+
+      - name: Upload DiscordRichPresence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DiscordRichPresence
+          path: artifact\mods\DiscordRichPresence\
+          if-no-files-found: warn
+
+      - name: Upload ForceFocus artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ForceFocus
+          path: artifact\mods\ForceFocus\
+          if-no-files-found: warn
+
+      - name: Upload ScreenRecorder artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ScreenRecorder
+          path: artifact\mods\ScreenRecorder\
+          if-no-files-found: warn

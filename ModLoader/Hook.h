@@ -33,14 +33,20 @@ struct HookBase {
     const char* mask;
     bool alwaysLoad;
 
-    // Mods register here via SE_ModApi::SubscribeHook. Subscriptions are added
-    // during single-threaded LoadMods and only read afterwards, so no lock.
-    std::vector<std::pair<SE_HookCallback, void*>> subscribers;
+    // Subscriptions are added during single-threaded LoadMods and only read afterwards, so no lock.
+    std::vector<std::pair<SE_HookCallback, void*>> preSubscribers;
+    std::vector<std::pair<SE_HookPostCallback, void*>> postSubscribers;
 
-    void NotifySubscribers()
+    void NotifyPreSubscribers()
     {
-        for (auto& sub : subscribers)
+        for (auto& sub : preSubscribers)
             sub.first(hookName.c_str(), sub.second);
+    }
+
+    void NotifyPostSubscribers(uintptr_t* returnValue)
+    {
+        for (auto& sub : postSubscribers)
+            sub.first(hookName.c_str(), returnValue, sub.second);
     }
 
     virtual ~HookBase() = default;

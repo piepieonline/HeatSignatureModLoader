@@ -34,6 +34,7 @@ namespace
 
     SE_LogFn               g_log = nullptr;
     SE_GetTimeScaleFn      g_getTimeScale = nullptr;
+    SE_GetDailyStatusFn    g_getDailyStatus = nullptr;
     SE_GetGameWindowFn     g_getGameWindow = nullptr;
     std::atomic<bool>      g_recording{false};
     std::atomic<bool>      g_recording_enabled{false};
@@ -443,6 +444,9 @@ namespace
         if (g_getTimeScale)
             ImGui::Text("timescale: %.3f", g_getTimeScale());
 
+        if (g_getDailyStatus)
+            ImGui::Text("timescale: %.3f", g_getDailyStatus());
+
         if (ImGui::Button(recordingEnabled ? "Disable Recording" : "Enable Recording"))
             ToggleRecordingEnabled();
 
@@ -477,6 +481,7 @@ void ModInit(const SE_ModApi* api)
 {
     g_log           = api->Log;
     g_getTimeScale  = api->GetTimeScale;
+    g_getDailyStatus = api->GetDailyStatus;
     g_getGameWindow = api->GetGameWindow;
     Log("Initialized");
 

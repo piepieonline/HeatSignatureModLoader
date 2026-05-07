@@ -15,3 +15,5 @@ build
 out
 vcpkg_installed
 .vs
+
+docs/decomp/*

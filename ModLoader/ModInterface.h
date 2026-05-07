@@ -5,17 +5,24 @@ extern "C" {
 
 typedef void (*SE_LogFn)(const char* prefix, const char* message);
 
-// Fires after a hooked function is invoked by the game. userData is the pointer
-// the mod passed to SubscribeHook. Callbacks run on the game thread that
-// invoked the hook, so keep work short or hand off to the mod's own thread.
+// Fires before a hooked function is invoked. Callbacks run on the game thread.
 typedef void (*SE_HookCallback)(const char* hookName, void* userData);
+
+// Fires after a hooked function returns. returnValue is the GML RValue* the
+// function returned. Callbacks run on the game thread.
+typedef void (*SE_HookPostCallback)(const char* hookName, uintptr_t* returnValue, void* userData);
 
 typedef void (*SE_SubscribeHookFn)(const char* hookName,
                                    SE_HookCallback callback,
                                    void* userData);
 
+typedef void (*SE_SubscribeHookPostFn)(const char* hookName,
+                                       SE_HookPostCallback callback,
+                                       void* userData);
+
 // Returns 1.0 if the time-manager instance isn't available yet.
 typedef double (*SE_GetTimeScaleFn)();
+typedef double (*SE_GetDailyStatusFn)();
 
 // Drawn from inside the host's per-frame ImGui::NewFrame / ::Render block,
 // on the game's render thread. Keep work short.
@@ -40,7 +47,9 @@ struct SE_ModApi
 {
     SE_LogFn                 Log;
     SE_SubscribeHookFn       SubscribeHook;
+    SE_SubscribeHookPostFn   SubscribeHookPost;
     SE_GetTimeScaleFn        GetTimeScale;
+	SE_GetDailyStatusFn      GetDailyStatus;
     SE_RegisterImGuiDrawFn   RegisterImGuiDraw;
     SE_GetImGuiContextFn     GetImGuiContext;
     SE_GetImGuiAllocatorsFn  GetImGuiAllocators;
