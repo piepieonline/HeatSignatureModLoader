@@ -13,6 +13,8 @@ std::atomic<bool>   g_recording_enabled{false};
 std::atomic<bool>   g_recording_paused{false};
 std::atomic<int>    g_unpause_skip_frames{0};
 std::thread         g_recordThread;
+UINT32              g_video_bit_rate       = 2'000'000;
+GUID                g_video_encoding_format = MFVideoFormat_H264;
 
 void Log(const char* fmt, ...)
 {
@@ -117,7 +119,14 @@ void ModInit(const SE_ModApi* api)
     api->SubscribeHookPost("gml_Script_CloseInventoryMenu",   &HideInventoryMenu_Postfix,   nullptr);
 
     g_recording_enabled.store(std::string(g_settings.Read("recordByDefault", "true")) == "true");
-    // TODO: Bitrate and codec should be config
+    g_video_bit_rate = static_cast<UINT32>(std::strtoul(g_settings.Read("bitrate", "2000000"), nullptr, 10));
+    {
+        std::string codec = g_settings.Read("codec", "h264");
+        if (codec == "h265" || codec == "hevc")
+            g_video_encoding_format = MFVideoFormat_H265;
+        else
+            g_video_encoding_format = MFVideoFormat_H264;
+    }
 
     if (api->GetImGuiAllocators && api->GetImGuiContext && api->RegisterImGuiDraw)
     {

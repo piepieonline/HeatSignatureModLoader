@@ -36,8 +36,8 @@ HRESULT InitSinkWriter(const std::wstring& path,
     CComPtr<IMFMediaType> outType;
     if (FAILED(hr = MFCreateMediaType(&outType))) return hr;
     outType->SetGUID(MF_MT_MAJOR_TYPE,  MFMediaType_Video);
-    outType->SetGUID(MF_MT_SUBTYPE,     VIDEO_ENCODING_FORMAT);
-    outType->SetUINT32(MF_MT_AVG_BITRATE,    VIDEO_BIT_RATE);
+    outType->SetGUID(MF_MT_SUBTYPE,     g_video_encoding_format);
+    outType->SetUINT32(MF_MT_AVG_BITRATE,    g_video_bit_rate);
     outType->SetUINT32(MF_MT_INTERLACE_MODE, MFVideoInterlace_Progressive);
     MFSetAttributeSize (outType, MF_MT_FRAME_SIZE,         width, height);
     MFSetAttributeRatio(outType, MF_MT_FRAME_RATE,         VIDEO_FPS, 1);

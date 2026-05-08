@@ -77,13 +77,10 @@ public:
 		STANDARD_GML_HOOK("gml_Script_GenerateMissions", 0x5C9EB0, true),
 		STANDARD_GML_HOOK("gml_Script_CompleteMission",  0x570840, true),
 		STANDARD_GML_HOOK("gml_Script_CancelMission",    0x56DC30, true),
-		STANDARD_GML_HOOK("gml_Script_PauseMission", 0x6056B0, true),
-		STANDARD_GML_HOOK("gml_Script_PauseFor",     0x9771A0, true),
 		STANDARD_GML_HOOK("gml_Script_ShowTutorialTip", 0x009FD8E0, true),
-		STANDARD_GML_HOOK("gml_Script_GetNameFromPersonaCache", 0x00913880, true),
 		STANDARD_GML_HOOK("gml_Script_SelectThisCharacter", 0xCB420, true),
-		STANDARD_GML_HOOK("gml_Script_ShowInventoryMenu", 0x005372E0, true),
-		STANDARD_GML_HOOK("gml_Script_CloseInventoryMenu", 0x004D1210, true),
+		STANDARD_GML_HOOK("gml_Script_ShowInventoryMenu", 0x005372E0, false),
+		STANDARD_GML_HOOK("gml_Script_CloseInventoryMenu", 0x004D1210, false),
 		STANDARD_GML_HOOK("gml_Script_UpdateCursorPosition", 0x000384B0, false), // fires every frame
 		STANDARD_GML_HOOK("gml_Script_SetTimeScale", 0x976800, false), // fires every frame
 		new Hook<GMLScript_t>(

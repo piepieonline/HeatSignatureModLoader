@@ -16,8 +16,24 @@ void ModConfig::Load()
     catch (...) { m_data = nlohmann::json::object(); }
 }
 
-// TODO: defaultValue should be typed
-// TODO: If defaultValue is returned, it should be added and saved
+void ModConfig::SetValue_Locked(const char* key, const char* value)
+{
+    std::string s = value ? value : "";
+
+    if (_stricmp(s.c_str(), "true") == 0)  { m_data[key] = true;  return; }
+    if (_stricmp(s.c_str(), "false") == 0) { m_data[key] = false; return; }
+
+    char* end = nullptr;
+    int64_t i = std::strtoll(s.c_str(), &end, 10);
+    if (end && *end == '\0' && end != s.c_str()) { m_data[key] = i; return; }
+
+    end = nullptr;
+    double d = std::strtod(s.c_str(), &end);
+    if (end && *end == '\0' && end != s.c_str()) { m_data[key] = d; return; }
+
+    m_data[key] = s;
+}
+
 const char* ModConfig::Read(const char* key, const char* defaultValue)
 {
     std::lock_guard<std::mutex> lk(m_mutex);
@@ -25,6 +41,8 @@ const char* ModConfig::Read(const char* key, const char* defaultValue)
     if (it == m_data.end())
     {
         m_readBuf = defaultValue ? defaultValue : "";
+        SetValue_Locked(key, defaultValue);
+        Save_Locked();
         return m_readBuf.c_str();
     }
     const auto& v = *it;
@@ -36,26 +54,27 @@ const char* ModConfig::Read(const char* key, const char* defaultValue)
     return m_readBuf.c_str();
 }
 
+const char* ModConfig::Read(const char* key, bool defaultValue)
+{
+    return Read(key, defaultValue ? "true" : "false");
+}
+
+const char* ModConfig::Read(const char* key, int64_t defaultValue)
+{
+    auto s = std::to_string(defaultValue);
+    return Read(key, s.c_str());
+}
+
+const char* ModConfig::Read(const char* key, double defaultValue)
+{
+    auto s = std::to_string(defaultValue);
+    return Read(key, s.c_str());
+}
+
 void ModConfig::Write(const char* key, const char* value)
 {
     std::lock_guard<std::mutex> lk(m_mutex);
-    std::string s = value ? value : "";
-
-    if (_stricmp(s.c_str(), "true") == 0)  { m_data[key] = true;  Save_Locked(); return; }
-    if (_stricmp(s.c_str(), "false") == 0) { m_data[key] = false; Save_Locked(); return; }
-
-    {
-        char* end = nullptr;
-        int64_t i = std::strtoll(s.c_str(), &end, 10);
-        if (end && *end == '\0' && end != s.c_str()) { m_data[key] = i; Save_Locked(); return; }
-    }
-    {
-        char* end = nullptr;
-        double d = std::strtod(s.c_str(), &end);
-        if (end && *end == '\0' && end != s.c_str()) { m_data[key] = d; Save_Locked(); return; }
-    }
-
-    m_data[key] = s;
+    SetValue_Locked(key, value);
     Save_Locked();
 }
 
