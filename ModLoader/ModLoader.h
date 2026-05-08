@@ -56,6 +56,8 @@ public:
 	static void Log(const char* prefix, const char* format, ...);
 	static void SubscribeHook(const char* hookName, SE_HookCallback callback, void* userData);
 	static void SubscribeHookPost(const char* hookName, SE_HookPostCallback callback, void* userData);
+	static RValue* CallScript(const char* scriptName,
+		uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
 	static double GetTimeScale();
 	static void PollDword(const char* label, uintptr_t rva, DWORD intervalMs);
 	static void LogGMLCall(const char* fnName, uintptr_t* self, int argc, RValue** argv, RValue* result = nullptr);
@@ -71,16 +73,6 @@ public:
 	std::vector<HookBase*> hooks
 	{
 		STANDARD_GML_HOOK("gml_Script_AcceptMission",    0x566200, true),
-		STANDARD_GML_HOOK("gml_Script_GenerateMissions", 0x5C9EB0, true),
-		STANDARD_GML_HOOK("gml_Script_CompleteMission",  0x570840, true),
-		STANDARD_GML_HOOK("gml_Script_CancelMission",    0x56DC30, true),
-		STANDARD_GML_HOOK("gml_Script_ShowTutorialTip", 0x009FD8E0, true),
-		STANDARD_GML_HOOK("gml_Script_ItemHasTrait", 0x004A5840, false),
-		STANDARD_GML_HOOK("gml_Script_SelectThisCharacter", 0xCB420, true),
-		STANDARD_GML_HOOK("gml_Script_ShowInventoryMenu", 0x005372E0, false),
-		STANDARD_GML_HOOK("gml_Script_CloseInventoryMenu", 0x004D1210, false),
-		STANDARD_GML_HOOK("gml_Script_UpdateCursorPosition", 0x000384B0, false), // fires every frame
-		STANDARD_GML_HOOK("gml_Script_SetTimeScale", 0x976800, false), // fires every frame
 		new Hook<GMLScript_t>(
 			"gml_Script_PlayAsCharacter",
 			0x000A0080,
@@ -312,7 +304,7 @@ public:
 	void LoadMods();
 
 private:
-	std::vector<std::unique_ptr<ModConfig>> m_modConfigs;
+	std::vector<std::unique_ptr<SE_ModApi>> m_modApis;
 	std::unique_ptr<ModConfig>              m_loaderConfig;
 };
 

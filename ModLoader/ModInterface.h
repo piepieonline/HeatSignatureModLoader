@@ -49,6 +49,14 @@ typedef HWND (*SE_GetGameWindowFn)();
 // this invocation. Has no effect when called outside a pre-hook callback.
 typedef void (*SE_RequestBypassFn)();
 
+// Invoke a `gml_Script_*` function by name. Routes through the installed hook
+// so other mods' subscribers fire. Lazily installs the hook on first use.
+// Returns `result` unchanged if the script name is not in the offset table or
+// the hook cannot be installed.
+typedef RValue* (*SE_CallScriptFn)(const char* scriptName,
+                                   uintptr_t* self, uintptr_t* other,
+                                   RValue* result, int argc, RValue** argv);
+
 struct SE_ModConfig {
     void*        handle;
     const char* (*Read)   (void* handle, const char* key, const char* defaultValue);
@@ -69,6 +77,7 @@ struct SE_ModApi
     SE_GetImGuiAllocatorsFn  GetImGuiAllocators;
     SE_GetGameWindowFn       GetGameWindow;
     SE_RequestBypassFn       RequestBypass;
+    SE_CallScriptFn          CallScript;
     SE_ModConfig             config;
 };
 

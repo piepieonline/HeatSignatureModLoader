@@ -7,7 +7,14 @@ endif()
 
 project(HeatSignatureModLoader)
 
-add_subdirectory(dinput8)
+include(${CMAKE_SOURCE_DIR}/cmake/GenerateScriptFunctions.cmake)
+set(SCRIPT_FUNCTIONS_GENERATED_DIR ${CMAKE_BINARY_DIR}/generated)
+generate_script_functions_header(
+    ${CMAKE_SOURCE_DIR}/docs/ScriptFunctions.txt
+    ${SCRIPT_FUNCTIONS_GENERATED_DIR}/ScriptFunctions.generated.h
+)
+
+add_subdirectory(dxgi)
 add_subdirectory(ModLoader)
 add_subdirectory(mods/ScreenRecorder)
 add_subdirectory(mods/DiscordRichPresence)

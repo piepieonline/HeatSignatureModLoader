@@ -16,6 +16,8 @@ find_package(Lua REQUIRED)
 find_path(LUABRIDGE_INCLUDE_DIRS "LuaBridge/Array.h")
 target_include_directories(ModLoader PRIVATE ${LUABRIDGE_INCLUDE_DIRS})
 
+target_include_directories(ModLoader PRIVATE ${SCRIPT_FUNCTIONS_GENERATED_DIR})
+
 target_compile_features(ModLoader PRIVATE cxx_std_17)
 target_link_libraries(ModLoader PRIVATE
     ${LUA_LIBRARIES}

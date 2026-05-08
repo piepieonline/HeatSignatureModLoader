@@ -3,11 +3,13 @@
 #include "ImGuiHook.h"
 #include "GameWindow.h"
 #include "ModConfig.h"
+#include "UniversalHooks.h"
 
 #include <Windows.h>
 #include <atomic>
 #include <iostream>
 #include <fstream>
+#include <mutex>
 #include <string>
 
 #include "MinHook.h"
@@ -344,12 +346,34 @@ void ModLoader::Log(const char* prefix, const char* format, ...)
         logFile << "[" << prefix << "] " << buffer << std::endl;
 }
 
+// Ensures the MinHook patch is in place. No-op if already installed.
+// Returns true if the hook is usable (originalFunction is non-null) afterwards.
+static bool EnsureHookInstalled(HookBase* base)
+{
+    if (base->reference.originalFunction)
+        return true;
+
+    static std::mutex s_installMutex;
+    std::lock_guard<std::mutex> guard(s_installMutex);
+
+    if (base->reference.originalFunction)
+        return true;
+
+    base->CreateHook();
+    return base->reference.originalFunction != nullptr;
+}
+
 void ModLoader::SubscribeHook(const char* hookName, SE_HookCallback callback, void* userData)
 {
     auto it = HookMap.find(hookName);
     if (it == HookMap.end())
     {
         Log("ModLoader", "Subscribe failed : unknown hook '%s'", hookName);
+        return;
+    }
+    if (!EnsureHookInstalled(it->second))
+    {
+        Log("ModLoader", "Subscribe failed : install of '%s' failed", hookName);
         return;
     }
     it->second->preSubscribers.emplace_back(callback, userData);
@@ -364,15 +388,36 @@ void ModLoader::SubscribeHookPost(const char* hookName, SE_HookPostCallback call
         Log("ModLoader", "SubscribePost failed: unknown hook '%s'", hookName);
         return;
     }
+    if (!EnsureHookInstalled(it->second))
+    {
+        Log("ModLoader", "SubscribePost failed: install of '%s' failed", hookName);
+        return;
+    }
     it->second->postSubscribers.emplace_back(callback, userData);
     Log("ModLoader", "Post-subscriber registered for %s", hookName);
+}
+
+RValue* ModLoader::CallScript(const char* scriptName,
+    uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv)
+{
+    auto it = HookMap.find(scriptName);
+    if (it == HookMap.end())
+    {
+        Log("ModLoader", "CallScript: unknown script '%s'", scriptName);
+        return result;
+    }
+    if (!EnsureHookInstalled(it->second))
+    {
+        Log("ModLoader", "CallScript: install of '%s' failed", scriptName);
+        return result;
+    }
+    auto detour = reinterpret_cast<GMLScript_t>(it->second->reference.hookFunction);
+    return detour(self, other, result, argc, argv);
 }
 
 void ModLoader::LoadMods()
 {
     CreateDirectoryA(".\\mods", nullptr);
-
-
 
     WIN32_FIND_DATAA fd;
     HANDLE h = FindFirstFileA(".\\mods\\*.dll", &fd);
@@ -383,7 +428,7 @@ void ModLoader::LoadMods()
     }
 
     do {
-        Log("ModLoader", "Loading % s", fd.cFileName);
+        Log("ModLoader", "Loading %s", fd.cFileName);
         std::string path = std::string(".\\mods\\") + fd.cFileName;
         HMODULE hMod = LoadLibraryA(path.c_str());
         if (!hMod)
@@ -409,9 +454,8 @@ void ModLoader::LoadMods()
 
         auto modConfigObj = std::make_unique<ModConfig>(std::string(".\\mods\\") + modName + ".json");
         SE_ModConfig modConfigApi = { modConfigObj.get(), Config_Read, Config_Write, Config_GetJson, Config_SetJson, Config_Save };
-        m_modConfigs.push_back(std::move(modConfigObj));
 
-        SE_ModApi modApi = {
+        auto modApi = std::make_unique<SE_ModApi>(SE_ModApi{
             +[](const char* prefix, const char* msg) { ModLoader::Log(prefix, msg); },
             +[](const char* hookName, SE_HookCallback cb, void* userData) {
                 ModLoader::SubscribeHook(hookName, cb, userData);
@@ -427,10 +471,14 @@ void ModLoader::LoadMods()
             +[](void** a, void** f, void** ud) { ImGuiHook::GetAllocators(a, f, ud); },
             &FindGameWindow,
             +[]() { g_hookBypassRequested = true; },
+            +[](const char* name, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv) {
+                return ModLoader::CallScript(name, self, other, result, argc, argv);
+            },
             modConfigApi
-        };
+        });
 
-        modInit(&modApi);
+        modInit(modApi.get());
+        m_modApis.push_back(std::move(modApi));
 
     } while (FindNextFileA(h, &fd));
 
@@ -450,6 +498,8 @@ void ModLoader::CreateHooks()
         hook->CreateHook();
         HookMap[hook->hookName] = hook;
     }
+
+    InstallUniversalHookEntries();
 
     Log("ModLoader", "Hooks installed");
 }
