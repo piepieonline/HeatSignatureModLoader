@@ -4,6 +4,7 @@ add_library(HS_QOL SHARED
     HS_QOL.cpp
     ForceFocus.cpp
     FixCursorLock.cpp
+    LoudGunPrefix.cpp
 )
 
 target_compile_features(HS_QOL PRIVATE cxx_std_17)

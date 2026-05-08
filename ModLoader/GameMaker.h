@@ -11,7 +11,6 @@ struct YYString {
 
 struct YYArray {
     uint32_t length;
-    RValue*  data;
 };
 
 struct RValue {

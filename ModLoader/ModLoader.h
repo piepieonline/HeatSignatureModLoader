@@ -75,6 +75,7 @@ public:
 		STANDARD_GML_HOOK("gml_Script_CompleteMission",  0x570840, true),
 		STANDARD_GML_HOOK("gml_Script_CancelMission",    0x56DC30, true),
 		STANDARD_GML_HOOK("gml_Script_ShowTutorialTip", 0x009FD8E0, true),
+		STANDARD_GML_HOOK("gml_Script_ItemHasTrait", 0x004A5840, false),
 		STANDARD_GML_HOOK("gml_Script_SelectThisCharacter", 0xCB420, true),
 		STANDARD_GML_HOOK("gml_Script_ShowInventoryMenu", 0x005372E0, false),
 		STANDARD_GML_HOOK("gml_Script_CloseInventoryMenu", 0x004D1210, false),
@@ -216,17 +217,70 @@ public:
 					int instance_handle = ResolveInstance((uint32_t*)argv[0]);
 					ModLoader::Log("gml_Script_GenerateGun", "instance=0x%08X", instance_handle);
 
-					RValue out{};
-					GetVar(instance_handle, 673, 0x80000000, &out);
-					std::string s = std::string("Pie's ") + out.str->text;
-					SetString(&out, s.c_str());
-					SetVar(instance_handle, 673, 0x80000000, &out);
-
 					RValue traits{};
 					GetVar(instance_handle, 664, 0x80000000, &traits);
 					ModLoader::LogRValue("Weapon Traits", &traits);
-					for (int i = 0; i < traits.arr->length; i++)
-						ModLoader::LogRValue("Weapon Traits", &(traits.arr->data[i]));
+
+					/*
+					struct IterState
+					{
+						uint8_t data[8];   // matches stack iterator buffer (v28)
+					};
+
+					using fn_CA8590 = int(__cdecl*)(IterState*, void*, void*, int);
+					using fn_C9AC30 = uint8_t(__cdecl*)(IterState*, void*);
+					using fn_CC62D0 = int(__cdecl*)(RValue*, int, void*);
+					using fn_GetKey = int(__cdecl*)(IterState*, void*);
+
+					fn_CA8590  sub_addr_CA8590 = (fn_CA8590)(HookBase::moduleBase + 0xCA8590);
+					fn_C9AC30  sub_addr_C9AC30 = (fn_C9AC30)(HookBase::moduleBase + 0xC9AC30);
+					fn_CC62D0  sub_addr_CC62D0 = (fn_CC62D0)(HookBase::moduleBase + 0xCC62D0);
+					// fn_GetKey  sub_addr_GetKey = (fn_GetKey)0xGETKEYADDR; // replace
+
+					IterState it;
+
+					void* container = &instance_handle;
+
+					// qword_44DEFB0 is a POINTER stored at that address
+					void* ctx = *(void**)(HookBase::moduleBase + 0x44DEFB0);
+
+					if (ctx && sub_addr_CA8590(&it, container, other, 0) > 0)
+					{
+						do
+						{
+							int key;
+
+							// Original:
+							// v12 ? v12 + 10608 : virtual_get(container, 663)
+
+							int v12 = *(int*)((uint8_t*)container + 4);
+
+							if (v12)
+							{
+								key = v12 + 10608;
+							}
+							else
+							{
+								using fn_virtual_get = int(__thiscall*)(void*, int);
+
+								auto vtbl = *(void***)container;
+
+								key =
+									((fn_virtual_get)vtbl[1])(container, 663);
+							}
+
+							RValue value{};
+
+							sub_addr_CC62D0(&value, key, ctx);
+
+							ModLoader::LogRValue("Trait:", &value);
+
+						} while (sub_addr_C9AC30(&it, container));
+					}
+					*/
+
+					// for (int i = 0; i < traits.arr->length; i++)
+					//	ModLoader::LogRValue("Weapon Traits", &(traits.arr->data[i]));
 				}
 				hook->NotifyPostSubscribers(self, other, ret, argc, argv);
 				return ret;
