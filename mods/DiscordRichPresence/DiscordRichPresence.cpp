@@ -87,26 +87,26 @@ static void OnErrored(int errorCode, const char* message)
 
 // ── Hook callbacks ───────────────────────────────────────────────────────────
 
-static void OnAcceptMission(const char* /*hookName*/, void* /*userData*/)
+static void OnAcceptMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
     g_missionStart = static_cast<int64_t>(std::time(nullptr));
     g_state        = GameState::OnMission;
     UpdatePresence();
 }
 
-static void OnCompleteMission(const char* /*hookName*/, void* /*userData*/)
+static void OnCompleteMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
     g_state = GameState::Station;
     UpdatePresence();
 }
 
-static void OnCancelMission(const char* /*hookName*/, void* /*userData*/)
+static void OnCancelMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
     g_state = GameState::Station;
     UpdatePresence();
 }
 
-static void OnPauseMission(const char* /*hookName*/, void* /*userData*/)
+static void OnPauseMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
     // Only treat as paused if we're currently on a mission
     if (g_state == GameState::OnMission)
@@ -116,7 +116,7 @@ static void OnPauseMission(const char* /*hookName*/, void* /*userData*/)
     }
 }
 
-static void OnSetTimeScale(const char* /*hookName*/, void* /*userData*/)
+static void OnSetTimeScale(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
     // Resuming from pause restores OnMission state
     if (g_state == GameState::MissionPaused)

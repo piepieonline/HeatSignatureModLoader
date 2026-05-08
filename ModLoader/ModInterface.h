@@ -1,16 +1,19 @@
 #pragma once
 #include <windows.h>
+#include <string>
+
+#include "GameMaker.h"
 
 extern "C" {
 
 typedef void (*SE_LogFn)(const char* prefix, const char* message);
 
 // Fires before a hooked function is invoked. Callbacks run on the game thread.
-typedef void (*SE_HookCallback)(const char* hookName, void* userData);
+typedef void (*SE_HookCallback)(const char* hookName, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv, void* userData);
 
 // Fires after a hooked function returns. returnValue is the GML RValue* the
 // function returned. Callbacks run on the game thread.
-typedef void (*SE_HookPostCallback)(const char* hookName, uintptr_t* returnValue, void* userData);
+typedef void (*SE_HookPostCallback)(const char* hookName, uintptr_t* self, uintptr_t* other, RValue* returnValue, int argc, RValue** argv, void* userData);
 
 typedef void (*SE_SubscribeHookFn)(const char* hookName,
                                    SE_HookCallback callback,
@@ -43,6 +46,19 @@ typedef void (*SE_GetImGuiAllocatorsFn)(void** allocFn, void** freeFn, void** us
 // game window is created.
 typedef HWND (*SE_GetGameWindowFn)();
 
+// Call from inside a SE_HookCallback to skip the hooked game function for
+// this invocation. Has no effect when called outside a pre-hook callback.
+typedef void (*SE_RequestBypassFn)();
+
+struct SE_ModConfig {
+    void*        handle;
+    const char* (*Read)   (void* handle, const char* key, const char* defaultValue);
+    void        (*Write)  (void* handle, const char* key, const char* value);
+    const char* (*GetJson)(void* handle);
+    void        (*SetJson)(void* handle, const char* json);
+    void        (*Save)   (void* handle);
+};
+
 struct SE_ModApi
 {
     SE_LogFn                 Log;
@@ -54,10 +70,34 @@ struct SE_ModApi
     SE_GetImGuiContextFn     GetImGuiContext;
     SE_GetImGuiAllocatorsFn  GetImGuiAllocators;
     SE_GetGameWindowFn       GetGameWindow;
+    SE_RequestBypassFn       RequestBypass;
+    SE_ModConfig             config;
 };
 
 // Each mod DLL must export:
 //     extern "C" __declspec(dllexport) void ModInit(const SE_ModApi* api);
 typedef void (*SE_ModInitFn)(const SE_ModApi* api);
 
-}
+} // extern "C"
+
+struct ModSettings
+{
+    ModSettings() = default;
+    explicit ModSettings(const SE_ModConfig& cfg) : m_cfg(cfg) {}
+
+    const char* Read(const char* key, const char* defaultVal = "") const
+        { return m_cfg.Read(m_cfg.handle, key, defaultVal); }
+    void Write(const char* key, const char* value)
+        { m_cfg.Write(m_cfg.handle, key, value); }
+    std::string GetJson() const
+        { return std::string(m_cfg.GetJson(m_cfg.handle)); }
+    void SetJson(const std::string& json)
+        { m_cfg.SetJson(m_cfg.handle, json.c_str()); }
+    void SetJson(const char* json)
+        { m_cfg.SetJson(m_cfg.handle, json); }
+    void Save()
+        { m_cfg.Save(m_cfg.handle); }
+
+private:
+    SE_ModConfig m_cfg{};
+};

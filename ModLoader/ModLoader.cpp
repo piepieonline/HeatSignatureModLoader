@@ -2,6 +2,7 @@
 #include "ModInterface.h"
 #include "ImGuiHook.h"
 #include "GameWindow.h"
+#include "ModConfig.h"
 
 #include <Windows.h>
 #include <atomic>
@@ -10,6 +11,12 @@
 #include <string>
 
 #include "MinHook.h"
+
+static const char* Config_Read   (void* h, const char* key, const char* def) { return static_cast<ModConfig*>(h)->Read(key, def); }
+static void        Config_Write  (void* h, const char* key, const char* val) { static_cast<ModConfig*>(h)->Write(key, val); }
+static const char* Config_GetJson(void* h)                                   { return static_cast<ModConfig*>(h)->GetJson(); }
+static void        Config_SetJson(void* h, const char* json)                 { static_cast<ModConfig*>(h)->SetJson(json); }
+static void        Config_Save   (void* h)                                   { static_cast<ModConfig*>(h)->Save(); }
 
 std::map<std::string, HookBase*> ModLoader::HookMap{};
 
@@ -134,7 +141,16 @@ static void LogRValue_SEH(const char* label, RValue* rv)
                 str ? str : "(null)");
             break;
         }
-
+        case 2: // ARRAY
+        {
+            ModLoader::Log(
+                "Hook",
+                "  %s @0x%08X type=ARRAY raw=0x%08X",
+                label,
+                (uint32_t)(uintptr_t)rv,
+                (uint32_t)(uintptr_t)rv->ptr);
+            break;
+        }
         default:
         {
             ModLoader::Log(
@@ -159,19 +175,19 @@ static void LogRValue_SEH(const char* label, RValue* rv)
     }
 }
 
-static void LogGMLArgs_SEH(const char* fnName, int self, int argc, uintptr_t** argv, uintptr_t* result)
+static void LogGMLArgs_SEH(const char* fnName, uintptr_t* self, int argc, RValue** argv, RValue* result)
 {
     __try
     {
         ModLoader::Log("Hook", "%s argc=%d", fnName, argc);
-        ModLoader::Log("Hook", "  self  id=0x%08X", (uint32_t)self);
+        ModLoader::Log("Hook", "  self  id=0x%08X", (uint32_t)(uintptr_t)self);
         for (int i = 0; i < argc; i++)
         {
             char label[16];
             sprintf_s(label, "arg[%d]", i);
-            LogRValue_SEH(label, argv ? reinterpret_cast<RValue*>(argv[i]) : nullptr);
+            LogRValue_SEH(label, argv ? argv[i] : nullptr);
         }
-        LogRValue_SEH("result", reinterpret_cast<RValue*>(result));
+        LogRValue_SEH("result", result);
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
@@ -237,7 +253,7 @@ void ModLoader::LogArgsAddress(int argc, uintptr_t** argv)
     LogArgsAddress_SEH(argc, argv);
 }
 
-void ModLoader::LogGMLCall(const char* fnName, int self, int argc, uintptr_t** argv, uintptr_t* result)
+void ModLoader::LogGMLCall(const char* fnName, uintptr_t* self, int argc, RValue** argv, RValue* result)
 {
     LogGMLArgs_SEH(fnName, self, argc, argv, result);
 }
@@ -299,6 +315,15 @@ ModLoader::ModLoader()
 
     std::ofstream logFile("ModLoader.log", std::ios::trunc);
     logFile.close();
+
+    extern HMODULE g_hModLoaderModule;
+    char selfPath[MAX_PATH] = {};
+    GetModuleFileNameA(g_hModLoaderModule, selfPath, MAX_PATH);
+    std::string loaderConfigPath = selfPath;
+    auto extPos = loaderConfigPath.rfind('.');
+    if (extPos != std::string::npos)
+        loaderConfigPath.replace(extPos, std::string::npos, ".json");
+    m_loaderConfig = std::make_unique<ModConfig>(loaderConfigPath);
 
     Log("ModLoader", "Attached");
 
@@ -387,6 +412,10 @@ void ModLoader::LoadMods()
             modName.resize(modName.size() - 4);
         }
 
+        auto modConfigObj = std::make_unique<ModConfig>(std::string(".\\mods\\") + modName + ".json");
+        SE_ModConfig modConfigApi = { modConfigObj.get(), Config_Read, Config_Write, Config_GetJson, Config_SetJson, Config_Save };
+        m_modConfigs.push_back(std::move(modConfigObj));
+
         SE_ModApi modApi = {
             +[](const char* prefix, const char* msg) { ModLoader::Log(prefix, msg); },
             +[](const char* hookName, SE_HookCallback cb, void* userData) {
@@ -402,7 +431,9 @@ void ModLoader::LoadMods()
             },
             +[]() -> void* { return ImGuiHook::GetContext(); },
             +[](void** a, void** f, void** ud) { ImGuiHook::GetAllocators(a, f, ud); },
-            &FindGameWindow
+            &FindGameWindow,
+            +[]() { g_hookBypassRequested = true; },
+            modConfigApi
         };
 
         modInit(&modApi);

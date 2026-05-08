@@ -11,6 +11,11 @@
 
 #include "ModInterface.h"
 
+// Set by RequestBypass (via SE_ModApi) inside a pre-hook callback.
+// NotifyPreSubscribers resets it before each notification pass and returns
+// its final value so callers know whether to skip the original function.
+extern thread_local bool g_hookBypassRequested;
+
 struct HookReference
 {
     uintptr_t offset;
@@ -37,16 +42,19 @@ struct HookBase {
     std::vector<std::pair<SE_HookCallback, void*>> preSubscribers;
     std::vector<std::pair<SE_HookPostCallback, void*>> postSubscribers;
 
-    void NotifyPreSubscribers()
+    // Returns true if any subscriber requested a bypass (skip original call).
+    bool NotifyPreSubscribers(uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv)
     {
+        g_hookBypassRequested = false;
         for (auto& sub : preSubscribers)
-            sub.first(hookName.c_str(), sub.second);
+            sub.first(hookName.c_str(), self, other, result, argc, argv, sub.second);
+        return g_hookBypassRequested;
     }
 
-    void NotifyPostSubscribers(uintptr_t* returnValue)
+    void NotifyPostSubscribers(uintptr_t* self, uintptr_t* other, RValue* returnValue, int argc, RValue** argv)
     {
         for (auto& sub : postSubscribers)
-            sub.first(hookName.c_str(), returnValue, sub.second);
+            sub.first(hookName.c_str(), self, other, returnValue, argc, argv, sub.second);
     }
 
     virtual ~HookBase() = default;

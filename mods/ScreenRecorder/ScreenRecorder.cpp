@@ -3,12 +3,15 @@
 #include <imgui.h>
 
 // Global definitions (declared extern in Globals.h)
+ModSettings         g_settings;
 SE_LogFn            g_log            = nullptr;
 SE_GetTimeScaleFn   g_getTimeScale   = nullptr;
 SE_GetDailyStatusFn g_getDailyStatus = nullptr;
 SE_GetGameWindowFn  g_getGameWindow  = nullptr;
 std::atomic<bool>   g_recording{false};
 std::atomic<bool>   g_recording_enabled{false};
+std::atomic<bool>   g_recording_paused{false};
+std::atomic<int>    g_unpause_skip_frames{0};
 std::thread         g_recordThread;
 
 void Log(const char* fmt, ...)
@@ -61,7 +64,7 @@ namespace
         ImGui::End();
     }
 
-    void OnAcceptMission(const char* /*hookName*/, void* /*userData*/)
+    void OnAcceptMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
     {
         if (g_recording.load(std::memory_order_acquire)) return;
         if (!g_recording_enabled.load(std::memory_order_acquire)) return;
@@ -69,24 +72,38 @@ namespace
         ToggleRecording();
     }
 
-    void OnCompleteMission(const char* /*hookName*/, void* /*userData*/)
+    void OnCompleteMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
     {
         if (!g_recording.load(std::memory_order_acquire)) return;
         Log("CompleteMission -> stop recording");
         ToggleRecording();
     }
 
-    void OnCancelMission(const char* /*hookName*/, void* /*userData*/)
+    void OnCancelMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
     {
         if (!g_recording.load(std::memory_order_acquire)) return;
         Log("CancelMission -> stop recording");
         ToggleRecording();
+    }
+
+    void ShowInventoryMenu_Prefix(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+    {
+        g_recording_paused.store(true);
+    }
+
+    void HideInventoryMenu_Postfix(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*returnValue*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+    {
+        // Skip a handful of frames so that any screen frames where the menu is
+        // still fading out don't make it into the recording.
+        g_unpause_skip_frames.store(2, std::memory_order_release);
+        g_recording_paused.store(false, std::memory_order_release);
     }
 }
 
 extern "C" __declspec(dllexport)
 void ModInit(const SE_ModApi* api)
 {
+    g_settings       = ModSettings(api->config);
     g_log            = api->Log;
     g_getTimeScale   = api->GetTimeScale;
     g_getDailyStatus = api->GetDailyStatus;
@@ -96,6 +113,11 @@ void ModInit(const SE_ModApi* api)
     api->SubscribeHook("gml_Script_AcceptMission",   &OnAcceptMission,   nullptr);
     api->SubscribeHook("gml_Script_CompleteMission", &OnCompleteMission, nullptr);
     api->SubscribeHook("gml_Script_CancelMission",   &OnCancelMission,   nullptr);
+    api->SubscribeHook("gml_Script_ShowInventoryMenu",   &ShowInventoryMenu_Prefix,   nullptr);
+    api->SubscribeHookPost("gml_Script_CloseInventoryMenu",   &HideInventoryMenu_Postfix,   nullptr);
+
+    g_recording_enabled.store(std::string(g_settings.Read("recordByDefault", "true")) == "true");
+    // TODO: Bitrate and codec should be config
 
     if (api->GetImGuiAllocators && api->GetImGuiContext && api->RegisterImGuiDraw)
     {

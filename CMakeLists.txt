@@ -11,7 +11,7 @@ add_subdirectory(dinput8)
 add_subdirectory(ModLoader)
 add_subdirectory(mods/ScreenRecorder)
 add_subdirectory(mods/DiscordRichPresence)
-add_subdirectory(mods/ForceFocus)
+add_subdirectory(mods/HS_QOL)
 
 set(MISC_FILES 
     README.md

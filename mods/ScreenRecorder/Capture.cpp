@@ -189,9 +189,15 @@ static void RecordingThreadInner()
         {
             LARGE_INTEGER qpcNow{};
             QueryPerformanceCounter(&qpcNow);
-            const LONGLONG wallDt100ns =
-                ((qpcNow.QuadPart - qpcLast.QuadPart) * 10'000'000LL) / qpcFreq.QuadPart;
+            const LONGLONG wallDt100ns = ((qpcNow.QuadPart - qpcLast.QuadPart) * 10'000'000LL) / qpcFreq.QuadPart;
             qpcLast = qpcNow;
+
+            if (g_recording_paused.load(std::memory_order_acquire))
+            {
+                Sleep(5);
+                qpcLast = qpcNow;   // prevent time jump when resuming
+                continue;
+            }
 
             const double speed = g_getTimeScale ? g_getTimeScale() : 1.0;
             if (speed > 0.0)
@@ -207,6 +213,26 @@ static void RecordingThreadInner()
             cv::Mat frame = camera->get_latest_frame();
             if (frame.empty())              { Sleep(1); continue; }
             if (frame.type() != CV_8UC4)    { Sleep(1); continue; }
+
+            // Re-check pause: the flag may have been set after we passed the
+            // check above but before we fetched the frame (open-side race).
+            // Also drain frames during the post-unpause settling window.
+            if (g_recording_paused.load(std::memory_order_acquire))
+            {
+                accumulator = 0;
+                Sleep(5);
+                continue;
+            }
+            {
+                int skip = g_unpause_skip_frames.load(std::memory_order_acquire);
+                if (skip > 0)
+                {
+                    g_unpause_skip_frames.store(skip - 1, std::memory_order_release);
+                    accumulator = 0;
+                    continue;
+                }
+            }
+
             if (!loggedSize)
             {
                 Log("first frame = %dx%d (writer expects %ux%u)",

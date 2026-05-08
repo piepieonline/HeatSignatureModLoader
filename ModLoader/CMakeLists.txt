@@ -10,6 +10,7 @@ add_library(ModLoader SHARED ${ModLoader_SOURCES})
 
 find_package(minhook CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 
 find_package(Lua REQUIRED)
 find_path(LUABRIDGE_INCLUDE_DIRS "LuaBridge/Array.h")
@@ -20,6 +21,7 @@ target_link_libraries(ModLoader PRIVATE
     ${LUA_LIBRARIES}
     minhook::minhook
     imgui::imgui
+    nlohmann_json::nlohmann_json
     d3d9.lib)
 
 set_target_properties(ModLoader PROPERTIES
