@@ -12,10 +12,13 @@ std::wstring MakeOutputPath()
 {
     SYSTEMTIME st;
     GetLocalTime(&st);
-    wchar_t name[MAX_PATH];
-    swprintf_s(name, L".\\HeatSignature_%04u-%02u-%02u_%02u-%02u-%02u.mp4",
+    wchar_t filename[MAX_PATH];
+    swprintf_s(filename, L"HeatSignature_%04u-%02u-%02u_%02u-%02u-%02u.mp4",
                st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond);
-    return name;
+    std::wstring path = g_video_output_path;
+    if (!path.empty() && path.back() != L'/' && path.back() != L'\\')
+        path += L'/';
+    return path + filename;
 }
 
 HRESULT InitSinkWriter(const std::wstring& path,

@@ -17,8 +17,9 @@ inline constexpr UINT32 VIDEO_FPS            = 30;
 inline constexpr UINT64 VIDEO_FRAME_DURATION = 10'000'000ULL / VIDEO_FPS; // 100 ns units
 inline const     GUID   VIDEO_INPUT_FORMAT    = MFVideoFormat_RGB32; // BGRA in memory
 
-extern UINT32 g_video_bit_rate;
-extern GUID   g_video_encoding_format;
+extern UINT32       g_video_bit_rate;
+extern GUID         g_video_encoding_format;
+extern std::wstring g_video_output_path;
 
 extern SE_LogFn            g_log;
 extern SE_GetTimeScaleFn   g_getTimeScale;

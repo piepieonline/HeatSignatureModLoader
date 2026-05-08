@@ -145,7 +145,7 @@ static void RecordingThreadInner()
     DWORD startSeh = SehGuard([&] {
         try
         {
-            camera->start(VIDEO_FPS, /*video_mode=*/true);
+            camera->start(VIDEO_FPS, false);
         }
         catch (const std::exception& e)
         {
