@@ -57,7 +57,6 @@ public:
 	static void SubscribeHook(const char* hookName, SE_HookCallback callback, void* userData);
 	static void SubscribeHookPost(const char* hookName, SE_HookPostCallback callback, void* userData);
 	static double GetTimeScale();
-	static double GetDailyStatus();
 	static void PollDword(const char* label, uintptr_t rva, DWORD intervalMs);
 	static void LogGMLCall(const char* fnName, uintptr_t* self, int argc, RValue** argv, RValue* result = nullptr);
 	static void LogRValue(const char* label, RValue* rv);

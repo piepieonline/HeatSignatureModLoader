@@ -23,7 +23,6 @@ extern std::wstring g_video_output_path;
 
 extern SE_LogFn            g_log;
 extern SE_GetTimeScaleFn   g_getTimeScale;
-extern SE_GetDailyStatusFn g_getDailyStatus;
 extern SE_GetGameWindowFn  g_getGameWindow;
 extern std::atomic<bool>   g_recording;
 extern std::atomic<bool>   g_recording_enabled;

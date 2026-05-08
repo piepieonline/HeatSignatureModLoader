@@ -237,11 +237,6 @@ double ModLoader::GetTimeScale()
     return result;
 }
 
-double ModLoader::GetDailyStatus()
-{
-    return 0;
-}
-
 void ModLoader::LogDrawText(int argc, uintptr_t** argv)
 {
     Log("ModLoader Hook", "draw_text argv=%p argc=%d", (void*)argv, argc);
@@ -425,7 +420,6 @@ void ModLoader::LoadMods()
                 ModLoader::SubscribeHookPost(hookName, cb, userData);
             },
             &ModLoader::GetTimeScale,
-            &ModLoader::GetDailyStatus,
             +[](SE_ImGuiDrawFn cb, void* userData) {
                 ImGuiHook::RegisterDraw(cb, userData);
             },

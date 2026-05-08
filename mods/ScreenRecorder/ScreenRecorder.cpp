@@ -6,7 +6,6 @@
 ModSettings         g_settings;
 SE_LogFn            g_log            = nullptr;
 SE_GetTimeScaleFn   g_getTimeScale   = nullptr;
-SE_GetDailyStatusFn g_getDailyStatus = nullptr;
 SE_GetGameWindowFn  g_getGameWindow  = nullptr;
 std::atomic<bool>   g_recording{false};
 std::atomic<bool>   g_recording_enabled{false};
@@ -109,7 +108,6 @@ void ModInit(const SE_ModApi* api)
     g_settings       = ModSettings(api->config);
     g_log            = api->Log;
     g_getTimeScale   = api->GetTimeScale;
-    g_getDailyStatus = api->GetDailyStatus;
     g_getGameWindow  = api->GetGameWindow;
     Log("Initialized");
 

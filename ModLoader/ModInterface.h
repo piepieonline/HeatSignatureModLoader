@@ -25,7 +25,6 @@ typedef void (*SE_SubscribeHookPostFn)(const char* hookName,
 
 // Returns 1.0 if the time-manager instance isn't available yet.
 typedef double (*SE_GetTimeScaleFn)();
-typedef double (*SE_GetDailyStatusFn)();
 
 // Drawn from inside the host's per-frame ImGui::NewFrame / ::Render block,
 // on the game's render thread. Keep work short.
@@ -65,7 +64,6 @@ struct SE_ModApi
     SE_SubscribeHookFn       SubscribeHook;
     SE_SubscribeHookPostFn   SubscribeHookPost;
     SE_GetTimeScaleFn        GetTimeScale;
-	SE_GetDailyStatusFn      GetDailyStatus;
     SE_RegisterImGuiDrawFn   RegisterImGuiDraw;
     SE_GetImGuiContextFn     GetImGuiContext;
     SE_GetImGuiAllocatorsFn  GetImGuiAllocators;
