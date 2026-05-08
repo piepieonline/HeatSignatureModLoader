@@ -4,7 +4,11 @@ project(ScreenRecorder LANGUAGES CXX)
 # is incompatible with optimization, so strip it from this directory's scope.
 string(REGEX REPLACE "/RTC[1csu]+" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
 
-add_library(ScreenRecorder SHARED ScreenRecorder.cpp)
+add_library(ScreenRecorder SHARED
+    ScreenRecorder.cpp
+    Encoding.cpp
+    Capture.cpp
+)
 
 # DXCam-CPP requires C++20.
 target_compile_features(ScreenRecorder PRIVATE cxx_std_20)
