@@ -24,10 +24,12 @@ static void Log(const char* fmt, ...)
 
 // ── Game state ────────────────────────────────────────────────────────────────
 
-enum class GameState { Station, OnMission, MissionPaused };
+enum class GameState { Station, OnMission, DailyChallenge };
 
 static std::atomic<GameState> g_state{ GameState::Station };
 static std::atomic<int64_t>   g_missionStart{ 0 };
+static std::atomic<int64_t>   g_dailyStart{ 0 };
+static std::atomic<int>       g_dailyCount{ 0 };
 static std::atomic<bool>      g_discordReady{ false };
 static std::atomic<bool>      g_running{ true };
 static std::thread            g_callbackThread;
@@ -45,21 +47,32 @@ static void UpdatePresence()
     {
     case GameState::Station:
         p.details = "In the station";
-        p.state   = "Planning the next heist";
+        p.state   = "Chilling at the bar";
         p.startTimestamp = 0;
         break;
 
     case GameState::OnMission:
         p.details        = "On a mission";
-        p.state          = "Infiltrating";
+        p.state          = "";
         p.startTimestamp = g_missionStart.load();
         break;
 
-    case GameState::MissionPaused:
-        p.details        = "On a mission";
-        p.state          = "Paused";
-        p.startTimestamp = g_missionStart.load();
+    case GameState::DailyChallenge:
+    {
+        static char dailyBuf[32];
+        p.details = "Daily Challenge";
+        if (g_dailyCount > 0)
+        {
+            snprintf(dailyBuf, sizeof(dailyBuf), "On Mission %d/3", g_dailyCount.load());
+            p.state = dailyBuf;
+        }
+        else
+        {
+            p.state = "";
+        }
+        p.startTimestamp = g_dailyStart.load();
         break;
+    }
     }
 
     Discord_UpdatePresence(&p);
@@ -89,41 +102,62 @@ static void OnErrored(int errorCode, const char* message)
 
 static void OnAcceptMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
-    g_missionStart = static_cast<int64_t>(std::time(nullptr));
-    g_state        = GameState::OnMission;
-    UpdatePresence();
+    if (g_state == GameState::DailyChallenge)
+    {
+        g_dailyCount++;
+        UpdatePresence();
+    }
+    else
+    {
+        g_missionStart = static_cast<int64_t>(std::time(nullptr));
+        g_state = GameState::OnMission;
+        UpdatePresence();
+    }
 }
 
 static void OnCompleteMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
-    g_state = GameState::Station;
-    UpdatePresence();
+    if (g_state != GameState::DailyChallenge)
+    {
+        g_state = GameState::Station;
+        UpdatePresence();
+    }
 }
 
 static void OnCancelMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
-    g_state = GameState::Station;
+    if (g_state != GameState::DailyChallenge)
+    {
+        g_state = GameState::Station;
+        UpdatePresence();
+    }
+}
+
+static void OnPlayAsCharacter(const char* /*hookName*/, uintptr_t* self, uintptr_t* other, RValue* /*result*/, int /*argc*/, RValue** argv, void* /*userData*/)
+{
+    static uintptr_t moduleBase = (uintptr_t)GetModuleHandleA("Heat_Signature.exe");
+
+    auto challengerFn = (GMLScript_t)(moduleBase + 0x1CE8A0);
+    RValue challengerResult{};
+    challengerFn(self, other, &challengerResult, 1, argv);
+
+    bool isDailyChallenger =
+        (challengerResult.type & 0xFF) == 0 &&
+        challengerResult.real != 0.0;
+
+    Log("PlayerIsDailyChallenger => %s", isDailyChallenger ? "true" : "false");
+
+    if (isDailyChallenger)
+    {
+        g_state = GameState::DailyChallenge;
+        g_dailyStart = static_cast<int64_t>(std::time(nullptr));
+    }
+    else
+    {
+        g_state = GameState::Station;
+    }
+
     UpdatePresence();
-}
-
-static void OnPauseMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
-{
-    // Only treat as paused if we're currently on a mission
-    if (g_state == GameState::OnMission)
-    {
-        g_state = GameState::MissionPaused;
-        UpdatePresence();
-    }
-}
-
-static void OnSetTimeScale(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
-{
-    // Resuming from pause restores OnMission state
-    if (g_state == GameState::MissionPaused)
-    {
-        g_state = GameState::OnMission;
-        UpdatePresence();
-    }
 }
 
 // ── Background thread: poll Discord callbacks ────────────────────────────────
@@ -155,8 +189,7 @@ void ModInit(const SE_ModApi* api)
     api->SubscribeHook("gml_Script_AcceptMission",   OnAcceptMission,   nullptr);
     api->SubscribeHook("gml_Script_CompleteMission", OnCompleteMission, nullptr);
     api->SubscribeHook("gml_Script_CancelMission",   OnCancelMission,   nullptr);
-    api->SubscribeHook("gml_Script_PauseMission",    OnPauseMission,    nullptr);
-    api->SubscribeHook("gml_Script_SetTimeScale",    OnSetTimeScale,    nullptr);
+    api->SubscribeHookPost("gml_Script_PlayAsCharacter", OnPlayAsCharacter, nullptr);
 
     g_callbackThread = std::thread(CallbackThread);
     g_callbackThread.detach();

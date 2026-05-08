@@ -68,8 +68,6 @@ public:
 	static RValue nameVal;
 
 
-	using GMLScript_t = RValue * (__cdecl*)(uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
-
 	static std::map<std::string, HookBase*> HookMap;
 	std::vector<HookBase*> hooks
 	{
@@ -103,29 +101,6 @@ public:
 				ModLoader::LogGMLCall(
 					hook->hookName.c_str(),
 					self, argc, argv, ret);
-
-				using challengerFn_t = GMLScript_t;
-				auto challengerFn =
-					(challengerFn_t)(HookBase::moduleBase + 0x1CE8A0);
-
-				RValue challengerResult{};
-
-				challengerFn(
-					self,
-					other,
-					&challengerResult,
-					1,
-					argv
-				);
-
-				bool isChallenger =
-					(challengerResult.type & 0xFF) == 0 &&
-					challengerResult.real != 0.0;
-
-				ModLoader::Log(
-					"PlayAsCharacter",
-					"PlayerIsDailyChallenger => %s",
-					isChallenger ? "true" : "false");
 
 				using sub_CBC420_t = int(__cdecl*)(uint32_t*);
 				using sub_C99410_t = int(__cdecl*)(

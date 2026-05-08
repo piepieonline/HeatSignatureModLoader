@@ -26,6 +26,8 @@ struct RValue {
     uint32_t type;
 };
 
+using GMLScript_t = RValue*(__cdecl*)(uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
+
 static const char* GetTypeName(int type)
 {
     switch (type)
