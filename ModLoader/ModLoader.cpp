@@ -13,6 +13,9 @@
 
 std::map<std::string, HookBase*> ModLoader::HookMap{};
 
+bool ModLoader::isDrawing = false;
+RValue ModLoader::nameVal;
+
 // ---------------------------------------------------------------------------
 // SEH-isolated helpers — no C++ objects with destructors allowed in scope
 // ---------------------------------------------------------------------------
@@ -48,48 +51,6 @@ static const char* TimeScaleWalk_SEH(uintptr_t moduleBase, double* outResult)
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
         return "access violation walking pointer chain";
-    }
-}
-
-struct DailyStatusSEHResult { double value; const char* failReason; };
-
-static DailyStatusSEHResult DailyStatusQuery_SEH(uintptr_t moduleBase)
-{
-    __try
-    {
-        using fn_CBC420 = int(__cdecl*)(void*);
-        using fn_C99410 = char(__cdecl*)(int, int, int, int*);
-
-        auto CBC420 = (fn_CBC420)(moduleBase + 0xCBC420);
-        auto C99410 = (fn_C99410)(moduleBase + 0xC99410);
-
-        if (!CBC420 || !C99410)
-            return { 0.0, "function pointers invalid" };
-
-        uint32_t instance_table_base = *(uint32_t*)(moduleBase + 0x0453D610);
-        if (!instance_table_base)
-            return { 0.0, "instance table base null" };
-
-        int instance_id = CBC420((void*)instance_table_base);
-        if (!instance_id)
-            return { 0.0, "instance_id resolved to 0" };
-
-        struct GMVariant { double value; uint32_t type; uint32_t pad1; uint32_t pad2; } out{};
-        if (!C99410(instance_id, 634, 0x80000000, (int*)&out))
-            return { 0.0, "C99410 query failed (var 634)" };
-
-        switch (out.type & 0xFFFFFF)
-        {
-        case 0x0: case 0xD: return { out.value, nullptr };
-        case 0x3: case 0x7: case 0xA: return { (double)*(int*)&out, nullptr };
-        default:
-            ModLoader::Log("ModLoader", "GetDailyStatus: unexpected GM variant type 0x%X", out.type & 0xFFFFFF);
-            return { 0.0, "unexpected GM variant type" };
-        }
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        return { 0.0, "access violation" };
     }
 }
 
@@ -231,77 +192,6 @@ static BOOL ReadDword_SEH(uintptr_t addr, DWORD* outValue)
     }
 }
 
-// Enumerates character instances of objType and logs their name via the same
-// call chain AnnotateCharacter uses: sub_1C47D0 prepares var634 as an argument,
-// then sub_CA7F30 calls the compiled name function (handle at moduleBase+0x10C3CCC).
-static void LogCharacterNames_SEH(uint32_t moduleBase, int objType, int other)
-{
-    using fn_CA8590_t = int  (__cdecl*)(void*, uint32_t*, int*, int);
-    using fn_C9AC30_t = uint8_t(__cdecl*)(void*, uint32_t*);
-    using fn_C9AC60_t = void (__cdecl*)(void*);
-    // Evaluates a variant (at *argPtr) into the GML argument stack; returns opaque arg index
-    using fn_1C47D0_t = int  (__cdecl*)(uint32_t, int, void*, int, uint32_t*);
-    // Calls a compiled GML function: (self, other, result, argc, funcHandle, argStackIdx*)
-    using fn_CA7F30_t = uint32_t*(__cdecl*)(uint32_t, int, void*, int, int, int);
-
-    auto CA8590    = (fn_CA8590_t)(moduleBase + 0xCA8590);
-    auto C9AC30    = (fn_C9AC30_t)(moduleBase + 0xC9AC30);
-    auto C9AC60    = (fn_C9AC60_t)(moduleBase + 0xC9AC60);
-    auto sub_1C47D0 = (fn_1C47D0_t)(moduleBase + 0x1C47D0);
-    auto CA7F30    = (fn_CA7F30_t)(moduleBase + 0xCA7F30);
-
-    // Name function handle compiled by GML into the binary's data segment
-    int nameHandle = *(int*)(moduleBase + 0x10C3CCC);
-
-    uint8_t  iterState[32] = {}; // decomp shows 8 bytes but adjacent slot also used; 32 is safe
-    int      ctx[5]        = { other, 0, 0, 0, 0 }; // v368: [0]=other
-    uint32_t instance      = 0;
-
-    __try
-    {
-        if (CA8590(iterState, &instance, ctx, objType) <= 0)
-            return;
-
-        do
-        {
-            // varTable is at instance+4 (same pattern used throughout AnnotateCharacter)
-            uint32_t varTable = *(uint32_t*)(instance + 4);
-            if (!varTable)
-                continue;
-
-            // var634 variant is at varTable + 634*16 = varTable + 10144
-            uint32_t var634addr = varTable + 634 * 16;
-            uint32_t argRef     = var634addr;
-            uint32_t argBuf[8]  = {}; // v222/v226 in decomp are 8-12 bytes; 32 bytes is safe
-            int argIdx = sub_1C47D0(instance, other, argBuf, 1, &argRef);
-
-            uint32_t  resultBuf[8] = {};
-            uint32_t* nameVar = CA7F30(instance, other, resultBuf, 1, nameHandle, (int)&argIdx);
-
-            // Variant layout: [0..3]=value/ptr, [4..7]=hi, [8..11]=extra, [12..15]=type
-            if (nameVar && (nameVar[3] & 0xFF) == 1)
-            {
-                void* strObj = (void*)nameVar[0];
-                if (strObj)
-                {
-                    const char* name = *(const char**)strObj;
-                    if (name)
-                        ModLoader::Log("PlayAsCharacter", "Character: %s", name);
-                }
-            }
-        }
-        while (C9AC30(iterState, &instance));
-
-        C9AC60(iterState);
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        ModLoader::Log("PlayAsCharacter", "Exception reading character names (instance=%08X)", instance);
-    }
-}
-
-// ---------------------------------------------------------------------------
-
 double ModLoader::GetTimeScale()
 {
     static const char* s_lastFailure = "init";
@@ -333,30 +223,7 @@ double ModLoader::GetTimeScale()
 
 double ModLoader::GetDailyStatus()
 {
-    static const char* s_lastFailure = nullptr;
-    static DWORD s_lastFailTime = 0;
-
     return 0;
-
-    auto fail = [&](const char* reason) -> double
-        {
-            DWORD now = GetTickCount();
-            if (!s_lastFailure || strcmp(s_lastFailure, reason) != 0 || (now - s_lastFailTime) >= 5000)
-            {
-                ModLoader::Log("ModLoader", "GetDailyStatus returning 0.0 (%s)", reason);
-                s_lastFailure = reason;
-                s_lastFailTime = now;
-            }
-            return 0.0;
-        };
-
-    if (!HookBase::moduleBase)
-        return fail("module base not found");
-
-    DailyStatusSEHResult r = DailyStatusQuery_SEH(HookBase::moduleBase);
-    if (r.failReason)
-        return fail(r.failReason);
-    return r.value;
 }
 
 void ModLoader::LogDrawText(int argc, uintptr_t** argv)
@@ -378,11 +245,6 @@ void ModLoader::LogGMLCall(const char* fnName, int self, int argc, uintptr_t** a
 void ModLoader::LogRValue(const char* label, RValue* rv)
 {
     LogRValue_SEH(label, rv);
-}
-
-void ModLoader::LogCharacterNames(uint32_t moduleBase, int objType, int other)
-{
-    LogCharacterNames_SEH(moduleBase, objType, other);
 }
 
 void ModLoader::PollDword(const char* label, uintptr_t rva, DWORD intervalMs)
