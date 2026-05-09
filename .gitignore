@@ -16,4 +16,6 @@ out
 vcpkg_installed
 .vs
 
+.claude
 docs/decomp/*
+/docs/posted_mod_ideas.txt
