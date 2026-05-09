@@ -62,6 +62,9 @@ public:
 	static std::map<std::string, HookBase*> HookMap;
 	std::vector<HookBase*> hooks
 	{
+		/*
+		// Example engine function hook
+		// Note that game functions can be hooked the same way, but care must be taken to not break subscribers
 		new Hook<GMLScript_t>(
 			"draw_text",
 			0xCD8350,
@@ -77,6 +80,7 @@ public:
 			},
 			true
 		)
+		*/
 	};
 
 	ModLoader();

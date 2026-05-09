@@ -56,12 +56,12 @@ static void LogDrawTextArgs_SEH(uintptr_t** argv)
         double y         = args[1].val;
         uint32_t strPtr  = *reinterpret_cast<uint32_t*>(&args[2].val);
         const char* text = strPtr ? *reinterpret_cast<const char**>(strPtr) : nullptr;
-        Log("DebugMod Hook", "draw_text x=%.1f y=%.1f str=\"%s\"",
+        Log("DebugMod", "draw_text x=%.1f y=%.1f str=\"%s\"",
             x, y, text ? text : "(null)");
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        Log("DebugMod Hook", "draw_text failed to read args");
+        Log("DebugMod", "draw_text failed to read args");
     }
 }
 
@@ -73,13 +73,13 @@ static void LogArgsAddress_SEH(int argc, uintptr_t** argv)
     {
         for (int i = 0; i < argc; i++)
         {
-            Log("DebugMod Hook", "arg %d: (raw: %08X)",
+            Log("DebugMod", "arg %d: (raw: %08X)",
                 i, *(uint32_t*)&args[i].val);
         }
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        Log("DebugMod Hook", "draw_text failed to read args");
+        Log("DebugMod", "draw_text failed to read args");
     }
 }
 
@@ -87,7 +87,7 @@ static void LogRValue_SEH(const char* label, RValue* rv)
 {
     if (!rv)
     {
-        Log("Hook", "  %s @NULL", label);
+        Log("DebugMod", "  %s @NULL", label);
         return;
     }
 
@@ -100,7 +100,7 @@ static void LogRValue_SEH(const char* label, RValue* rv)
         case 0: // REAL
         {
             Log(
-                "Hook",
+                "DebugMod",
                 "  %s @0x%08X type=REAL val=%f",
                 label,
                 (uint32_t)(uintptr_t)rv,
@@ -118,7 +118,7 @@ static void LogRValue_SEH(const char* label, RValue* rv)
                 : nullptr;
 
             Log(
-                "Hook",
+                "DebugMod",
                 "  %s @0x%08X type=STRING ptr=0x%08X val=\"%s\"",
                 label,
                 (uint32_t)(uintptr_t)rv,
@@ -129,7 +129,7 @@ static void LogRValue_SEH(const char* label, RValue* rv)
         case 2: // ARRAY
         {
             Log(
-                "Hook",
+                "DebugMod",
                 "  %s @0x%08X type=ARRAY raw=0x%08X",
                 label,
                 (uint32_t)(uintptr_t)rv,
@@ -139,7 +139,7 @@ static void LogRValue_SEH(const char* label, RValue* rv)
         default:
         {
             Log(
-                "Hook",
+                "DebugMod",
                 "  %s @0x%08X type=%s(%d) raw=0x%08X",
                 label,
                 (uint32_t)(uintptr_t)rv,
@@ -153,7 +153,7 @@ static void LogRValue_SEH(const char* label, RValue* rv)
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
         Log(
-            "Hook",
+            "DebugMod",
             "  %s @0x%08X <exception reading RValue>",
             label,
             (uint32_t)(uintptr_t)rv);
@@ -164,8 +164,8 @@ static void LogGMLArgs_SEH(const char* fnName, uintptr_t* self, int argc, RValue
 {
     __try
     {
-        Log("Hook", "%s argc=%d", fnName, argc);
-        Log("Hook", "  self  id=0x%08X", (uint32_t)(uintptr_t)self);
+        Log("DebugMod", "%s argc=%d", fnName, argc);
+        Log("DebugMod", "  self  id=0x%08X", (uint32_t)(uintptr_t)self);
         for (int i = 0; i < argc; i++)
         {
             char label[16];
@@ -176,7 +176,7 @@ static void LogGMLArgs_SEH(const char* fnName, uintptr_t* self, int argc, RValue
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        Log("Hook", "%s: exception reading args", fnName);
+        Log("DebugMod", "%s: exception reading args", fnName);
     }
 }
 
@@ -195,7 +195,7 @@ static BOOL ReadDword_SEH(uintptr_t addr, DWORD* outValue)
 
 static void LogDrawText(int argc, uintptr_t** argv)
 {
-    Log("DebugMod Hook", "draw_text argv=%p argc=%d", (void*)argv, argc);
+    Log("DebugMod", "draw_text argv=%p argc=%d", (void*)argv, argc);
     LogDrawTextArgs_SEH(argv);
 }
 
@@ -324,7 +324,7 @@ static void OnGenerateGunPost(const char* hookName, uintptr_t* self, uintptr_t* 
     LogGMLCall(hookName, self, argc, argv, returnValue);
 
     int instance_handle = g_api->ResolveInstance((uint32_t*)argv[0]);
-    Log("gml_Script_GenerateGun", "instance=0x%08X", instance_handle);
+    Log("DebugMod", "instance=0x%08X", instance_handle);
 
     // RValue traits{};
     // GetVar(instance_handle, 664, 0x80000000, &traits);
