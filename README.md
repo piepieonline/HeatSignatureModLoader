@@ -29,7 +29,7 @@ Built mods go in `./mods/` as `./mods/MyMod.dll`. If they use config, it will be
 
 ## Building
 
-1. Clone the repo.
+1. Clone the repo from [Github](http://github.com/piepieonline/HeatSignatureModLoader)
 2. Copy `CMakeUserPresets.json.template` to `CMakeUserPresets.json` and fill in the variables in angle brackets.
 3. `vcpkg install`
 4. `cmake --preset x86-debug` (note that Heat Signature is a x86 game)
