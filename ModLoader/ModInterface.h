@@ -1,10 +1,24 @@
 #pragma once
 #include <windows.h>
+#include <cstdint>
 #include <string>
 
 #include "GameMaker.h"
 
 extern "C" {
+
+// Bump whenever any cross-ABI struct (SE_ModApi, SE_ModConfig, SE_ConfigString,
+// or any callback signature reachable through them) changes shape. Mods compiled
+// against a different value are rejected by the loader unless the user opts in
+// via `allow_version_mismatch` in ModLoader.json.
+#define SE_API_VERSION 1u
+
+// Mods must export `ModApiVersion()` returning SE_API_VERSION at the version
+// they were built for. The macro below is the canonical one-liner.
+typedef uint32_t (*SE_ModApiVersionFn)(void);
+
+#define SE_EXPORT_MOD_API_VERSION() \
+    extern "C" __declspec(dllexport) uint32_t ModApiVersion(void) { return SE_API_VERSION; }
 
 typedef void (*SE_LogFn)(const char* prefix, const char* message);
 

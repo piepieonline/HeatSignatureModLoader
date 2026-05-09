@@ -516,6 +516,9 @@ void ModLoader::LoadMods()
 {
     CreateDirectoryA(".\\mods", nullptr);
 
+    const bool allowVersionMismatch =
+        m_loaderConfig->Read("allow_version_mismatch", false) == "true";
+
     WIN32_FIND_DATAA fd;
     HANDLE h = FindFirstFileA(".\\mods\\*.dll", &fd);
     if (h == INVALID_HANDLE_VALUE)
@@ -532,6 +535,24 @@ void ModLoader::LoadMods()
         {
             Log("ModLoader", "Failed to load %s (error %lu)", fd.cFileName, GetLastError());
             continue;
+        }
+
+        auto modVersionFn = reinterpret_cast<SE_ModApiVersionFn>(GetProcAddress(hMod, "ModApiVersion"));
+        uint32_t modVersion = modVersionFn ? modVersionFn() : 0u;
+        if (modVersion != SE_API_VERSION)
+        {
+            if (!allowVersionMismatch)
+            {
+                Log("ModLoader",
+                    "Skipping %s: built for API v%u, loader is v%u "
+                    "(set allow_version_mismatch=true to override)",
+                    fd.cFileName, modVersion, SE_API_VERSION);
+                FreeLibrary(hMod);
+                continue;
+            }
+            Log("ModLoader",
+                "WARNING: loading %s with API mismatch (mod v%u, loader v%u)",
+                fd.cFileName, modVersion, SE_API_VERSION);
         }
 
         auto modInit = reinterpret_cast<SE_ModInitFn>(GetProcAddress(hMod, "ModInit"));

@@ -172,6 +172,8 @@ static void CallbackThread()
 
 // ── ModInit ──────────────────────────────────────────────────────────────────
 
+SE_EXPORT_MOD_API_VERSION()
+
 extern "C" __declspec(dllexport)
 void ModInit(const SE_ModApi* api)
 {
