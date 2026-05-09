@@ -20,7 +20,7 @@ Weapon Changes:
 New Mission Complications:
 - Alarm responce: missles are fired at the ship to destroy it (similar to Warzone).
 - No mufflers: Guards that would have quiet guns now have loud guns instead.
-- Heat signature proof walls: You cannot see rooms that you could not reach with a sidewinder.
+- Heat signature proof walls: You cannot see rooms that you could not reach with a sidewinder. (Glitch cloak?)
 
 
 General changes:

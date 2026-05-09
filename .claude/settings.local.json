@@ -5,6 +5,9 @@
       "Bash(Select-Object -Property FullName, PSIsContainer)",
       "Bash(Format-Table -AutoSize)",
       "Bash(Get-ChildItem -Path \"D:\\\\Game Modding\\\\HeatSignature\\\\HeatSignatureModLoader\" -Force)"
+    ],
+	"additionalDirectories": [
+      "D:\\Game Modding\\HeatSignature\\HeatSignatureModLoader\\"
     ]
   }
 }
