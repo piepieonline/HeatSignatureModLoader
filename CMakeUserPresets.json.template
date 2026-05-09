@@ -1,0 +1,31 @@
+{
+  "version": 3,
+  "configurePresets": [
+      {
+      "name": "x86-debug",
+      "inherits": "x86-debug-base",
+      "cacheVariables": {
+        "HEATSIG_DIR": "<PATH TO HEAT SIGNATURE>"
+      }
+    },
+    {
+      "name": "x86-release",
+      "inherits": "x86-release-base",
+      "cacheVariables": {
+        "HEATSIG_DIR": "<PATH TO HEAT SIGNATURE>"
+      }
+    }
+  ],
+  "buildPresets": [
+	{
+      "name": "local-debug",
+      "configurePreset": "x86-debug",
+      "configuration": "Debug"
+    },
+	{
+      "name": "local-release",
+      "configurePreset": "x86-release",
+      "configuration": "Release"
+    }
+  ]
+}

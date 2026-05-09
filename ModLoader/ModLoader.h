@@ -2,9 +2,6 @@
 
 #include <windows.h>
 
-#include <lua.hpp>
-#include "LuaBridge/LuaBridge.h"
-
 #include "Hook.h"
 #include "GameWindow.h"
 #include "ModConfig.h"
