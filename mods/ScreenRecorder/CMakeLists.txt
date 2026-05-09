@@ -8,6 +8,7 @@ add_library(ScreenRecorder SHARED
     ScreenRecorder.cpp
     Encoding.cpp
     Capture.cpp
+    Globals.h
 )
 
 # DXCam-CPP requires C++20.

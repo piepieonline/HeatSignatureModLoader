@@ -1,24 +1,13 @@
 project(DiscordRichPresence LANGUAGES CXX)
 
-# /RTC1 is incompatible with /O2; strip it before add_library so it never
-# lands in this target's flags.
-string(REGEX REPLACE "/RTC[1csu]+" "" CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
-
 add_library(DiscordRichPresence SHARED DiscordRichPresence.cpp)
 
 target_compile_features(DiscordRichPresence PRIVATE cxx_std_17)
 
 # Force static Release CRT (/MT) in all configs so it matches the Release
-# discord-rpc static lib. The debug lib uses /MTd which conflicts with /MDd.
+# discord-rpc static lib (the debug lib uses /MTd, which we don't link).
 set_target_properties(DiscordRichPresence PROPERTIES
-    MSVC_RUNTIME_LIBRARY          "MultiThreaded"
-    MSVC_DEBUG_INFORMATION_FORMAT ""
-)
-target_compile_options(DiscordRichPresence PRIVATE
-    $<$<CONFIG:Debug>:/O2 /Ob2>
-)
-target_compile_definitions(DiscordRichPresence PRIVATE
-    $<$<CONFIG:Debug>:NDEBUG>
+    MSVC_RUNTIME_LIBRARY "MultiThreaded"
 )
 
 target_include_directories(DiscordRichPresence PRIVATE

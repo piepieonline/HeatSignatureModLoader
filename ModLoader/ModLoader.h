@@ -10,6 +10,7 @@
 #include "ModConfig.h"
 
 #include <memory>
+#include <unordered_map>
 #include <vector>
 
 static inline uint32_t* GetActiveContext()
@@ -49,6 +50,41 @@ static inline uint32_t* GetActiveContext()
 // todo: draw a UI for the modloader itself, and pass a "we want the UI drawn now" flag to mods
 // They can still choose to draw if they want to
 
+#pragma pack(push, 1)
+struct PropertyDesc
+{
+	uint32_t namePtr;
+	uint32_t id;
+};
+#pragma pack(pop)
+
+static std::unordered_map<std::string, uint32_t> BuildMap(
+	uintptr_t tableAddr,
+	uint32_t count)
+{
+	std::unordered_map<std::string, uint32_t> map;
+
+	auto table = reinterpret_cast<PropertyDesc**>(tableAddr);
+
+	for (uint32_t i = 0; i < count; ++i)
+	{
+		PropertyDesc* p = table[i];
+
+		if (!p)
+			continue;
+
+		const char* name =
+			reinterpret_cast<const char*>(p->namePtr);
+
+		if (!name)
+			continue;
+
+		map[name] = i; // p->id;
+	}
+
+	return map;
+}
+
 class ModLoader
 {
 public:
@@ -58,6 +94,9 @@ public:
 	static void SubscribeHookPost(const char* hookName, SE_HookPostCallback callback, void* userData);
 	static RValue* CallScript(const char* scriptName,
 		uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
+	static int GetVarId(const char* name);
+	static void EnsureVariableMap();
+	static std::unordered_map<std::string, uint32_t> VariableMap;
 	static double GetTimeScale();
 	static void PollDword(const char* label, uintptr_t rva, DWORD intervalMs);
 	static void LogGMLCall(const char* fnName, uintptr_t* self, int argc, RValue** argv, RValue* result = nullptr);
@@ -94,54 +133,20 @@ public:
 					hook->hookName.c_str(),
 					self, argc, argv, ret);
 
-				using sub_CBC420_t = int(__cdecl*)(uint32_t*);
-				using sub_C99410_t = int(__cdecl*)(
-					int, int, int, RValue*
-				);
-				using SetVar_t = int(__cdecl*)(
-					int, int, int, RValue*
-				);
-
-				auto SetVar =
-					(SetVar_t)(HookBase::moduleBase + 0xC996F0);
-
-				auto GetVar =
-					(sub_C99410_t)(HookBase::moduleBase + 0xC99410);
-
-				auto ResolveInstance =
-					(sub_CBC420_t)(HookBase::moduleBase + 0xCBC420);
-
-				int instance_handle =
-					ResolveInstance((uint32_t*)argv[0]);
-
-				ModLoader::Log(
-					"PlayerIsDailyChallenger",
-					"instance=0x%08X",
-					instance_handle);
-
-				for (int i = 0; i <= 1000; i++)
+				/*
+				for (const auto& [name, id] : ModLoader::VariableMap)
 				{
 					RValue out{};
-					GetVar(instance_handle, i, 0x80000000, &out);
+					GetVar(instance_handle, id, 0x80000000, &out);
 
-					char label[64];
-					if (i == 634)
-						sprintf_s(label, "Var[634] (Daily Challenger Flag)");
-					else
-						sprintf_s(label, "Var[%d]", i);
+					if (GetTypeName(out.type) == std::string("UNKNOWN"))
+						continue;
 
+					char label[128];
+					sprintf_s(label, "%s (%u):", name.c_str(), id);
 					ModLoader::LogRValue(label, &out);
 				}
-
-				ModLoader::isDrawing = true;
-
-				using SetString_t = int(__cdecl*)(RValue*, char*);
-				auto SetString = (SetString_t)(HookBase::moduleBase + 0xCAB130);
-
-				RValue nameTest;
-
-				GetVar(instance_handle, 673, 0x80000000, &nameTest);
-				SetString(&ModLoader::nameVal, (char*)"Hello");
+				*/
 
 				hook->NotifyPostSubscribers(self, other, ret, argc, argv);
 				return ret;
@@ -209,9 +214,24 @@ public:
 					int instance_handle = ResolveInstance((uint32_t*)argv[0]);
 					ModLoader::Log("gml_Script_GenerateGun", "instance=0x%08X", instance_handle);
 
-					RValue traits{};
-					GetVar(instance_handle, 664, 0x80000000, &traits);
-					ModLoader::LogRValue("Weapon Traits", &traits);
+					// RValue traits{};
+					// GetVar(instance_handle, 664, 0x80000000, &traits);
+					// ModLoader::LogRValue("Weapon Traits", &traits);
+
+					/*
+					for (const auto& [name, id] : ModLoader::VariableMap)
+					{
+						RValue out{};
+						GetVar(instance_handle, id, 0x80000000, &out);
+
+						if (GetTypeName(out.type) == std::string("UNKNOWN"))
+							continue;
+
+						char label[128];
+						sprintf_s(label, "%s (%u):", name.c_str(), id);
+						ModLoader::LogRValue(label, &out);
+					}
+					*/
 
 					/*
 					struct IterState

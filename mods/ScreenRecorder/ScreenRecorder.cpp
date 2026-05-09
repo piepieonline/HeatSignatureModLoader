@@ -109,7 +109,6 @@ void ModInit(const SE_ModApi* api)
     g_log            = api->Log;
     g_getTimeScale   = api->GetTimeScale;
     g_getGameWindow  = api->GetGameWindow;
-    Log("Initialized");
 
     api->SubscribeHook("gml_Script_AcceptMission",   &OnAcceptMission,   nullptr);
     api->SubscribeHook("gml_Script_CompleteMission", &OnCompleteMission, nullptr);
@@ -155,6 +154,8 @@ void ModInit(const SE_ModApi* api)
         ImGui::SetCurrentContext(static_cast<ImGuiContext*>(api->GetImGuiContext()));
         api->RegisterImGuiDraw(&DrawImGui, nullptr);
     }
+
+    Log("Initialized");
 
     std::thread(InputLoop).detach();
 }

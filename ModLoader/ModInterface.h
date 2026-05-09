@@ -57,6 +57,24 @@ typedef RValue* (*SE_CallScriptFn)(const char* scriptName,
                                    uintptr_t* self, uintptr_t* other,
                                    RValue* result, int argc, RValue** argv);
 
+// Engine helpers — the four GameMaker built-ins mods most often need.
+// ResolveInstance: turns the `argv[i]` instance reference into an integer handle
+// suitable for GetVar/SetVar. GetVar/SetVar use GameMaker variable IDs (e.g.
+// 673 = displayName on a weapon). SetString assigns a C string into an RValue.
+typedef int (*SE_ResolveInstanceFn)(uint32_t* argHandle);
+typedef int (*SE_GetVarFn)(int instance, int varId, int arrayIndex, RValue* out);
+typedef int (*SE_SetVarFn)(int instance, int varId, int arrayIndex, RValue* in);
+typedef int (*SE_SetStringFn)(RValue* dest, const char* text);
+
+// Variable name -> ID lookup, populated at startup by hooking the engine's
+// variable-table initializer. Returns -1 for unknown names (logged once).
+typedef int (*SE_GetVarIdFn)(const char* name);
+
+// Convenience wrappers around GetVar/SetVar that resolve the ID from a name.
+// No-op (returns 0) if the name is unknown.
+typedef int (*SE_GetVarByNameFn)(int instance, const char* name, int arrayIndex, RValue* out);
+typedef int (*SE_SetVarByNameFn)(int instance, const char* name, int arrayIndex, RValue* in);
+
 struct SE_ModConfig {
     void*        handle;
     const char* (*Read)   (void* handle, const char* key, const char* defaultValue);
@@ -78,6 +96,13 @@ struct SE_ModApi
     SE_GetGameWindowFn       GetGameWindow;
     SE_RequestBypassFn       RequestBypass;
     SE_CallScriptFn          CallScript;
+    SE_ResolveInstanceFn     ResolveInstance;
+    SE_GetVarFn              GetVar;
+    SE_SetVarFn              SetVar;
+    SE_SetStringFn           SetString;
+    SE_GetVarIdFn            GetVarId;
+    SE_GetVarByNameFn        GetVarByName;
+    SE_SetVarByNameFn        SetVarByName;
     SE_ModConfig             config;
 };
 

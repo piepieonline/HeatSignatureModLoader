@@ -1,4 +1,5 @@
 #include "ModInterface.h"
+#include "HS/HS_Character.h"
 #include <discord_rpc.h>
 #include <windows.h>
 #include <atomic>
@@ -10,6 +11,7 @@
 static constexpr const char* DISCORD_APP_ID = "1500846665467166720";
 
 static SE_LogFn g_log = nullptr;
+static const SE_ModApi* g_api = nullptr;
 
 static void Log(const char* fmt, ...)
 {
@@ -133,17 +135,14 @@ static void OnCancelMission(const char* /*hookName*/, uintptr_t* /*self*/, uintp
     }
 }
 
-static void OnPlayAsCharacter(const char* /*hookName*/, uintptr_t* self, uintptr_t* other, RValue* /*result*/, int /*argc*/, RValue** argv, void* /*userData*/)
+static void OnPlayAsCharacter(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int argc, RValue** argv, void* /*userData*/)
 {
-    static uintptr_t moduleBase = (uintptr_t)GetModuleHandleA("Heat_Signature.exe");
+    if (argc < 1 || !argv || !argv[0]) return;
 
-    auto challengerFn = (GMLScript_t)(moduleBase + 0x1CE8A0);
-    RValue challengerResult{};
-    challengerFn(self, other, &challengerResult, 1, argv);
+    auto character = HS::ResolveInstanceAs<HS::HS_Character>((uint32_t*)argv[0], g_api);
+    if (!character.valid()) return;
 
-    bool isDailyChallenger =
-        (challengerResult.type & 0xFF) == 0 &&
-        challengerResult.real != 0.0;
+    bool isDailyChallenger = character.DailyChallenge > 0.0;
 
     Log("PlayerIsDailyChallenger => %s", isDailyChallenger ? "true" : "false");
 
@@ -176,6 +175,7 @@ static void CallbackThread()
 extern "C" __declspec(dllexport)
 void ModInit(const SE_ModApi* api)
 {
+    g_api = api;
     g_log = api->Log;
     Log("Initializing");
 

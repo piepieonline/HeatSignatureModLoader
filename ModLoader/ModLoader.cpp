@@ -11,6 +11,7 @@
 #include <fstream>
 #include <mutex>
 #include <string>
+#include <unordered_set>
 
 #include "MinHook.h"
 
@@ -21,6 +22,7 @@ static void        Config_SetJson(void* h, const char* json)                 { s
 static void        Config_Save   (void* h)                                   { static_cast<ModConfig*>(h)->Save(); }
 
 std::map<std::string, HookBase*> ModLoader::HookMap{};
+std::unordered_map<std::string, uint32_t> ModLoader::VariableMap{};
 
 bool ModLoader::isDrawing = false;
 RValue ModLoader::nameVal;
@@ -415,6 +417,59 @@ RValue* ModLoader::CallScript(const char* scriptName,
     return detour(self, other, result, argc, argv);
 }
 
+// The engine stores a pointer to the variable-table struct at moduleBase +
+// 0x453D5B8, populated by sub_C7F050. struct[4] = entry count, struct[5] =
+// pointer to the PropertyDesc* array. Read lazily on first lookup.
+void ModLoader::EnsureVariableMap()
+{
+    static std::atomic<bool> s_built{ false };
+    if (s_built.load(std::memory_order_acquire)) return;
+
+    static std::mutex s_mutex;
+    std::lock_guard<std::mutex> lock(s_mutex);
+    if (s_built.load()) return;
+
+    auto structPtr = *reinterpret_cast<uint32_t**>(HookBase::moduleBase + 0x453D5B8);
+    if (!structPtr)
+    {
+        Log("ModLoader", "VariableMap: struct at moduleBase+0x453D5B8 not yet populated");
+        return;
+    }
+
+    uintptr_t tableAddr = static_cast<uintptr_t>(structPtr[5]);
+    uint32_t  count     = structPtr[4];
+
+    auto map = BuildMap(tableAddr, count);
+    if (map.empty())
+    {
+        Log("ModLoader", "VariableMap: BuildMap returned empty (table=0x%p count=%u)",
+            reinterpret_cast<void*>(tableAddr), count);
+        return;
+    }
+
+    VariableMap = std::move(map);
+    s_built.store(true, std::memory_order_release);
+    Log("ModLoader", "VariableMap: built %zu entries from 0x%p (count=%u)",
+        VariableMap.size(), reinterpret_cast<void*>(tableAddr), count);
+}
+
+int ModLoader::GetVarId(const char* name)
+{
+    if (!name) return -1;
+
+    EnsureVariableMap();
+
+    auto it = VariableMap.find(name);
+    if (it != VariableMap.end()) return static_cast<int>(it->second);
+
+    static std::mutex s_missMutex;
+    static std::unordered_set<std::string> s_logged;
+    std::lock_guard<std::mutex> lock(s_missMutex);
+    if (s_logged.insert(name).second)
+        Log("ModLoader", "GetVarId: unknown variable '%s'", name);
+    return -1;
+}
+
 void ModLoader::LoadMods()
 {
     CreateDirectoryA(".\\mods", nullptr);
@@ -473,6 +528,25 @@ void ModLoader::LoadMods()
             +[]() { g_hookBypassRequested = true; },
             +[](const char* name, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv) {
                 return ModLoader::CallScript(name, self, other, result, argc, argv);
+            },
+            reinterpret_cast<SE_ResolveInstanceFn>(HookBase::moduleBase + 0xCBC420),
+            reinterpret_cast<SE_GetVarFn>         (HookBase::moduleBase + 0xC99410),
+            reinterpret_cast<SE_SetVarFn>         (HookBase::moduleBase + 0xC996F0),
+            reinterpret_cast<SE_SetStringFn>      (HookBase::moduleBase + 0xCAB130),
+            +[](const char* name) { return ModLoader::GetVarId(name); },
+            +[](int instance, const char* name, int arrayIndex, RValue* out) -> int {
+                int id = ModLoader::GetVarId(name);
+                if (id < 0) { if (out) *out = RValue{}; return 0; }
+                using GetVar_t = int(__cdecl*)(int, int, int, RValue*);
+                auto fn = reinterpret_cast<GetVar_t>(HookBase::moduleBase + 0xC99410);
+                return fn(instance, id, arrayIndex, out);
+            },
+            +[](int instance, const char* name, int arrayIndex, RValue* in) -> int {
+                int id = ModLoader::GetVarId(name);
+                if (id < 0) return 0;
+                using SetVar_t = int(__cdecl*)(int, int, int, RValue*);
+                auto fn = reinterpret_cast<SetVar_t>(HookBase::moduleBase + 0xC996F0);
+                return fn(instance, id, arrayIndex, in);
             },
             modConfigApi
         });
