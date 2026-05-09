@@ -19,6 +19,10 @@
 // its final value so callers know whether to skip the original function.
 extern thread_local bool g_hookBypassRequested;
 
+// Forwarder to ModLoader::Log. Lives here so Hook.h can log without pulling
+// in ModLoader.h (which itself includes Hook.h).
+void HookLog(const char* prefix, const char* fmt, ...);
+
 struct HookReference
 {
     uintptr_t offset;

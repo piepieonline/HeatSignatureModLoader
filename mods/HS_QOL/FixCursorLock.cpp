@@ -1,5 +1,6 @@
 #include "FixCursorLock.h"
 #include <windows.h>
+#include "Log.h"
 
 static SE_GetGameWindowFn g_getGameWindow = nullptr;
 static SE_RequestBypassFn g_requestBypass = nullptr;
@@ -8,12 +9,14 @@ static void OnUpdateCursorPosition(const char* /*hookName*/, uintptr_t* /*self*/
 {
     HWND hwnd = g_getGameWindow();
     if (!hwnd || GetForegroundWindow() != hwnd)
+    {
         g_requestBypass();
+    }
 }
 
 void FixCursorLock_Register(const SE_ModApi* api)
 {
     g_getGameWindow = api->GetGameWindow;
     g_requestBypass = api->RequestBypass;
-    api->SubscribeHook("gml_Script_UpdateCursorPosition", OnUpdateCursorPosition, nullptr);
+    api->SubscribeHook("gml_Script_CaptureCursor", OnUpdateCursorPosition, nullptr);
 }
