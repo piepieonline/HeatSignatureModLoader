@@ -34,6 +34,7 @@ namespace
     std::once_flag g_deviceHooksInstalled;
 
     std::atomic<bool> g_backendsInitialized{false};
+    std::atomic<bool> g_visible{false};
     HWND   g_hwnd          = nullptr;
     WNDPROC g_originalWndProc = nullptr;
 
@@ -60,7 +61,8 @@ namespace
 
     LRESULT CALLBACK HookedWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
-        if (g_backendsInitialized.load(std::memory_order_acquire))
+        if (g_backendsInitialized.load(std::memory_order_acquire) &&
+            g_visible.load(std::memory_order_acquire))
         {
             if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
                 return 1;
@@ -90,7 +92,8 @@ namespace
                 InitBackends(device, cp.hFocusWindow);
         }
 
-        if (g_backendsInitialized.load(std::memory_order_acquire))
+        if (g_backendsInitialized.load(std::memory_order_acquire) &&
+            g_visible.load(std::memory_order_acquire))
         {
             ImGui_ImplDX9_NewFrame();
             ImGui_ImplWin32_NewFrame();
@@ -350,6 +353,10 @@ namespace ImGuiHook
     {
         return ImGui::GetCurrentContext();
     }
+
+    bool IsVisible()                   { return g_visible.load(std::memory_order_acquire); }
+    void SetVisible(bool v)            { g_visible.store(v, std::memory_order_release); }
+    void ToggleVisible()               { g_visible.store(!g_visible.load(std::memory_order_acquire), std::memory_order_release); }
 
     void GetAllocators(void** allocFn, void** freeFn, void** userData)
     {

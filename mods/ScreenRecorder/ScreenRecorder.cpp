@@ -34,22 +34,6 @@ namespace
         g_recording_enabled.store(!g_recording_enabled.load(std::memory_order_acquire), std::memory_order_release);
     }
 
-    void InputLoop()
-    {
-        bool f9Down = false;
-        while (true)
-        {
-            const bool f9 = (GetAsyncKeyState(VK_F9) & 0x8000) != 0;
-            if (f9 && !f9Down)
-            {
-
-            }
-            f9Down = f9;
-
-            Sleep(50);
-        }
-    }
-
     void DrawImGui(void* /*userData*/)
     {
         if (!ImGui::Begin("ScreenRecorder")) { ImGui::End(); return; }
@@ -156,6 +140,4 @@ void ModInit(const SE_ModApi* api)
     }
 
     Log("Initialized");
-
-    std::thread(InputLoop).detach();
 }

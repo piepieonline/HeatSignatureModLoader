@@ -306,12 +306,6 @@ ModLoader& ModLoader::Instance()
 
 ModLoader::ModLoader()
 {
-    AllocConsole();
-    FILE* fDummy;
-    freopen_s(&fDummy, "CONOUT$", "w", stdout);
-    freopen_s(&fDummy, "CONOUT$", "w", stderr);
-    freopen_s(&fDummy, "CONIN$", "r", stdin);
-
     std::ofstream logFile("ModLoader.log", std::ios::trunc);
     logFile.close();
 
@@ -324,10 +318,42 @@ ModLoader::ModLoader()
         loaderConfigPath.replace(extPos, std::string::npos, ".json");
     m_loaderConfig = std::make_unique<ModConfig>(loaderConfigPath);
 
+    if (std::string(m_loaderConfig->Read("show_console", false)) == "true")
+    {
+        AllocConsole();
+        FILE* fDummy;
+        freopen_s(&fDummy, "CONOUT$", "w", stdout);
+        freopen_s(&fDummy, "CONOUT$", "w", stderr);
+        freopen_s(&fDummy, "CONIN$", "r", stdin);
+    }
+
     Log("ModLoader", "Attached");
 
     CreateHooks();
     ImGuiHook::Install();
+
+    {
+        ImGuiHook::SetVisible(std::string(m_loaderConfig->Read("imgui_visible_default", false)) == "true");
+        int toggleKey = static_cast<int>(std::strtol(m_loaderConfig->Read("imgui_toggle_key", static_cast<int64_t>(VK_F7)), nullptr, 0));
+
+        struct ToggleArgs { int vk; };
+        auto* args = new ToggleArgs{ toggleKey };
+        HANDLE thread = CreateThread(nullptr, 0, [](LPVOID p) -> DWORD {
+            auto* a = static_cast<ToggleArgs*>(p);
+            bool down = false;
+            while (true)
+            {
+                bool now = (GetAsyncKeyState(a->vk) & 0x8000) != 0;
+                if (now && !down)
+                    ImGuiHook::ToggleVisible();
+                down = now;
+                Sleep(50);
+            }
+            return 0;
+        }, args, 0, nullptr);
+        if (thread) CloseHandle(thread);
+    }
+
     LoadMods();
 
     // PollDword("dword_10C3CEC", 0x10C3CEC, 5000);
@@ -341,11 +367,13 @@ void ModLoader::Log(const char* prefix, const char* format, ...)
     vsnprintf(buffer, sizeof(buffer), format, args);
     va_end(args);
 
-    std::cout << "[" << prefix << "] " << buffer << std::endl;
+    static std::mutex s_logMutex;
+    static std::ofstream s_logFile("ModLoader.log", std::ios::app);
 
-    std::ofstream logFile("ModLoader.log", std::ios::app);
-    if (logFile.is_open())
-        logFile << "[" << prefix << "] " << buffer << std::endl;
+    std::lock_guard<std::mutex> lock(s_logMutex);
+    std::cout << "[" << prefix << "] " << buffer << std::endl;
+    if (s_logFile.is_open())
+        s_logFile << "[" << prefix << "] " << buffer << std::endl;
 }
 
 // Ensures the MinHook patch is in place. No-op if already installed.

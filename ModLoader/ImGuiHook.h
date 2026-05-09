@@ -20,4 +20,10 @@ namespace ImGuiHook
     // Outputs the allocator pair ImGui is using inside ModLoader so mods
     // can mirror them via ImGui::SetAllocatorFunctions.
     void GetAllocators(void** allocFn, void** freeFn, void** userData);
+
+    // Visibility toggle: when hidden, registered draw callbacks are not
+    // invoked and ImGui does not consume input.
+    bool IsVisible();
+    void SetVisible(bool visible);
+    void ToggleVisible();
 }
