@@ -470,6 +470,20 @@ void ModLoader::CreateHooks()
         return;
     }
 
+    // Resolve moduleBase up front so the engine function pointers baked into
+    // each mod's HS_ModApi (ResolveInstance/GetVar/SetVar/SetString) don't get
+    // computed against a zero base. Hook::CreateHook would set this lazily on
+    // the first SubscribeHook, but that's too late for the first mod loaded.
+    if (HookBase::moduleBase == 0)
+    {
+        HMODULE hMod = GetModuleHandleA("Heat_Signature.exe");
+        HookBase::moduleBase = (uintptr_t)hMod;
+        MODULEINFO mi{};
+        if (hMod && GetModuleInformation(GetCurrentProcess(), hMod, &mi, sizeof(mi)))
+            HookBase::moduleSize = mi.SizeOfImage;
+        Log("ModLoader", "Module base resolved at 0x%p", HookBase::moduleBase);
+    }
+
     for (auto hook : hooks)
     {
         hook->CreateHook();
