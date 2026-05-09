@@ -9,6 +9,8 @@
 #include <cassert>
 
 #include <MinHook.h>
+#include <psapi.h>
+#pragma comment(lib, "psapi.lib")
 
 #include "ModInterface.h"
 
@@ -130,13 +132,13 @@ public:
 
     void GetModuleCodeRegion(const char* moduleName, uintptr_t* o_base, size_t* o_size)
     {
-        uintptr_t base = (uintptr_t)GetModuleHandleA(moduleName);
+        HMODULE hModule = GetModuleHandleA(moduleName);
+        *o_base = (uintptr_t)hModule;
+        *o_size = 0;
 
-        MEMORY_BASIC_INFORMATION mbi;
-        assert(VirtualQuery((LPCVOID)base, &mbi, sizeof(mbi)));
-
-        *o_base = base;
-        *o_size = mbi.RegionSize;
+        MODULEINFO mi{};
+        if (GetModuleInformation(GetCurrentProcess(), hModule, &mi, sizeof(mi)))
+            *o_size = mi.SizeOfImage;
     }
 
     void CreateHook()

@@ -7,6 +7,7 @@
 
 #include <Windows.h>
 #include <atomic>
+#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <mutex>
@@ -15,11 +16,23 @@
 
 #include "MinHook.h"
 
-static const char* Config_Read   (void* h, const char* key, const char* def) { return static_cast<ModConfig*>(h)->Read(key, def); }
-static void        Config_Write  (void* h, const char* key, const char* val) { static_cast<ModConfig*>(h)->Write(key, val); }
-static const char* Config_GetJson(void* h)                                   { return static_cast<ModConfig*>(h)->GetJson(); }
-static void        Config_SetJson(void* h, const char* json)                 { static_cast<ModConfig*>(h)->SetJson(json); }
-static void        Config_Save   (void* h)                                   { static_cast<ModConfig*>(h)->Save(); }
+static SE_ConfigString MakeOwnedString(const std::string& s)
+{
+    SE_ConfigString out{};
+    char* buf = new char[s.size() + 1];
+    std::memcpy(buf, s.data(), s.size());
+    buf[s.size()] = '\0';
+    out.data   = buf;
+    out.length = s.size();
+    return out;
+}
+
+static SE_ConfigString Config_Read      (void* h, const char* key, const char* def) { return MakeOwnedString(static_cast<ModConfig*>(h)->Read(key, def)); }
+static void            Config_Write     (void* h, const char* key, const char* val) { static_cast<ModConfig*>(h)->Write(key, val); }
+static SE_ConfigString Config_GetJson   (void* h)                                   { return MakeOwnedString(static_cast<ModConfig*>(h)->GetJson()); }
+static void            Config_SetJson   (void* h, const char* json)                 { static_cast<ModConfig*>(h)->SetJson(json); }
+static void            Config_Save      (void* h)                                   { static_cast<ModConfig*>(h)->Save(); }
+static void            Config_FreeString(SE_ConfigString s)                         { delete[] const_cast<char*>(s.data); }
 
 std::map<std::string, HookBase*> ModLoader::HookMap{};
 std::unordered_map<std::string, uint32_t> ModLoader::VariableMap{};
@@ -318,7 +331,7 @@ ModLoader::ModLoader()
         loaderConfigPath.replace(extPos, std::string::npos, ".json");
     m_loaderConfig = std::make_unique<ModConfig>(loaderConfigPath);
 
-    if (std::string(m_loaderConfig->Read("show_console", false)) == "true")
+    if (m_loaderConfig->Read("show_console", false) == "true")
     {
         AllocConsole();
         FILE* fDummy;
@@ -333,8 +346,9 @@ ModLoader::ModLoader()
     ImGuiHook::Install();
 
     {
-        ImGuiHook::SetVisible(std::string(m_loaderConfig->Read("imgui_visible_default", false)) == "true");
-        int toggleKey = static_cast<int>(std::strtol(m_loaderConfig->Read("imgui_toggle_key", static_cast<int64_t>(VK_F7)), nullptr, 0));
+        ImGuiHook::SetVisible(m_loaderConfig->Read("imgui_visible_default", false) == "true");
+        std::string toggleKeyStr = m_loaderConfig->Read("imgui_toggle_key", static_cast<int64_t>(VK_F7));
+        int toggleKey = static_cast<int>(std::strtol(toggleKeyStr.c_str(), nullptr, 0));
 
         struct ToggleArgs { int vk; };
         auto* args = new ToggleArgs{ toggleKey };
@@ -536,7 +550,7 @@ void ModLoader::LoadMods()
         }
 
         auto modConfigObj = std::make_unique<ModConfig>(std::string(".\\mods\\") + modName + ".json");
-        SE_ModConfig modConfigApi = { modConfigObj.get(), Config_Read, Config_Write, Config_GetJson, Config_SetJson, Config_Save };
+        SE_ModConfig modConfigApi = { modConfigObj.get(), Config_Read, Config_Write, Config_GetJson, Config_SetJson, Config_Save, Config_FreeString };
 
         auto modApi = std::make_unique<SE_ModApi>(SE_ModApi{
             +[](const char* prefix, const char* msg) { ModLoader::Log(prefix, msg); },

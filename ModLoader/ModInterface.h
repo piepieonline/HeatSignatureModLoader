@@ -75,13 +75,24 @@ typedef int (*SE_GetVarIdFn)(const char* name);
 typedef int (*SE_GetVarByNameFn)(int instance, const char* name, int arrayIndex, RValue* out);
 typedef int (*SE_SetVarByNameFn)(int instance, const char* name, int arrayIndex, RValue* in);
 
+// Owning string returned by SE_ModConfig::Read / GetJson.
+// `data` is heap-allocated by the host and null-terminated. The caller MUST
+// release it by calling SE_ModConfig::FreeString — the C++ wrapper below
+// (ModSettings) does this automatically. Multiple in-flight strings from the
+// same handle do not alias each other.
+struct SE_ConfigString {
+    const char* data;
+    size_t      length;
+};
+
 struct SE_ModConfig {
-    void*        handle;
-    const char* (*Read)   (void* handle, const char* key, const char* defaultValue);
-    void        (*Write)  (void* handle, const char* key, const char* value);
-    const char* (*GetJson)(void* handle);
-    void        (*SetJson)(void* handle, const char* json);
-    void        (*Save)   (void* handle);
+    void*           handle;
+    SE_ConfigString (*Read)      (void* handle, const char* key, const char* defaultValue);
+    void            (*Write)     (void* handle, const char* key, const char* value);
+    SE_ConfigString (*GetJson)   (void* handle);
+    void            (*SetJson)   (void* handle, const char* json);
+    void            (*Save)      (void* handle);
+    void            (*FreeString)(SE_ConfigString s);
 };
 
 struct SE_ModApi
@@ -117,12 +128,22 @@ struct ModSettings
     ModSettings() = default;
     explicit ModSettings(const SE_ModConfig& cfg) : m_cfg(cfg) {}
 
-    const char* Read(const char* key, const char* defaultVal = "") const
-        { return m_cfg.Read(m_cfg.handle, key, defaultVal); }
+    std::string Read(const char* key, const char* defaultVal = "") const
+    {
+        SE_ConfigString s = m_cfg.Read(m_cfg.handle, key, defaultVal);
+        std::string out = s.data ? std::string(s.data, s.length) : std::string();
+        m_cfg.FreeString(s);
+        return out;
+    }
     void Write(const char* key, const char* value)
         { m_cfg.Write(m_cfg.handle, key, value); }
     std::string GetJson() const
-        { return std::string(m_cfg.GetJson(m_cfg.handle)); }
+    {
+        SE_ConfigString s = m_cfg.GetJson(m_cfg.handle);
+        std::string out = s.data ? std::string(s.data, s.length) : std::string();
+        m_cfg.FreeString(s);
+        return out;
+    }
     void SetJson(const std::string& json)
         { m_cfg.SetJson(m_cfg.handle, json.c_str()); }
     void SetJson(const char* json)

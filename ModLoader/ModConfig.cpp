@@ -34,38 +34,36 @@ void ModConfig::SetValue_Locked(const char* key, const char* value)
     m_data[key] = s;
 }
 
-const char* ModConfig::Read(const char* key, const char* defaultValue)
+std::string ModConfig::Read(const char* key, const char* defaultValue)
 {
     std::lock_guard<std::mutex> lk(m_mutex);
     auto it = m_data.find(key);
     if (it == m_data.end())
     {
-        m_readBuf = defaultValue ? defaultValue : "";
         SetValue_Locked(key, defaultValue);
         Save_Locked();
-        return m_readBuf.c_str();
+        return defaultValue ? std::string(defaultValue) : std::string();
     }
     const auto& v = *it;
-    if      (v.is_string())         m_readBuf = v.get<std::string>();
-    else if (v.is_boolean())        m_readBuf = v.get<bool>() ? "true" : "false";
-    else if (v.is_number_integer()) m_readBuf = std::to_string(v.get<int64_t>());
-    else if (v.is_number_float())   m_readBuf = std::to_string(v.get<double>());
-    else                            m_readBuf = v.dump();
-    return m_readBuf.c_str();
+    if (v.is_string())         return v.get<std::string>();
+    if (v.is_boolean())        return v.get<bool>() ? "true" : "false";
+    if (v.is_number_integer()) return std::to_string(v.get<int64_t>());
+    if (v.is_number_float())   return std::to_string(v.get<double>());
+    return v.dump();
 }
 
-const char* ModConfig::Read(const char* key, bool defaultValue)
+std::string ModConfig::Read(const char* key, bool defaultValue)
 {
     return Read(key, defaultValue ? "true" : "false");
 }
 
-const char* ModConfig::Read(const char* key, int64_t defaultValue)
+std::string ModConfig::Read(const char* key, int64_t defaultValue)
 {
     auto s = std::to_string(defaultValue);
     return Read(key, s.c_str());
 }
 
-const char* ModConfig::Read(const char* key, double defaultValue)
+std::string ModConfig::Read(const char* key, double defaultValue)
 {
     auto s = std::to_string(defaultValue);
     return Read(key, s.c_str());
@@ -78,11 +76,10 @@ void ModConfig::Write(const char* key, const char* value)
     Save_Locked();
 }
 
-const char* ModConfig::GetJson()
+std::string ModConfig::GetJson()
 {
     std::lock_guard<std::mutex> lk(m_mutex);
-    m_jsonBuf = m_data.dump(4);
-    return m_jsonBuf.c_str();
+    return m_data.dump(4);
 }
 
 void ModConfig::SetJson(const char* json)

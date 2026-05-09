@@ -8,9 +8,9 @@ extern "C" __declspec(dllexport)
 void ModInit(const SE_ModApi* api)
 {
     ModSettings settings(api->config);
-    bool forceFocus     = std::string(settings.Read("force_focus",     "false")) != "false";
-    bool fixCursorLock  = std::string(settings.Read("fix_cursor_lock", "true"))  != "false";
-    bool loudGunPrefix  = std::string(settings.Read("loud_gun_prefix", "true"))  != "false";
+    bool forceFocus     = settings.Read("force_focus",     "false") != "false";
+    bool fixCursorLock  = settings.Read("fix_cursor_lock", "true")  != "false";
+    bool loudGunPrefix  = settings.Read("loud_gun_prefix", "true")  != "false";
 
     if (forceFocus)
     {

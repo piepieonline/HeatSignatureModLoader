@@ -100,8 +100,8 @@ void ModInit(const SE_ModApi* api)
     api->SubscribeHook("gml_Script_ShowInventoryMenu",   &ShowInventoryMenu_Prefix,   nullptr);
     api->SubscribeHookPost("gml_Script_CloseInventoryMenu",   &HideInventoryMenu_Postfix,   nullptr);
 
-    g_recording_enabled.store(std::string(g_settings.Read("recordByDefault", "true")) == "true");
-    g_video_bit_rate = static_cast<UINT32>(std::strtoul(g_settings.Read("bitrate", "8000000"), nullptr, 10));
+    g_recording_enabled.store(g_settings.Read("recordByDefault", "true") == "true");
+    g_video_bit_rate = static_cast<UINT32>(std::strtoul(g_settings.Read("bitrate", "8000000").c_str(), nullptr, 10));
     {
         std::string codec = g_settings.Read("codec", "h264");
         if (codec == "h265" || codec == "hevc")
@@ -110,12 +110,12 @@ void ModInit(const SE_ModApi* api)
             g_video_encoding_format = MFVideoFormat_H264;
     }
     {
-        const char* path = g_settings.Read("outputPath", "./");
-        int len = MultiByteToWideChar(CP_UTF8, 0, path, -1, nullptr, 0);
+        std::string path = g_settings.Read("outputPath", "./");
+        int len = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), -1, nullptr, 0);
         if (len > 0)
         {
             g_video_output_path.resize(len - 1);
-            MultiByteToWideChar(CP_UTF8, 0, path, -1, g_video_output_path.data(), len);
+            MultiByteToWideChar(CP_UTF8, 0, path.c_str(), -1, g_video_output_path.data(), len);
         }
     }
 

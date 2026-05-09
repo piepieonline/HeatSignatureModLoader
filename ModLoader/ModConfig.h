@@ -8,13 +8,14 @@ class ModConfig
 public:
     explicit ModConfig(const std::string& filePath);
 
-    // Returned const char* is valid until the next call of the same method on this object.
-    const char* Read(const char* key, const char* defaultValue);
-    const char* Read(const char* key, bool        defaultValue);
-    const char* Read(const char* key, int64_t     defaultValue);
-    const char* Read(const char* key, double      defaultValue);
+    // All Read/GetJson calls return owned std::strings — no aliasing,
+    // no per-handle scratch buffer, safe across threads.
+    std::string Read(const char* key, const char* defaultValue);
+    std::string Read(const char* key, bool        defaultValue);
+    std::string Read(const char* key, int64_t     defaultValue);
+    std::string Read(const char* key, double      defaultValue);
     void        Write(const char* key, const char* value);
-    const char* GetJson();
+    std::string GetJson();
     void        SetJson(const char* json);
     void        Save();
 
@@ -26,6 +27,4 @@ private:
     std::string        m_filePath;
     nlohmann::json     m_data;
     std::mutex         m_mutex;
-    std::string        m_readBuf;
-    std::string        m_jsonBuf;
 };
