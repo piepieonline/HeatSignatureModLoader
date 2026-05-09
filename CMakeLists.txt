@@ -19,6 +19,7 @@ add_subdirectory(ModLoader)
 add_subdirectory(mods/ScreenRecorder)
 add_subdirectory(mods/DiscordRichPresence)
 add_subdirectory(mods/HS_QOL)
+add_subdirectory(mods/DebugMod)
 
 set(MISC_FILES 
     README.md

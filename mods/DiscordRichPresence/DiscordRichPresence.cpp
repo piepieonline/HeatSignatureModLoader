@@ -1,5 +1,6 @@
 #include "ModInterface.h"
 #include "HS/HS_Character.h"
+#include "HS/HS_Mission.h"
 #include <discord_rpc.h>
 #include <windows.h>
 #include <atomic>
@@ -38,7 +39,7 @@ static std::thread            g_callbackThread;
 
 // ── Presence update ──────────────────────────────────────────────────────────
 
-static void UpdatePresence()
+static void UpdatePresence(std::string details = "", std::string state = "")
 {
     if (!g_discordReady) return;
 
@@ -47,34 +48,39 @@ static void UpdatePresence()
 
     switch (g_state.load())
     {
-    case GameState::Station:
-        p.details = "In the station";
-        p.state   = "Chilling at the bar";
-        p.startTimestamp = 0;
-        break;
+        case GameState::Station:
+            p.details = "In the station";
+            p.state   = "Chilling at the bar";
 
-    case GameState::OnMission:
-        p.details        = "On a mission";
-        p.state          = "";
-        p.startTimestamp = g_missionStart.load();
-        break;
+            p.details = details.empty() ? "In the station" : details.c_str();
+            p.state = state.empty() ? "Chilling at the bar" : state.c_str();
 
-    case GameState::DailyChallenge:
-    {
-        static char dailyBuf[32];
-        p.details = "Daily Challenge";
-        if (g_dailyCount > 0)
+            p.startTimestamp = 0;
+            break;
+
+        case GameState::OnMission:
+            p.details = details.empty() ? "On a mission" : details.c_str();
+            p.state = state.empty() ? "" : state.c_str();
+
+            p.startTimestamp = g_missionStart.load();
+            break;
+
+        case GameState::DailyChallenge:
         {
-            snprintf(dailyBuf, sizeof(dailyBuf), "On Mission %d/3", g_dailyCount.load());
-            p.state = dailyBuf;
+            static char dailyBuf[32];
+            p.details = "Daily Challenge";
+            if (g_dailyCount > 0)
+            {
+                snprintf(dailyBuf, sizeof(dailyBuf), "On Mission %d/3", g_dailyCount.load());
+                p.state = dailyBuf;
+            }
+            else
+            {
+                p.state = "";
+            }
+            p.startTimestamp = g_dailyStart.load();
+            break;
         }
-        else
-        {
-            p.state = "";
-        }
-        p.startTimestamp = g_dailyStart.load();
-        break;
-    }
     }
 
     Discord_UpdatePresence(&p);
@@ -102,7 +108,7 @@ static void OnErrored(int errorCode, const char* message)
 
 // ── Hook callbacks ───────────────────────────────────────────────────────────
 
-static void OnAcceptMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+static void OnAcceptMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** argv, void* /*userData*/)
 {
     if (g_state == GameState::DailyChallenge)
     {
@@ -111,9 +117,51 @@ static void OnAcceptMission(const char* /*hookName*/, uintptr_t* /*self*/, uintp
     }
     else
     {
+        std::string description;
+        if (argv && argv[0])
+        {
+            auto mission = HS::ResolveInstanceAs<HS::HS_Mission>((uint32_t*)argv[0], g_api);
+            if (mission.valid())
+            {
+                std::string difficulty = "";
+
+                if (mission.IsGloryMission > 0.5)
+                {
+                    difficulty = " (Glory";
+                }
+                else if (mission.IsPersonalMission > 0.5)
+                {
+                    difficulty = " (Personal)";
+                }
+                else
+                {
+                    switch (static_cast<int>(mission.Difficulty))
+                    {
+                    case 0:
+                        difficulty = " (Easy)";
+                        break;
+                    case 1:
+                        difficulty = " (Medium)";
+                        break;
+                    case 2:
+                        difficulty = " (Hard)";
+                        break;
+                    case 3:
+                        difficulty = " (Audacious)";
+                        break;
+                    case 4:
+                        difficulty = " (Mistake)";
+                        break;
+                    }
+                }
+
+                description = static_cast<std::string>(mission.Description) + difficulty;
+            }
+        }
+
         g_missionStart = static_cast<int64_t>(std::time(nullptr));
         g_state = GameState::OnMission;
-        UpdatePresence();
+        UpdatePresence("", description);
     }
 }
 

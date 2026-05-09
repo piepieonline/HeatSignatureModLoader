@@ -2,6 +2,8 @@ project(HS_QOL LANGUAGES CXX)
 
 add_library(HS_QOL SHARED
     HS_QOL.cpp
+    Log.cpp
+    Log.h
     ForceFocus.cpp
     ForceFocus.h
     FixCursorLock.cpp

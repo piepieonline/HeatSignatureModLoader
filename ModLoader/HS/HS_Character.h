@@ -1,9 +1,6 @@
 #pragma once
 #include "Instance.h"
 
-// Typed wrapper for HS character instances.
-// See HS_Weapon.h for the convention used to add new properties.
-
 namespace HS {
 
 class HS_Character : public Instance

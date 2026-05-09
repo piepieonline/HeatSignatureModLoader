@@ -1,4 +1,5 @@
 #include "LoudGunPrefix.h"
+#include "Log.h"
 #include "HS/HS_Weapon.h"
 #include <string>
 
@@ -25,7 +26,7 @@ static void OnGenerateGunPost(const char* /*hookName*/, uintptr_t* self, uintptr
 
     weapon.Name = "Loud " + current;
 
-    g_api->Log("LoudGunPrefix", "Generating loud gun");
+    Log("Generating loud gun");
 }
 
 void LoudGunPrefix_Register(const SE_ModApi* api)

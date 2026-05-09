@@ -37,9 +37,6 @@ static void            Config_FreeString(SE_ConfigString s)                     
 std::map<std::string, HookBase*> ModLoader::HookMap{};
 std::unordered_map<std::string, uint32_t> ModLoader::VariableMap{};
 
-bool ModLoader::isDrawing = false;
-RValue ModLoader::nameVal;
-
 // ---------------------------------------------------------------------------
 // SEH-isolated helpers — no C++ objects with destructors allowed in scope
 // ---------------------------------------------------------------------------
@@ -78,153 +75,6 @@ static const char* TimeScaleWalk_SEH(uintptr_t moduleBase, double* outResult)
     }
 }
 
-static void LogDrawTextArgs_SEH(uintptr_t** argv)
-{
-    struct RValue { double val; uint32_t type; uint32_t pad; };
-    RValue* args = reinterpret_cast<RValue*>(argv);
-    __try
-    {
-        double x         = args[0].val;
-        double y         = args[1].val;
-        uint32_t strPtr  = *reinterpret_cast<uint32_t*>(&args[2].val);
-        const char* text = strPtr ? *reinterpret_cast<const char**>(strPtr) : nullptr;
-        ModLoader::Log("ModLoader Hook", "draw_text x=%.1f y=%.1f str=\"%s\"",
-            x, y, text ? text : "(null)");
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        ModLoader::Log("ModLoader Hook", "draw_text failed to read args");
-    }
-}
-
-static void LogArgsAddress_SEH(int argc, uintptr_t** argv)
-{
-    struct RValue { double val; uint32_t type; uint32_t pad; };
-    RValue* args = reinterpret_cast<RValue*>(argv);
-    __try
-    {
-        for (int i = 0; i < argc; i++)
-        {
-            ModLoader::Log("ModLoader Hook", "arg %d: (raw: %08X)",
-                i, *(uint32_t*)&args[i].val);
-        }
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        ModLoader::Log("ModLoader Hook", "draw_text failed to read args");
-    }
-}
-
-static void LogRValue_SEH(const char* label, RValue* rv)
-{
-    if (!rv)
-    {
-        ModLoader::Log("Hook", "  %s @NULL", label);
-        return;
-    }
-
-    __try
-    {
-        int type = rv->type & 0xFF;
-
-        switch (type)
-        {
-        case 0: // REAL
-        {
-            ModLoader::Log(
-                "Hook",
-                "  %s @0x%08X type=REAL val=%f",
-                label,
-                (uint32_t)(uintptr_t)rv,
-                rv->real);
-            break;
-        }
-
-        case 1: // STRING
-        {
-            void* strObj = rv->ptr;
-
-            const char* str =
-                strObj
-                ? *(const char**)strObj
-                : nullptr;
-
-            ModLoader::Log(
-                "Hook",
-                "  %s @0x%08X type=STRING ptr=0x%08X val=\"%s\"",
-                label,
-                (uint32_t)(uintptr_t)rv,
-                (uint32_t)(uintptr_t)strObj,
-                str ? str : "(null)");
-            break;
-        }
-        case 2: // ARRAY
-        {
-            ModLoader::Log(
-                "Hook",
-                "  %s @0x%08X type=ARRAY raw=0x%08X",
-                label,
-                (uint32_t)(uintptr_t)rv,
-                (uint32_t)(uintptr_t)rv->ptr);
-            break;
-        }
-        default:
-        {
-            ModLoader::Log(
-                "Hook",
-                "  %s @0x%08X type=%s(%d) raw=0x%08X",
-                label,
-                (uint32_t)(uintptr_t)rv,
-                GetTypeName(type),
-                type,
-                (uint32_t)(uintptr_t)rv->ptr);
-            break;
-        }
-        }
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        ModLoader::Log(
-            "Hook",
-            "  %s @0x%08X <exception reading RValue>",
-            label,
-            (uint32_t)(uintptr_t)rv);
-    }
-}
-
-static void LogGMLArgs_SEH(const char* fnName, uintptr_t* self, int argc, RValue** argv, RValue* result)
-{
-    __try
-    {
-        ModLoader::Log("Hook", "%s argc=%d", fnName, argc);
-        ModLoader::Log("Hook", "  self  id=0x%08X", (uint32_t)(uintptr_t)self);
-        for (int i = 0; i < argc; i++)
-        {
-            char label[16];
-            sprintf_s(label, "arg[%d]", i);
-            LogRValue_SEH(label, argv ? argv[i] : nullptr);
-        }
-        LogRValue_SEH("result", result);
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        ModLoader::Log("Hook", "%s: exception reading args", fnName);
-    }
-}
-
-static BOOL ReadDword_SEH(uintptr_t addr, DWORD* outValue)
-{
-    __try
-    {
-        *outValue = *reinterpret_cast<DWORD*>(addr);
-        return TRUE;
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        return FALSE;
-    }
-}
-
 double ModLoader::GetTimeScale()
 {
     static const char* s_lastFailure = "init";
@@ -253,63 +103,6 @@ double ModLoader::GetTimeScale()
     }
     return result;
 }
-
-void ModLoader::LogDrawText(int argc, uintptr_t** argv)
-{
-    Log("ModLoader Hook", "draw_text argv=%p argc=%d", (void*)argv, argc);
-    LogDrawTextArgs_SEH(argv);
-}
-
-void ModLoader::LogArgsAddress(int argc, uintptr_t** argv)
-{
-    LogArgsAddress_SEH(argc, argv);
-}
-
-void ModLoader::LogGMLCall(const char* fnName, uintptr_t* self, int argc, RValue** argv, RValue* result)
-{
-    LogGMLArgs_SEH(fnName, self, argc, argv, result);
-}
-
-void ModLoader::LogRValue(const char* label, RValue* rv)
-{
-    LogRValue_SEH(label, rv);
-}
-
-void ModLoader::PollDword(const char* label, uintptr_t rva, DWORD intervalMs)
-{
-    struct Args { std::string label; uintptr_t rva; DWORD intervalMs; };
-    auto* args = new Args{ label, rva, intervalMs };
-
-    HANDLE thread = CreateThread(nullptr, 0, [](LPVOID param) -> DWORD {
-        auto* a = static_cast<Args*>(param);
-        while (true)
-        {
-            Sleep(a->intervalMs);
-            if (HookBase::moduleBase == 0)
-            {
-                ModLoader::Log(a->label.c_str(), "moduleBase not ready");
-                continue;
-            }
-            DWORD value = 0;
-            if (ReadDword_SEH(HookBase::moduleBase + a->rva, &value))
-                ModLoader::Log(a->label.c_str(), "0x%08X (%u)", value, value);
-            else
-                ModLoader::Log(a->label.c_str(), "access violation reading 0x%p + 0x%X",
-                    (void*)HookBase::moduleBase, (unsigned)a->rva);
-        }
-        return 0;
-    }, args, 0, nullptr);
-
-    if (thread) CloseHandle(thread);
-}
-
-using MissionAccept_t = uintptr_t* (__cdecl*)(int a1, int a2, uintptr_t* a3, int a4, int a5);
-using MissionComplete_t = uintptr_t* (__cdecl*)(int a1, int a2, uintptr_t* a3, int a4, int a5);
-using GenerateMissions_t = uintptr_t* (__cdecl*)(int self, int other, uintptr_t* result, int argc, uintptr_t** argv);
-using SetTimeScale_t = uintptr_t* (__cdecl*)(int self, int other, uintptr_t* result, int argc, uintptr_t** argv);
-using PauseMission_t = uintptr_t* (__cdecl*)(uintptr_t* a1, int a2, uintptr_t* a3);
-using PauseFor_t = uintptr_t* (__cdecl*)(int a1, int a2, uintptr_t* a3, int a4, uintptr_t** a5);
-using SetSlowMotionEffectStrength_t = uintptr_t* (__cdecl*)(int a1, int a2, uintptr_t* a3, int a4, uintptr_t* a5);
 
 ModLoader& ModLoader::Instance()
 {
@@ -369,8 +162,6 @@ ModLoader::ModLoader()
     }
 
     LoadMods();
-
-    // PollDword("dword_10C3CEC", 0x10C3CEC, 5000);
 }
 
 void ModLoader::Log(const char* prefix, const char* format, ...)

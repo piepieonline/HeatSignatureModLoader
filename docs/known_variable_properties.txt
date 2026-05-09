@@ -2908,7 +2908,7 @@ FastMoScale
 MissileSlowMoScale
 SleepSeconds
 FramesBeforeReset
-SecondsUntilEarliestPossibleFrameRateCh"..
+SecondsUntilEarliestPossibleFrameRateChange
 SlowMoVisualsStrength
 CanFastMo
 Gun
