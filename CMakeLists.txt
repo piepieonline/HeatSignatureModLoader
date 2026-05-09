@@ -36,7 +36,7 @@ if (WIN32)
     set(USER_FILES
         "${CMAKE_BINARY_DIR}/ALL_BUILD.vcxproj.user"
         "${CMAKE_BINARY_DIR}/ModLoader/ModLoader.vcxproj.user"
-        "${CMAKE_BINARY_DIR}/dinput8/dxgi.vcxproj.user"
+        "${CMAKE_BINARY_DIR}/dxgi/dxgi.vcxproj.user"
     )
 
     foreach(USER_FILE IN LISTS USER_FILES)

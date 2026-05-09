@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <mutex>
+#include <cstdint>
 #include <nlohmann/json.hpp>
 
 class ModConfig
@@ -8,12 +9,15 @@ class ModConfig
 public:
     explicit ModConfig(const std::string& filePath);
 
-    // All Read/GetJson calls return owned std::strings — no aliasing,
-    // no per-handle scratch buffer, safe across threads.
-    std::string Read(const char* key, const char* defaultValue);
-    std::string Read(const char* key, bool        defaultValue);
-    std::string Read(const char* key, int64_t     defaultValue);
-    std::string Read(const char* key, double      defaultValue);
+    // Typed accessors. Each returns the stored value coerced to the requested
+    // type, falling back to defaultValue (and persisting it) if the key is
+    // missing. Strings returned by ReadString are owned by the caller — no
+    // aliasing, no scratch buffer, safe across threads.
+    std::string ReadString(const char* key, const char* defaultValue);
+    bool        ReadBool  (const char* key, bool        defaultValue);
+    int64_t     ReadInt   (const char* key, int64_t     defaultValue);
+    double      ReadDouble(const char* key, double      defaultValue);
+
     void        Write(const char* key, const char* value);
     std::string GetJson();
     void        SetJson(const char* json);

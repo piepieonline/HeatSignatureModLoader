@@ -10,48 +10,13 @@
 #include <unordered_map>
 #include <vector>
 
-#pragma pack(push, 1)
-struct PropertyDesc
-{
-	uint32_t namePtr;
-	uint32_t id;
-};
-#pragma pack(pop)
-
-static std::unordered_map<std::string, uint32_t> BuildMap(
-	uintptr_t tableAddr,
-	uint32_t count)
-{
-	std::unordered_map<std::string, uint32_t> map;
-
-	auto table = reinterpret_cast<PropertyDesc**>(tableAddr);
-
-	for (uint32_t i = 0; i < count; ++i)
-	{
-		PropertyDesc* p = table[i];
-
-		if (!p)
-			continue;
-
-		const char* name =
-			reinterpret_cast<const char*>(p->namePtr);
-
-		if (!name)
-			continue;
-
-		map[name] = i; // p->id;
-	}
-
-	return map;
-}
-
 class ModLoader
 {
 public:
 	static ModLoader& Instance();
 	static void Log(const char* prefix, const char* format, ...);
-	static void SubscribeHook(const char* hookName, SE_HookCallback callback, void* userData);
-	static void SubscribeHookPost(const char* hookName, SE_HookPostCallback callback, void* userData);
+	static void SubscribeHook(const char* hookName, HS_HookCallback callback, void* userData);
+	static void SubscribeHookPost(const char* hookName, HS_HookPostCallback callback, void* userData);
 	static RValue* CallScript(const char* scriptName,
 		uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
 	static int GetVarId(const char* name);
@@ -91,6 +56,7 @@ public:
 	void LoadMods();
 
 private:
-	std::vector<std::unique_ptr<SE_ModApi>> m_modApis;
+	std::vector<std::unique_ptr<HS_ModApi>> m_modApis;
+	std::vector<std::unique_ptr<ModConfig>> m_modConfigs;
 	std::unique_ptr<ModConfig>              m_loaderConfig;
 };

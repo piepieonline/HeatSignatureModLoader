@@ -1,4 +1,4 @@
 #pragma once
 #include "ModInterface.h"
 
-void LoudGunPrefix_Register(const SE_ModApi* api);
+void LoudGunPrefix_Register(const HS_ModApi* api);

@@ -14,7 +14,7 @@
 
 #include "ModInterface.h"
 
-// Set by RequestBypass (via SE_ModApi) inside a pre-hook callback.
+// Set by RequestBypass (via HS_ModApi) inside a pre-hook callback.
 // NotifyPreSubscribers resets it before each notification pass and returns
 // its final value so callers know whether to skip the original function.
 extern thread_local bool g_hookBypassRequested;
@@ -46,8 +46,8 @@ struct HookBase {
     bool alwaysLoad;
 
     // Subscriptions are added during single-threaded LoadMods and only read afterwards, so no lock.
-    std::vector<std::pair<SE_HookCallback, void*>> preSubscribers;
-    std::vector<std::pair<SE_HookPostCallback, void*>> postSubscribers;
+    std::vector<std::pair<HS_HookCallback, void*>> preSubscribers;
+    std::vector<std::pair<HS_HookPostCallback, void*>> postSubscribers;
 
     // Returns true if any subscriber requested a bypass (skip original call).
     bool NotifyPreSubscribers(uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv)

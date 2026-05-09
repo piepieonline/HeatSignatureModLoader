@@ -5,17 +5,17 @@
 #include "LoudGunPrefix.h"
 #include <string>
 
-SE_EXPORT_MOD_API_VERSION()
+HS_EXPORT_MOD_API_VERSION()
 
 extern "C" __declspec(dllexport)
-void ModInit(const SE_ModApi* api)
+void ModInit(const HS_ModApi* api)
 {
     Log_Init(api->Log);
 
     ModSettings settings(api->config);
-    bool forceFocus     = settings.Read("force_focus",     "false") != "false";
-    bool fixCursorLock  = settings.Read("fix_cursor_lock", "true")  != "false";
-    bool loudGunPrefix  = settings.Read("loud_gun_prefix", "true")  != "false";
+    bool forceFocus     = settings.ReadBool("force_focus",     false);
+    bool fixCursorLock  = settings.ReadBool("fix_cursor_lock", true);
+    bool loudGunPrefix  = settings.ReadBool("loud_gun_prefix", true);
 
     if (forceFocus)
     {

@@ -60,11 +60,11 @@ jobs:
           path: artifact\mods\DiscordRichPresence\
           if-no-files-found: warn
 
-      - name: Upload ForceFocus artifact
+      - name: Upload HS_QOL artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ForceFocus
-          path: artifact\mods\ForceFocus\
+          name: HS_QOL
+          path: artifact\mods\HS_QOL\
           if-no-files-found: warn
 
       - name: Upload ScreenRecorder artifact

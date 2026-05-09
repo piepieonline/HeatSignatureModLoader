@@ -2,7 +2,7 @@
 #include "Log.h"
 #include <windows.h>
 
-static SE_GetGameWindowFn g_getGameWindow = nullptr;
+static HS_GetGameWindowFn g_getGameWindow = nullptr;
 static int                g_frameCount    = 0;
 static bool               g_done          = false;
 
@@ -87,7 +87,7 @@ void ForceFocus_OnImGuiDraw(void* /*userData*/)
     }
 }
 
-void ForceFocus_Init(SE_GetGameWindowFn getWindow)
+void ForceFocus_Init(HS_GetGameWindowFn getWindow)
 {
     g_getGameWindow = getWindow;
 }

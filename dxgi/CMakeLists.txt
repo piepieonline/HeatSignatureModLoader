@@ -5,7 +5,7 @@ add_library(dxgi SHARED dxgi.cpp)
 target_compile_definitions(dxgi PRIVATE UNICODE _UNICODE)
 target_include_directories(dxgi PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Build output name exactly "dinput8.dll"
+# Build output name exactly "dxgi.dll"
 set_target_properties(dxgi PROPERTIES
   OUTPUT_NAME "dxgi"
   RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin

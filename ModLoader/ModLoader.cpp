@@ -7,6 +7,7 @@
 
 #include <Windows.h>
 #include <atomic>
+#include <cassert>
 #include <cstring>
 #include <iostream>
 #include <fstream>
@@ -16,9 +17,9 @@
 
 #include "MinHook.h"
 
-static SE_ConfigString MakeOwnedString(const std::string& s)
+static HS_ConfigString MakeOwnedString(const std::string& s)
 {
-    SE_ConfigString out{};
+    HS_ConfigString out{};
     char* buf = new char[s.size() + 1];
     std::memcpy(buf, s.data(), s.size());
     buf[s.size()] = '\0';
@@ -27,12 +28,15 @@ static SE_ConfigString MakeOwnedString(const std::string& s)
     return out;
 }
 
-static SE_ConfigString Config_Read      (void* h, const char* key, const char* def) { return MakeOwnedString(static_cast<ModConfig*>(h)->Read(key, def)); }
+static HS_ConfigString Config_ReadString(void* h, const char* key, const char* def) { return MakeOwnedString(static_cast<ModConfig*>(h)->ReadString(key, def)); }
+static int             Config_ReadBool  (void* h, const char* key, int     def)     { return static_cast<ModConfig*>(h)->ReadBool  (key, def != 0) ? 1 : 0; }
+static int64_t         Config_ReadInt   (void* h, const char* key, int64_t def)     { return static_cast<ModConfig*>(h)->ReadInt   (key, def); }
+static double          Config_ReadDouble(void* h, const char* key, double  def)     { return static_cast<ModConfig*>(h)->ReadDouble(key, def); }
 static void            Config_Write     (void* h, const char* key, const char* val) { static_cast<ModConfig*>(h)->Write(key, val); }
-static SE_ConfigString Config_GetJson   (void* h)                                   { return MakeOwnedString(static_cast<ModConfig*>(h)->GetJson()); }
+static HS_ConfigString Config_GetJson   (void* h)                                   { return MakeOwnedString(static_cast<ModConfig*>(h)->GetJson()); }
 static void            Config_SetJson   (void* h, const char* json)                 { static_cast<ModConfig*>(h)->SetJson(json); }
 static void            Config_Save      (void* h)                                   { static_cast<ModConfig*>(h)->Save(); }
-static void            Config_FreeString(SE_ConfigString s)                         { delete[] const_cast<char*>(s.data); }
+static void            Config_FreeString(HS_ConfigString s)                         { delete[] const_cast<char*>(s.data); }
 
 std::map<std::string, HookBase*> ModLoader::HookMap{};
 std::unordered_map<std::string, uint32_t> ModLoader::VariableMap{};
@@ -112,9 +116,6 @@ ModLoader& ModLoader::Instance()
 
 ModLoader::ModLoader()
 {
-    std::ofstream logFile("ModLoader.log", std::ios::trunc);
-    logFile.close();
-
     extern HMODULE g_hModLoaderModule;
     char selfPath[MAX_PATH] = {};
     GetModuleFileNameA(g_hModLoaderModule, selfPath, MAX_PATH);
@@ -124,7 +125,7 @@ ModLoader::ModLoader()
         loaderConfigPath.replace(extPos, std::string::npos, ".json");
     m_loaderConfig = std::make_unique<ModConfig>(loaderConfigPath);
 
-    if (m_loaderConfig->Read("show_console", false) == "true")
+    if (m_loaderConfig->ReadBool("show_console", false))
     {
         AllocConsole();
         FILE* fDummy;
@@ -139,25 +140,24 @@ ModLoader::ModLoader()
     ImGuiHook::Install();
 
     {
-        ImGuiHook::SetVisible(m_loaderConfig->Read("imgui_visible_default", false) == "true");
-        std::string toggleKeyStr = m_loaderConfig->Read("imgui_toggle_key", static_cast<int64_t>(VK_F7));
-        int toggleKey = static_cast<int>(std::strtol(toggleKeyStr.c_str(), nullptr, 0));
+        ImGuiHook::SetVisible(m_loaderConfig->ReadBool("imgui_visible_default", false));
+        int toggleKey = static_cast<int>(m_loaderConfig->ReadInt("imgui_toggle_key", VK_F7));
 
-        struct ToggleArgs { int vk; };
-        auto* args = new ToggleArgs{ toggleKey };
-        HANDLE thread = CreateThread(nullptr, 0, [](LPVOID p) -> DWORD {
-            auto* a = static_cast<ToggleArgs*>(p);
+        static std::atomic<int> s_toggleVk{ toggleKey };
+        s_toggleVk.store(toggleKey, std::memory_order_release);
+        HANDLE thread = CreateThread(nullptr, 0, [](LPVOID) -> DWORD {
             bool down = false;
             while (true)
             {
-                bool now = (GetAsyncKeyState(a->vk) & 0x8000) != 0;
+                int vk = s_toggleVk.load(std::memory_order_acquire);
+                bool now = (GetAsyncKeyState(vk) & 0x8000) != 0;
                 if (now && !down)
                     ImGuiHook::ToggleVisible();
                 down = now;
                 Sleep(50);
             }
             return 0;
-        }, args, 0, nullptr);
+        }, nullptr, 0, nullptr);
         if (thread) CloseHandle(thread);
     }
 
@@ -173,7 +173,7 @@ void ModLoader::Log(const char* prefix, const char* format, ...)
     va_end(args);
 
     static std::mutex s_logMutex;
-    static std::ofstream s_logFile("ModLoader.log", std::ios::app);
+    static std::ofstream s_logFile("ModLoader.log", std::ios::trunc);
 
     std::lock_guard<std::mutex> lock(s_logMutex);
     std::cout << "[" << prefix << "] " << buffer << std::endl;
@@ -198,8 +198,25 @@ static bool EnsureHookInstalled(HookBase* base)
     return base->reference.originalFunction != nullptr;
 }
 
-void ModLoader::SubscribeHook(const char* hookName, SE_HookCallback callback, void* userData)
+// Set when LoadMods begins; never cleared. Subscribe* require this thread,
+// because preSubscribers/postSubscribers are appended without a lock and read
+// concurrently by hook callbacks on the game thread.
+static std::atomic<DWORD> s_loadThreadId{ 0 };
+
+static bool OnLoadThread()
 {
+    DWORD tid = s_loadThreadId.load(std::memory_order_acquire);
+    return tid == 0 || tid == GetCurrentThreadId();
+}
+
+void ModLoader::SubscribeHook(const char* hookName, HS_HookCallback callback, void* userData)
+{
+    if (!OnLoadThread())
+    {
+        Log("ModLoader", "SubscribeHook('%s') called off the load thread; ignored", hookName);
+        assert(false && "SubscribeHook must be called from ModInit on the load thread");
+        return;
+    }
     auto it = HookMap.find(hookName);
     if (it == HookMap.end())
     {
@@ -215,8 +232,14 @@ void ModLoader::SubscribeHook(const char* hookName, SE_HookCallback callback, vo
     Log("ModLoader", "Pre-subscriber registered for %s", hookName);
 }
 
-void ModLoader::SubscribeHookPost(const char* hookName, SE_HookPostCallback callback, void* userData)
+void ModLoader::SubscribeHookPost(const char* hookName, HS_HookPostCallback callback, void* userData)
 {
+    if (!OnLoadThread())
+    {
+        Log("ModLoader", "SubscribeHookPost('%s') called off the load thread; ignored", hookName);
+        assert(false && "SubscribeHookPost must be called from ModInit on the load thread");
+        return;
+    }
     auto it = HookMap.find(hookName);
     if (it == HookMap.end())
     {
@@ -248,6 +271,29 @@ RValue* ModLoader::CallScript(const char* scriptName,
     }
     auto detour = reinterpret_cast<GMLScript_t>(it->second->reference.hookFunction);
     return detour(self, other, result, argc, argv);
+}
+
+#pragma pack(push, 1)
+struct PropertyDesc
+{
+    uint32_t namePtr;
+    uint32_t id;
+};
+#pragma pack(pop)
+
+static std::unordered_map<std::string, uint32_t> BuildMap(uintptr_t tableAddr, uint32_t count)
+{
+    std::unordered_map<std::string, uint32_t> map;
+    auto table = reinterpret_cast<PropertyDesc**>(tableAddr);
+    for (uint32_t i = 0; i < count; ++i)
+    {
+        PropertyDesc* p = table[i];
+        if (!p) continue;
+        const char* name = reinterpret_cast<const char*>(p->namePtr);
+        if (!name) continue;
+        map[name] = i; // p->id;
+    }
+    return map;
 }
 
 // The engine stores a pointer to the variable-table struct at moduleBase +
@@ -305,10 +351,12 @@ int ModLoader::GetVarId(const char* name)
 
 void ModLoader::LoadMods()
 {
+    s_loadThreadId.store(GetCurrentThreadId(), std::memory_order_release);
+
     CreateDirectoryA(".\\mods", nullptr);
 
     const bool allowVersionMismatch =
-        m_loaderConfig->Read("allow_version_mismatch", false) == "true";
+        m_loaderConfig->ReadBool("allow_version_mismatch", false);
 
     WIN32_FIND_DATAA fd;
     HANDLE h = FindFirstFileA(".\\mods\\*.dll", &fd);
@@ -328,25 +376,25 @@ void ModLoader::LoadMods()
             continue;
         }
 
-        auto modVersionFn = reinterpret_cast<SE_ModApiVersionFn>(GetProcAddress(hMod, "ModApiVersion"));
+        auto modVersionFn = reinterpret_cast<HS_ModApiVersionFn>(GetProcAddress(hMod, "ModApiVersion"));
         uint32_t modVersion = modVersionFn ? modVersionFn() : 0u;
-        if (modVersion != SE_API_VERSION)
+        if (modVersion != HS_API_VERSION)
         {
             if (!allowVersionMismatch)
             {
                 Log("ModLoader",
                     "Skipping %s: built for API v%u, loader is v%u "
                     "(set allow_version_mismatch=true to override)",
-                    fd.cFileName, modVersion, SE_API_VERSION);
+                    fd.cFileName, modVersion, HS_API_VERSION);
                 FreeLibrary(hMod);
                 continue;
             }
             Log("ModLoader",
                 "WARNING: loading %s with API mismatch (mod v%u, loader v%u)",
-                fd.cFileName, modVersion, SE_API_VERSION);
+                fd.cFileName, modVersion, HS_API_VERSION);
         }
 
-        auto modInit = reinterpret_cast<SE_ModInitFn>(GetProcAddress(hMod, "ModInit"));
+        auto modInit = reinterpret_cast<HS_ModInitFn>(GetProcAddress(hMod, "ModInit"));
         if (!modInit)
         {
             Log("ModLoader", "%s has no ModInit export, skipping", fd.cFileName);
@@ -362,18 +410,18 @@ void ModLoader::LoadMods()
         }
 
         auto modConfigObj = std::make_unique<ModConfig>(std::string(".\\mods\\") + modName + ".json");
-        SE_ModConfig modConfigApi = { modConfigObj.get(), Config_Read, Config_Write, Config_GetJson, Config_SetJson, Config_Save, Config_FreeString };
+        HS_ModConfig modConfigApi = { modConfigObj.get(), Config_ReadString, Config_ReadBool, Config_ReadInt, Config_ReadDouble, Config_Write, Config_GetJson, Config_SetJson, Config_Save, Config_FreeString };
 
-        auto modApi = std::make_unique<SE_ModApi>(SE_ModApi{
+        auto modApi = std::make_unique<HS_ModApi>(HS_ModApi{
             +[](const char* prefix, const char* msg) { ModLoader::Log(prefix, msg); },
-            +[](const char* hookName, SE_HookCallback cb, void* userData) {
+            +[](const char* hookName, HS_HookCallback cb, void* userData) {
                 ModLoader::SubscribeHook(hookName, cb, userData);
             },
-            +[](const char* hookName, SE_HookPostCallback cb, void* userData) {
+            +[](const char* hookName, HS_HookPostCallback cb, void* userData) {
                 ModLoader::SubscribeHookPost(hookName, cb, userData);
             },
             &ModLoader::GetTimeScale,
-            +[](SE_ImGuiDrawFn cb, void* userData) {
+            +[](HS_ImGuiDrawFn cb, void* userData) {
                 ImGuiHook::RegisterDraw(cb, userData);
             },
             +[]() -> void* { return ImGuiHook::GetContext(); },
@@ -383,10 +431,10 @@ void ModLoader::LoadMods()
             +[](const char* name, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv) {
                 return ModLoader::CallScript(name, self, other, result, argc, argv);
             },
-            reinterpret_cast<SE_ResolveInstanceFn>(HookBase::moduleBase + 0xCBC420),
-            reinterpret_cast<SE_GetVarFn>         (HookBase::moduleBase + 0xC99410),
-            reinterpret_cast<SE_SetVarFn>         (HookBase::moduleBase + 0xC996F0),
-            reinterpret_cast<SE_SetStringFn>      (HookBase::moduleBase + 0xCAB130),
+            reinterpret_cast<HS_ResolveInstanceFn>(HookBase::moduleBase + 0xCBC420),
+            reinterpret_cast<HS_GetVarFn>         (HookBase::moduleBase + 0xC99410),
+            reinterpret_cast<HS_SetVarFn>         (HookBase::moduleBase + 0xC996F0),
+            reinterpret_cast<HS_SetStringFn>      (HookBase::moduleBase + 0xCAB130),
             +[](const char* name) { return ModLoader::GetVarId(name); },
             +[](int instance, const char* name, int arrayIndex, RValue* out) -> int {
                 int id = ModLoader::GetVarId(name);
@@ -407,6 +455,7 @@ void ModLoader::LoadMods()
 
         modInit(modApi.get());
         m_modApis.push_back(std::move(modApi));
+        m_modConfigs.push_back(std::move(modConfigObj));
 
     } while (FindNextFileA(h, &fd));
 

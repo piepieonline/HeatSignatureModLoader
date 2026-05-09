@@ -2,9 +2,9 @@
 #include <cstdarg>
 #include <cstdio>
 
-static SE_LogFn g_log = nullptr;
+static HS_LogFn g_log = nullptr;
 
-void Log_Init(SE_LogFn log)
+void Log_Init(HS_LogFn log)
 {
     g_log = log;
 }

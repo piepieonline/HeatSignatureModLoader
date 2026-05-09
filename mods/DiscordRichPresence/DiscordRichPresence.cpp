@@ -11,8 +11,8 @@
 
 static constexpr const char* DISCORD_APP_ID = "1500846665467166720";
 
-static SE_LogFn g_log = nullptr;
-static const SE_ModApi* g_api = nullptr;
+static HS_LogFn g_log = nullptr;
+static const HS_ModApi* g_api = nullptr;
 
 static void Log(const char* fmt, ...)
 {
@@ -220,10 +220,10 @@ static void CallbackThread()
 
 // ── ModInit ──────────────────────────────────────────────────────────────────
 
-SE_EXPORT_MOD_API_VERSION()
+HS_EXPORT_MOD_API_VERSION()
 
 extern "C" __declspec(dllexport)
-void ModInit(const SE_ModApi* api)
+void ModInit(const HS_ModApi* api)
 {
     g_api = api;
     g_log = api->Log;

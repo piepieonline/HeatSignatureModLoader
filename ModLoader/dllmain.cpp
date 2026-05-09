@@ -3,7 +3,7 @@
 #include <mutex>
 #include <string>
 
-#include "ModLoader.h";
+#include "ModLoader.h"
 
 HMODULE g_hModLoaderModule = nullptr;
 
@@ -12,7 +12,6 @@ DWORD WINAPI HookThread(LPVOID lpParam) {
     return 0;
 }
 
-// DllMain: load real DLL and init logging
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
     switch (ul_reason_for_call)

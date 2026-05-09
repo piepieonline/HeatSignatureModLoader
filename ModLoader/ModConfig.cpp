@@ -1,6 +1,7 @@
 #include "ModConfig.h"
 #include <fstream>
 #include <cstring>
+#include <cstdlib>
 
 ModConfig::ModConfig(const std::string& filePath)
     : m_filePath(filePath), m_data(nlohmann::json::object())
@@ -34,7 +35,7 @@ void ModConfig::SetValue_Locked(const char* key, const char* value)
     m_data[key] = s;
 }
 
-std::string ModConfig::Read(const char* key, const char* defaultValue)
+std::string ModConfig::ReadString(const char* key, const char* defaultValue)
 {
     std::lock_guard<std::mutex> lk(m_mutex);
     auto it = m_data.find(key);
@@ -52,21 +53,70 @@ std::string ModConfig::Read(const char* key, const char* defaultValue)
     return v.dump();
 }
 
-std::string ModConfig::Read(const char* key, bool defaultValue)
+bool ModConfig::ReadBool(const char* key, bool defaultValue)
 {
-    return Read(key, defaultValue ? "true" : "false");
+    std::lock_guard<std::mutex> lk(m_mutex);
+    auto it = m_data.find(key);
+    if (it == m_data.end())
+    {
+        m_data[key] = defaultValue;
+        Save_Locked();
+        return defaultValue;
+    }
+    const auto& v = *it;
+    if (v.is_boolean())        return v.get<bool>();
+    if (v.is_number_integer()) return v.get<int64_t>() != 0;
+    if (v.is_number_float())   return v.get<double>()  != 0.0;
+    if (v.is_string())         return _stricmp(v.get<std::string>().c_str(), "true") == 0;
+    return defaultValue;
 }
 
-std::string ModConfig::Read(const char* key, int64_t defaultValue)
+int64_t ModConfig::ReadInt(const char* key, int64_t defaultValue)
 {
-    auto s = std::to_string(defaultValue);
-    return Read(key, s.c_str());
+    std::lock_guard<std::mutex> lk(m_mutex);
+    auto it = m_data.find(key);
+    if (it == m_data.end())
+    {
+        m_data[key] = defaultValue;
+        Save_Locked();
+        return defaultValue;
+    }
+    const auto& v = *it;
+    if (v.is_number_integer()) return v.get<int64_t>();
+    if (v.is_number_float())   return static_cast<int64_t>(v.get<double>());
+    if (v.is_boolean())        return v.get<bool>() ? 1 : 0;
+    if (v.is_string())
+    {
+        const std::string s = v.get<std::string>();
+        char* end = nullptr;
+        int64_t parsed = std::strtoll(s.c_str(), &end, 0);
+        if (end && *end == '\0' && end != s.c_str()) return parsed;
+    }
+    return defaultValue;
 }
 
-std::string ModConfig::Read(const char* key, double defaultValue)
+double ModConfig::ReadDouble(const char* key, double defaultValue)
 {
-    auto s = std::to_string(defaultValue);
-    return Read(key, s.c_str());
+    std::lock_guard<std::mutex> lk(m_mutex);
+    auto it = m_data.find(key);
+    if (it == m_data.end())
+    {
+        m_data[key] = defaultValue;
+        Save_Locked();
+        return defaultValue;
+    }
+    const auto& v = *it;
+    if (v.is_number_float())   return v.get<double>();
+    if (v.is_number_integer()) return static_cast<double>(v.get<int64_t>());
+    if (v.is_boolean())        return v.get<bool>() ? 1.0 : 0.0;
+    if (v.is_string())
+    {
+        const std::string s = v.get<std::string>();
+        char* end = nullptr;
+        double parsed = std::strtod(s.c_str(), &end);
+        if (end && *end == '\0' && end != s.c_str()) return parsed;
+    }
+    return defaultValue;
 }
 
 void ModConfig::Write(const char* key, const char* value)

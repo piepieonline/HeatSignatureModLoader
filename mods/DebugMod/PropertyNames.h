@@ -1,7 +1,7 @@
 #pragma once
 
 // One name per row from the engine variable table dump. Iterated by
-// DebugMod via SE_ModApi::GetVarByName.
+// DebugMod via HS_ModApi::GetVarByName.
 static constexpr const char* kPropertyNames[] = {
     "StationSensorRange",
     "HomeStation",

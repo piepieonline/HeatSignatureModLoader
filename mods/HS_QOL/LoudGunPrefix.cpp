@@ -3,7 +3,7 @@
 #include "HS/HS_Weapon.h"
 #include <string>
 
-static const SE_ModApi* g_api = nullptr;
+static const HS_ModApi* g_api = nullptr;
 
 static void OnGenerateGunPost(const char* /*hookName*/, uintptr_t* self, uintptr_t* other, RValue* /*returnValue*/, int argc, RValue** argv, void* /*userData*/)
 {
@@ -29,7 +29,7 @@ static void OnGenerateGunPost(const char* /*hookName*/, uintptr_t* self, uintptr
     Log("Generating loud gun");
 }
 
-void LoudGunPrefix_Register(const SE_ModApi* api)
+void LoudGunPrefix_Register(const HS_ModApi* api)
 {
     g_api = api;
     api->SubscribeHookPost("gml_Script_GenerateGun", OnGenerateGunPost, nullptr);

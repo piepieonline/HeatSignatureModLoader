@@ -8,9 +8,9 @@
 
 #include "PropertyNames.h"
 
-SE_EXPORT_MOD_API_VERSION()
+HS_EXPORT_MOD_API_VERSION()
 
-static const SE_ModApi* g_api = nullptr;
+static const HS_ModApi* g_api = nullptr;
 static uintptr_t        g_moduleBase = 0;
 
 static bool   g_isDrawing = false;
@@ -408,7 +408,7 @@ static void OnGenerateGunPost(const char* hookName, uintptr_t* self, uintptr_t* 
 }
 
 extern "C" __declspec(dllexport)
-void ModInit(const SE_ModApi* api)
+void ModInit(const HS_ModApi* api)
 {
     g_api = api;
     g_moduleBase = (uintptr_t)GetModuleHandleA("Heat_Signature.exe");

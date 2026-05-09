@@ -37,13 +37,14 @@ namespace
     std::atomic<bool> g_visible{false};
     HWND   g_hwnd          = nullptr;
     WNDPROC g_originalWndProc = nullptr;
+    bool    g_hwndIsUnicode  = true;
 
     std::mutex                                          g_drawMu;
-    std::vector<std::pair<SE_ImGuiDrawFn, void*>>       g_drawCallbacks;
+    std::vector<std::pair<HS_ImGuiDrawFn, void*>>       g_drawCallbacks;
 
     // /EHsc forbids __try in functions that have C++ object unwinding, so the
     // SEH wrapper around each mod callback lives in its own helper.
-    DWORD InvokeDrawSafe(SE_ImGuiDrawFn fn, void* userData)
+    DWORD InvokeDrawSafe(HS_ImGuiDrawFn fn, void* userData)
     {
         __try { fn(userData); return 0; }
         __except (EXCEPTION_EXECUTE_HANDLER) { return GetExceptionCode(); }
@@ -67,7 +68,9 @@ namespace
             if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
                 return 1;
         }
-        return CallWindowProcW(g_originalWndProc, hwnd, msg, wParam, lParam);
+        return g_hwndIsUnicode
+            ? CallWindowProcW(g_originalWndProc, hwnd, msg, wParam, lParam)
+            : CallWindowProcA(g_originalWndProc, hwnd, msg, wParam, lParam);
     }
 
     void InitBackends(IDirect3DDevice9* device, HWND hwnd)
@@ -75,8 +78,10 @@ namespace
         ImGui_ImplWin32_Init(hwnd);
         ImGui_ImplDX9_Init(device);
 
-        g_originalWndProc = reinterpret_cast<WNDPROC>(
-            SetWindowLongPtrW(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&HookedWndProc)));
+        g_hwndIsUnicode = IsWindowUnicode(hwnd) != FALSE;
+        g_originalWndProc = reinterpret_cast<WNDPROC>(g_hwndIsUnicode
+            ? SetWindowLongPtrW(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&HookedWndProc))
+            : SetWindowLongPtrA(hwnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>(&HookedWndProc)));
 
         g_hwnd = hwnd;
         g_backendsInitialized.store(true, std::memory_order_release);
@@ -99,7 +104,7 @@ namespace
             ImGui_ImplWin32_NewFrame();
             ImGui::NewFrame();
 
-            std::vector<std::pair<SE_ImGuiDrawFn, void*>> snapshot;
+            std::vector<std::pair<HS_ImGuiDrawFn, void*>> snapshot;
             {
                 std::lock_guard<std::mutex> lk(g_drawMu);
                 snapshot = g_drawCallbacks;
@@ -139,8 +144,10 @@ namespace
         std::call_once(g_deviceHooksInstalled, [&]() {
             void** vtable = *reinterpret_cast<void***>(device);
 
-            void* resetTarget    = vtable[16];
-            void* endSceneTarget = vtable[42];
+            constexpr size_t kIDirect3DDevice9_Reset    = 16;
+            constexpr size_t kIDirect3DDevice9_EndScene = 42;
+            void* resetTarget    = vtable[kIDirect3DDevice9_Reset];
+            void* endSceneTarget = vtable[kIDirect3DDevice9_EndScene];
 
             if (MH_CreateHook(resetTarget, &Hooked_Reset,
                               reinterpret_cast<void**>(&o_Reset)) != MH_OK)
@@ -184,7 +191,8 @@ namespace
     {
         std::call_once(g_d3dHooksInstalled, [&]() {
             void** vtable = *reinterpret_cast<void***>(d3d);
-            void* createDeviceTarget = vtable[16];
+            constexpr size_t kIDirect3D9_CreateDevice = 16;
+            void* createDeviceTarget = vtable[kIDirect3D9_CreateDevice];
 
             if (MH_CreateHook(createDeviceTarget, &Hooked_CreateDevice,
                               reinterpret_cast<void**>(&o_CreateDevice)) != MH_OK)
@@ -342,7 +350,7 @@ namespace ImGuiHook
         return true;
     }
 
-    void RegisterDraw(SE_ImGuiDrawFn callback, void* userData)
+    void RegisterDraw(HS_ImGuiDrawFn callback, void* userData)
     {
         if (!callback) return;
         std::lock_guard<std::mutex> lk(g_drawMu);

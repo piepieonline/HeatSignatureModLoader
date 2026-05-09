@@ -7,67 +7,67 @@
 
 extern "C" {
 
-// Bump whenever any cross-ABI struct (SE_ModApi, SE_ModConfig, SE_ConfigString,
+// Bump whenever any cross-ABI struct (HS_ModApi, HS_ModConfig, HS_ConfigString,
 // or any callback signature reachable through them) changes shape. Mods compiled
 // against a different value are rejected by the loader unless the user opts in
 // via `allow_version_mismatch` in ModLoader.json.
-#define SE_API_VERSION 1u
+#define HS_API_VERSION 1u
 
-// Mods must export `ModApiVersion()` returning SE_API_VERSION at the version
+// Mods must export `ModApiVersion()` returning HS_API_VERSION at the version
 // they were built for. The macro below is the canonical one-liner.
-typedef uint32_t (*SE_ModApiVersionFn)(void);
+typedef uint32_t (*HS_ModApiVersionFn)(void);
 
-#define SE_EXPORT_MOD_API_VERSION() \
-    extern "C" __declspec(dllexport) uint32_t ModApiVersion(void) { return SE_API_VERSION; }
+#define HS_EXPORT_MOD_API_VERSION() \
+    extern "C" __declspec(dllexport) uint32_t ModApiVersion(void) { return HS_API_VERSION; }
 
-typedef void (*SE_LogFn)(const char* prefix, const char* message);
+typedef void (*HS_LogFn)(const char* prefix, const char* message);
 
 // Fires before a hooked function is invoked. Callbacks run on the game thread.
-typedef void (*SE_HookCallback)(const char* hookName, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv, void* userData);
+typedef void (*HS_HookCallback)(const char* hookName, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv, void* userData);
 
 // Fires after a hooked function returns. returnValue is the GML RValue* the
 // function returned. Callbacks run on the game thread.
-typedef void (*SE_HookPostCallback)(const char* hookName, uintptr_t* self, uintptr_t* other, RValue* returnValue, int argc, RValue** argv, void* userData);
+typedef void (*HS_HookPostCallback)(const char* hookName, uintptr_t* self, uintptr_t* other, RValue* returnValue, int argc, RValue** argv, void* userData);
 
-typedef void (*SE_SubscribeHookFn)(const char* hookName,
-                                   SE_HookCallback callback,
+typedef void (*HS_SubscribeHookFn)(const char* hookName,
+                                   HS_HookCallback callback,
                                    void* userData);
 
-typedef void (*SE_SubscribeHookPostFn)(const char* hookName,
-                                       SE_HookPostCallback callback,
+typedef void (*HS_SubscribeHookPostFn)(const char* hookName,
+                                       HS_HookPostCallback callback,
                                        void* userData);
 
 // Returns 1.0 if the time-manager instance isn't available yet.
-typedef double (*SE_GetTimeScaleFn)();
+typedef double (*HS_GetTimeScaleFn)();
 
 // Drawn from inside the host's per-frame ImGui::NewFrame / ::Render block,
 // on the game's render thread. Keep work short.
-typedef void (*SE_ImGuiDrawFn)(void* userData);
-typedef void (*SE_RegisterImGuiDrawFn)(SE_ImGuiDrawFn callback, void* userData);
+typedef void (*HS_ImGuiDrawFn)(void* userData);
+typedef void (*HS_RegisterImGuiDrawFn)(HS_ImGuiDrawFn callback, void* userData);
 
 // Returns the host's ImGuiContext*. Mods must call ImGui::SetCurrentContext
 // with this value once before issuing any ImGui calls so they share the
 // host's globals (which would otherwise be per-DLL).
-typedef void* (*SE_GetImGuiContextFn)();
+typedef void* (*HS_GetImGuiContextFn)();
 
 // Outputs the host's ImGui allocator pair so mods can call
 // ImGui::SetAllocatorFunctions and allocate from the same heap.
-typedef void (*SE_GetImGuiAllocatorsFn)(void** allocFn, void** freeFn, void** userData);
+typedef void (*HS_GetImGuiAllocatorsFn)(void** allocFn, void** freeFn, void** userData);
 
 // Returns the game's main window handle — largest visible, unowned,
 // non-console window in the current process. May return nullptr before the
 // game window is created.
-typedef HWND (*SE_GetGameWindowFn)();
+typedef HWND (*HS_GetGameWindowFn)();
 
-// Call from inside a SE_HookCallback to skip the hooked game function for
+// Call from inside a HS_HookCallback to skip the hooked game function for
 // this invocation. Has no effect when called outside a pre-hook callback.
-typedef void (*SE_RequestBypassFn)();
+typedef void (*HS_RequestBypassFn)();
 
 // Invoke a `gml_Script_*` function by name. Routes through the installed hook
 // so other mods' subscribers fire. Lazily installs the hook on first use.
 // Returns `result` unchanged if the script name is not in the offset table or
 // the hook cannot be installed.
-typedef RValue* (*SE_CallScriptFn)(const char* scriptName,
+typedef RValue* (*HS_CallScriptFn)(const char* scriptName,
                                    uintptr_t* self, uintptr_t* other,
                                    RValue* result, int argc, RValue** argv);
 
@@ -75,85 +75,91 @@ typedef RValue* (*SE_CallScriptFn)(const char* scriptName,
 // ResolveInstance: turns the `argv[i]` instance reference into an integer handle
 // suitable for GetVar/SetVar. GetVar/SetVar use GameMaker variable IDs (e.g.
 // 673 = displayName on a weapon). SetString assigns a C string into an RValue.
-typedef int (*SE_ResolveInstanceFn)(uint32_t* argHandle);
-typedef int (*SE_GetVarFn)(int instance, int varId, int arrayIndex, RValue* out);
-typedef int (*SE_SetVarFn)(int instance, int varId, int arrayIndex, RValue* in);
-typedef int (*SE_SetStringFn)(RValue* dest, const char* text);
+typedef int (*HS_ResolveInstanceFn)(uint32_t* argHandle);
+typedef int (*HS_GetVarFn)(int instance, int varId, int arrayIndex, RValue* out);
+typedef int (*HS_SetVarFn)(int instance, int varId, int arrayIndex, RValue* in);
+typedef int (*HS_SetStringFn)(RValue* dest, const char* text);
 
 // Variable name -> ID lookup, populated at startup by hooking the engine's
 // variable-table initializer. Returns -1 for unknown names (logged once).
-typedef int (*SE_GetVarIdFn)(const char* name);
+typedef int (*HS_GetVarIdFn)(const char* name);
 
 // Convenience wrappers around GetVar/SetVar that resolve the ID from a name.
 // No-op (returns 0) if the name is unknown.
-typedef int (*SE_GetVarByNameFn)(int instance, const char* name, int arrayIndex, RValue* out);
-typedef int (*SE_SetVarByNameFn)(int instance, const char* name, int arrayIndex, RValue* in);
+typedef int (*HS_GetVarByNameFn)(int instance, const char* name, int arrayIndex, RValue* out);
+typedef int (*HS_SetVarByNameFn)(int instance, const char* name, int arrayIndex, RValue* in);
 
-// Owning string returned by SE_ModConfig::Read / GetJson.
+// Owning string returned by HS_ModConfig::ReadString / GetJson.
 // `data` is heap-allocated by the host and null-terminated. The caller MUST
-// release it by calling SE_ModConfig::FreeString — the C++ wrapper below
+// release it by calling HS_ModConfig::FreeString — the C++ wrapper below
 // (ModSettings) does this automatically. Multiple in-flight strings from the
 // same handle do not alias each other.
-struct SE_ConfigString {
+struct HS_ConfigString {
     const char* data;
     size_t      length;
 };
 
-struct SE_ModConfig {
+struct HS_ModConfig {
     void*           handle;
-    SE_ConfigString (*Read)      (void* handle, const char* key, const char* defaultValue);
+    HS_ConfigString (*ReadString)(void* handle, const char* key, const char* defaultValue);
+    int             (*ReadBool)  (void* handle, const char* key, int      defaultValue);  // 0 / 1
+    int64_t         (*ReadInt)   (void* handle, const char* key, int64_t  defaultValue);
+    double          (*ReadDouble)(void* handle, const char* key, double   defaultValue);
     void            (*Write)     (void* handle, const char* key, const char* value);
-    SE_ConfigString (*GetJson)   (void* handle);
+    HS_ConfigString (*GetJson)   (void* handle);
     void            (*SetJson)   (void* handle, const char* json);
     void            (*Save)      (void* handle);
-    void            (*FreeString)(SE_ConfigString s);
+    void            (*FreeString)(HS_ConfigString s);
 };
 
-struct SE_ModApi
+struct HS_ModApi
 {
-    SE_LogFn                 Log;
-    SE_SubscribeHookFn       SubscribeHook;
-    SE_SubscribeHookPostFn   SubscribeHookPost;
-    SE_GetTimeScaleFn        GetTimeScale;
-    SE_RegisterImGuiDrawFn   RegisterImGuiDraw;
-    SE_GetImGuiContextFn     GetImGuiContext;
-    SE_GetImGuiAllocatorsFn  GetImGuiAllocators;
-    SE_GetGameWindowFn       GetGameWindow;
-    SE_RequestBypassFn       RequestBypass;
-    SE_CallScriptFn          CallScript;
-    SE_ResolveInstanceFn     ResolveInstance;
-    SE_GetVarFn              GetVar;
-    SE_SetVarFn              SetVar;
-    SE_SetStringFn           SetString;
-    SE_GetVarIdFn            GetVarId;
-    SE_GetVarByNameFn        GetVarByName;
-    SE_SetVarByNameFn        SetVarByName;
-    SE_ModConfig             config;
+    HS_LogFn                 Log;
+    HS_SubscribeHookFn       SubscribeHook;
+    HS_SubscribeHookPostFn   SubscribeHookPost;
+    HS_GetTimeScaleFn        GetTimeScale;
+    HS_RegisterImGuiDrawFn   RegisterImGuiDraw;
+    HS_GetImGuiContextFn     GetImGuiContext;
+    HS_GetImGuiAllocatorsFn  GetImGuiAllocators;
+    HS_GetGameWindowFn       GetGameWindow;
+    HS_RequestBypassFn       RequestBypass;
+    HS_CallScriptFn          CallScript;
+    HS_ResolveInstanceFn     ResolveInstance;
+    HS_GetVarFn              GetVar;
+    HS_SetVarFn              SetVar;
+    HS_SetStringFn           SetString;
+    HS_GetVarIdFn            GetVarId;
+    HS_GetVarByNameFn        GetVarByName;
+    HS_SetVarByNameFn        SetVarByName;
+    HS_ModConfig             config;
 };
 
 // Each mod DLL must export:
-//     extern "C" __declspec(dllexport) void ModInit(const SE_ModApi* api);
-typedef void (*SE_ModInitFn)(const SE_ModApi* api);
+//     extern "C" __declspec(dllexport) void ModInit(const HS_ModApi* api);
+typedef void (*HS_ModInitFn)(const HS_ModApi* api);
 
 } // extern "C"
 
 struct ModSettings
 {
     ModSettings() = default;
-    explicit ModSettings(const SE_ModConfig& cfg) : m_cfg(cfg) {}
+    explicit ModSettings(const HS_ModConfig& cfg) : m_cfg(cfg) {}
 
-    std::string Read(const char* key, const char* defaultVal = "") const
+    std::string ReadString(const char* key, const char* defaultVal = "") const
     {
-        SE_ConfigString s = m_cfg.Read(m_cfg.handle, key, defaultVal);
+        HS_ConfigString s = m_cfg.ReadString(m_cfg.handle, key, defaultVal);
         std::string out = s.data ? std::string(s.data, s.length) : std::string();
         m_cfg.FreeString(s);
         return out;
     }
+    bool    ReadBool  (const char* key, bool    defaultVal = false) const { return m_cfg.ReadBool  (m_cfg.handle, key, defaultVal ? 1 : 0) != 0; }
+    int64_t ReadInt   (const char* key, int64_t defaultVal = 0)     const { return m_cfg.ReadInt   (m_cfg.handle, key, defaultVal); }
+    double  ReadDouble(const char* key, double  defaultVal = 0.0)   const { return m_cfg.ReadDouble(m_cfg.handle, key, defaultVal); }
     void Write(const char* key, const char* value)
         { m_cfg.Write(m_cfg.handle, key, value); }
     std::string GetJson() const
     {
-        SE_ConfigString s = m_cfg.GetJson(m_cfg.handle);
+        HS_ConfigString s = m_cfg.GetJson(m_cfg.handle);
         std::string out = s.data ? std::string(s.data, s.length) : std::string();
         m_cfg.FreeString(s);
         return out;
@@ -166,5 +172,5 @@ struct ModSettings
         { m_cfg.Save(m_cfg.handle); }
 
 private:
-    SE_ModConfig m_cfg{};
+    HS_ModConfig m_cfg{};
 };

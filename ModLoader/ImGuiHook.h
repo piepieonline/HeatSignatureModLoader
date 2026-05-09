@@ -9,7 +9,7 @@ namespace ImGuiHook
     bool Install();
 
     // Mod-facing draw registration. Safe to call from any thread.
-    void RegisterDraw(SE_ImGuiDrawFn callback, void* userData);
+    void RegisterDraw(HS_ImGuiDrawFn callback, void* userData);
 
     // Returns the shared ImGuiContext* (created lazily on first EndScene).
     // May return nullptr if EndScene hasn't fired yet — mods should call this

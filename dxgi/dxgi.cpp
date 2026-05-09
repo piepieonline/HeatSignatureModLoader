@@ -27,7 +27,7 @@ static FARPROC GetRealProc(const char* name)
 }
 
 // =========================
-// ScriptExtender bootstrap
+// ModLoader bootstrap
 // =========================
 static DWORD WINAPI InitThread(LPVOID)
 {

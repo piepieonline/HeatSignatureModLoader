@@ -21,9 +21,9 @@ extern UINT32       g_video_bit_rate;
 extern GUID         g_video_encoding_format;
 extern std::wstring g_video_output_path;
 
-extern SE_LogFn            g_log;
-extern SE_GetTimeScaleFn   g_getTimeScale;
-extern SE_GetGameWindowFn  g_getGameWindow;
+extern HS_LogFn            g_log;
+extern HS_GetTimeScaleFn   g_getTimeScale;
+extern HS_GetGameWindowFn  g_getGameWindow;
 extern std::atomic<bool>   g_recording;
 extern std::atomic<bool>   g_recording_enabled;
 extern std::atomic<bool>   g_recording_paused;

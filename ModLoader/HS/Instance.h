@@ -7,11 +7,11 @@ namespace HS {
 class Instance
 {
 public:
-    Instance(int handle, const SE_ModApi* api) : m_handle(handle), m_api(api) {}
+    Instance(int handle, const HS_ModApi* api) : m_handle(handle), m_api(api) {}
 
     int handle() const { return m_handle; }
     bool valid() const { return m_handle != 0 && m_api != nullptr; }
-    const SE_ModApi* api() const { return m_api; }
+    const HS_ModApi* api() const { return m_api; }
 
     // Generic by-name access for variables not exposed as a typed member.
     struct NamedProperty
@@ -113,11 +113,11 @@ protected:
     };
 
     int              m_handle;
-    const SE_ModApi* m_api;
+    const HS_ModApi* m_api;
 };
 
 template <typename T>
-T ResolveInstanceAs(uint32_t* argHandle, const SE_ModApi* api)
+T ResolveInstanceAs(uint32_t* argHandle, const HS_ModApi* api)
 {
     return T(api->ResolveInstance(argHandle), api);
 }

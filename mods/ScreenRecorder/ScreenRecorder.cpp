@@ -4,9 +4,9 @@
 
 // Global definitions (declared extern in Globals.h)
 ModSettings         g_settings;
-SE_LogFn            g_log            = nullptr;
-SE_GetTimeScaleFn   g_getTimeScale   = nullptr;
-SE_GetGameWindowFn  g_getGameWindow  = nullptr;
+HS_LogFn            g_log            = nullptr;
+HS_GetTimeScaleFn   g_getTimeScale   = nullptr;
+HS_GetGameWindowFn  g_getGameWindow  = nullptr;
 std::atomic<bool>   g_recording{false};
 std::atomic<bool>   g_recording_enabled{false};
 std::atomic<bool>   g_recording_paused{false};
@@ -86,10 +86,10 @@ namespace
     }
 }
 
-SE_EXPORT_MOD_API_VERSION()
+HS_EXPORT_MOD_API_VERSION()
 
 extern "C" __declspec(dllexport)
-void ModInit(const SE_ModApi* api)
+void ModInit(const HS_ModApi* api)
 {
     g_settings       = ModSettings(api->config);
     g_log            = api->Log;
@@ -102,17 +102,17 @@ void ModInit(const SE_ModApi* api)
     api->SubscribeHook("gml_Script_ShowInventoryMenu",   &ShowInventoryMenu_Prefix,   nullptr);
     api->SubscribeHookPost("gml_Script_CloseInventoryMenu",   &HideInventoryMenu_Postfix,   nullptr);
 
-    g_recording_enabled.store(g_settings.Read("recordByDefault", "true") == "true");
-    g_video_bit_rate = static_cast<UINT32>(std::strtoul(g_settings.Read("bitrate", "8000000").c_str(), nullptr, 10));
+    g_recording_enabled.store(g_settings.ReadBool("recordByDefault", true));
+    g_video_bit_rate = static_cast<UINT32>(g_settings.ReadInt("bitrate", 8000000));
     {
-        std::string codec = g_settings.Read("codec", "h264");
+        std::string codec = g_settings.ReadString("codec", "h264");
         if (codec == "h265" || codec == "hevc")
             g_video_encoding_format = MFVideoFormat_H265;
         else
             g_video_encoding_format = MFVideoFormat_H264;
     }
     {
-        std::string path = g_settings.Read("outputPath", "./");
+        std::string path = g_settings.ReadString("outputPath", "./");
         int len = MultiByteToWideChar(CP_UTF8, 0, path.c_str(), -1, nullptr, 0);
         if (len > 0)
         {
