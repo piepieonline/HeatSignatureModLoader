@@ -192,7 +192,32 @@ void ModInit(const SE_ModApi* api)
     api->SubscribeHookPost("gml_Script_PlayAsCharacter", OnPlayAsCharacter, nullptr);
 
     g_callbackThread = std::thread(CallbackThread);
-    g_callbackThread.detach();
 
     Log("Ready");
+}
+
+// ── DLL teardown ─────────────────────────────────────────────────────────────
+
+BOOL APIENTRY DllMain(HMODULE /*hModule*/, DWORD reason, LPVOID lpvReserved)
+{
+    if (reason == DLL_PROCESS_DETACH)
+    {
+        g_running = false;
+
+        // lpvReserved == NULL means FreeLibrary; otherwise the process is
+        // terminating and Windows has already killed all other threads, so
+        // joining is unsafe / unnecessary.
+        if (lpvReserved == nullptr && g_callbackThread.joinable())
+        {
+            HANDLE h = g_callbackThread.native_handle();
+            WaitForSingleObject(h, 1000);
+            g_callbackThread.detach();
+            Discord_Shutdown();
+        }
+        else if (g_callbackThread.joinable())
+        {
+            g_callbackThread.detach();
+        }
+    }
+    return TRUE;
 }
