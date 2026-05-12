@@ -11,7 +11,7 @@ extern "C" {
 // or any callback signature reachable through them) changes shape. Mods compiled
 // against a different value are rejected by the loader unless the user opts in
 // via `allow_version_mismatch` in ModLoader.json.
-#define HS_API_VERSION 1u
+#define HS_API_VERSION 2u
 
 // Mods must export `ModApiVersion()` returning HS_API_VERSION at the version
 // they were built for. The macro below is the canonical one-liner.
@@ -71,6 +71,15 @@ typedef RValue* (*HS_CallScriptFn)(const char* scriptName,
                                    uintptr_t* self, uintptr_t* other,
                                    RValue* result, int argc, RValue** argv);
 
+// Invoke a GameMaker engine built-in (e.g. draw_text, instance_create) by
+// name. Built-ins use a different calling convention than gml_Script_* and
+// cannot be invoked through CallScript. Names are resolved against the
+// engine's built-in registry, populated at startup. Returns `result`
+// unchanged if the name is unknown or the registry is not yet ready.
+typedef RValue* (*HS_CallEngineScriptFn)(const char* builtinName,
+                                         uintptr_t* self, uintptr_t* other,
+                                         RValue* result, int argc, RValue** argv);
+
 // Engine helpers — the four GameMaker built-ins mods most often need.
 // ResolveInstance: turns the `argv[i]` instance reference into an integer handle
 // suitable for GetVar/SetVar. GetVar/SetVar use GameMaker variable IDs (e.g.
@@ -124,6 +133,7 @@ struct HS_ModApi
     HS_GetGameWindowFn       GetGameWindow;
     HS_RequestBypassFn       RequestBypass;
     HS_CallScriptFn          CallScript;
+    HS_CallEngineScriptFn    CallEngineScript;
     HS_ResolveInstanceFn     ResolveInstance;
     HS_GetVarFn              GetVar;
     HS_SetVarFn              SetVar;

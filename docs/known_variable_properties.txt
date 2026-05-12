@@ -1,3343 +1,3343 @@
-StationSensorRange
-HomeStation
-Mission
-PlayerFactionIndex
-Debug
-Player
-Objective
-PlayerShip
-CameraDepth
-TradeRouteYScale
-TimeScale
-TrailerMode
-CaptureCursorMode
-ViewScaling
-GameWidth
-GameHeight
-ScreenWidth
-ScreenHeight
-AutoZoomEnabled
-PauseInBackgroundMode
-WindowedMode
-AltSync
-FastVertexBufferMode
-SpecialChallengeFolder
-SaveFileExtension
-NormalChallengeFolder
-CurrentDefectorStation
-CurrentDefectorFilename
-CurrentDefectorID
-EncodeSaves
-StationCharacterSeats
-DesiredSecondsBetweenLiberations
-LastDailyChallenge
-CurrencyMultiplier
-Economy
-CapturedAgent
-NPCDialogSeat
-CharacterSeats
-GloryLeaderboard
-Gold
-UnselectedColour
-SteamEnabled
-UniqueItemCount
-UniqueItemsInUse
-GloryColour
-AppealingGreen
-RareShipmentType
-RareShipmentOwnerName
-EnemyFactionCount
-MaxAmmo
-LogExtra
-ForenameCount
-Forenames
-SurnameCount
-Surnames
-DisabledColour
-StashPink
-PersonalItemColour
-DeveloperMode
-SaveFileVersion
-CharacterTraitTypes
-LiberationColour
-DailyChallengeColour
-DisabledRed
-PaleFriendlyBlue
-CharacterTraitNames
-CharacterTraitDescriptions
-StationsNeededForDifficulty
-StationsNeededForMissionType
-CharacterTraitChallengeScores
-MaxGloryModifier
-LuckyTraitRarityChanceMultiplier
-CompatibilityMode
-GuardRoleNames
-GamepadEnabled
-ControlList
-ShipCrewDepth
-NormalItemPickUpRange
-LastDailyChallengeSubmitted
-DailyChallengeSubmittedStreak
-DailyChallengeEnabled
-DailyChallengeHourOffset
-DailyChallengeMissionCount
-DailyChallengeMissionScores
-DailyChallengeLeaderboardVersion
-DailyChallengeKillPenalty
-DailyChallengeHarmPenalty
-DailyChallengeSeenPenalty
-DailyChallengeAlarmPenalty
-DailyChallengeTimePenalty
-MaxDailyChallengeTimeBonus
-LastDailyChallengeWin
-DailyChallengeWinStreak
-LastDailyChallengeScore
-MaxPossibleDailyChallengeScore
-DailyChallengeMissionDifficulties
-DailyChallengeEasyMissionDifficulties
-DailyChallengeDefaultScore
-DailyChallengeDebugSeedOffset
-DeactivatedInstances
-CollisionSensor
-CrashedOnce
-PatchVersion
-LogToDisk
-AmmoTypeCount
-LogFilename
-LogLineCount
-LogLineIndex
-LogLineMaxCount
-LogLines
-EngineVersion
-BuildMode
-GalaxyVersion
-DialogHistory
-DialogHeader
-DialogHeaderBlock
-DialogData
-DialogSpeakerName
-DialogPortrait
-DialogName
-DialogOptionColour
-DoorOpenDepth
-DoorClosedDepth
-Factions
-WindowParticleDepth
-ShadersEnabled
-ScratchList
-GodMode
-CorpseDepth
-JammerSpacingMax
-JammerSpacingMin
-KitNames
-KnockoutMomentum
-MomentumToTriggerGun
-MercenaryNames
-ScratchHeap
-MercenaryString
-JammerDeviceRange
-OffsetCount
-OffsetArray
-GhostMode
-FactionCount
-HighVisibility
-FactionSpriteMap
-FactionNames
-GlitchersFactionIndex
-FoundryFactionIndex
-OffworldFactionIndex
-SovereignFactionIndex
-IndependentFactionIndex
-Fringes
-HomeStationName
-CenterX
-CenterY
-VapourWakePool
-GalaxyEditingMode
-TradeRouteDepth
-ClientNames
-SpriteIndexes
-SpriteIndexCount
-TraitCount
-TraitDefaultLockStatus
-ObjectForTrait
-Traits
-DoorScrambleRange
-Root2Over2
-DiscountMultiplier
-CreatedSprites
-SoundVolume
-GuardDropsShiplocked
-StationOffsetScale
-UnlockedAchievements
-SpecialItemDue
-TipCount
-Tips
-TipIndex
-MissionGenerationDebug
-LiberationAssist
-Heirlooms
-Permadeath
-ExplosiveWarnings
-DeveloperShortcut
-ScreenshakeEnabled
-SpeedLimit
-BigShipSpeedLimit
-BigShipCruiseSpeed
-ThrusterThrust
-PlayerSensorRange
-WASD
-FactionToDescribe
-EconomyBoostPerStation
-EconomyBoostWindfallMultiplier
-PersonalMissionIntelCostReduction
-LongDashRange
-ShortDashRange
-ShopRestockTime
-AdditionalDelayBeforeFirstLiberator
-LiberationProgressSlopesOffAfter
-LiberationProgressLimitPerCharacter
-PayForOneLiberation
-PayForLiberations
-MaxThrowSpeed
-WindowBreakMomentum
-StunMomentum
-ShipsSecured
-ShipsNeededForLiberation
-FancyMode
-VapourBurn
-LowerModulesDrawnToSurfaceRate
-ModulesDrawnToSurfacePerFrame
-SurfaceSizeLimit
-SurfaceSize
-Nebulae
-BackgroundLayers
-Surfaces
-ParticleTrails
-ShipSurfaceSize
-ShipSurfaceCount
-ShipSurfaceModuleOffset
-IconSurfaceSize
-IconSurfaceCount
-MinModulesForSurface
-GreekLetters
-GreekLetterCount
-AmmoNames
-AmmoSprites
-RarityNames
-MediumCapacity
-HighCapacity
-LongRange
-ExtremeRange
-CapacityForRechargeableGun
-WorkshopItemsInUse
-MaxValueForRarity
-ChanceOfRarity
-DesiredWorkshopItemCount
-WorkshopChanceForRarity
-MaxRarity
-MaxThrustVolume
-RecentUnlocks
-RecentUnlockCount
-RecentUnlockMax
-AllModulesWeveDestroyed
-GiftBox
-CollisionMask
-Saving
-MissionsCompleted
-EnableSharing
-SeasonalEvents
-FirstLaunch
-PausedMission
-PausedObjective
-PausedObjectiveInInventory
-GiftFriendsReceived
-GiftsReceived
-LastGiftSentTime
-LastGiftReceivedTime
-GunSpriteNameMap
-GunSpriteRifleSet
-LootDepth
-CursorTipCircleDepth
-GalaxySurfaceDepth
-DustLayerDepth
-StarDepth
-VapourCloudDepth
-NebulaFeatureDepth
-VapourShadowDepth
-ShipVisionConeDepth
-FloatingObjectsDepth
-StationRockDepth
-StationDepth
-VapourTrailDepth
-ScreenMaskDepth
-ShipHUDDepth
-TransitTubeDepth
-ShipFloorDepth
-ShipFloorFeaturesDepth
-AirlockInteriorDepth
-ForcefieldJoinerDepth
-PlayerShipDockedDepth
-TerminalDepth
-BloodSplatterDepth
-LootBoxDepth
-LootBoxLidDepth
-ShipFloorMarkerDepth
-KeycardDepth
-ShopDepth
-PersonalBulletDepth
-PlayerDepth
-BloodDepth
-WindowGlassDepth
-SecurityCameraDepth
-StationLiftRoofDepth
-ShipHullDepth
-ShipHullFeaturesDepth
-AsteroidExteriorDepth
-AirlockExteriorDepth
-ShipOverlayDepth
-PlayerShipDepth
-MissileDepth
-ExplosionDepth
-SlowMotionEffectDepth
-SaturationEffectDepth
-TeleportEffectDepth
-BlackoutEffectDepth
-CrtEffectDepth
-GunRangeDepth
-CharacterMarkerDepth
-HighlightedCharacterMarkerDepth
-SoundPingDepth
-ReticuleDepth
-MenuDepth
-LiberationShipDepth
-CursorDepth
-TipsDepth
-TutorialDepth
-DebugStuffDepth
-DifficultyMap
-BreakMap
-RareDifficulties
-DifficultyLevelNames
-MaxPayForDifficultyLevel
-MinPayForDifficultyLevel
-MaxPayForOverrideMission
-MercenaryDescriptions
-KitDescriptions
-KitCosts
-DifficultyTypeNames
-NamesForReinforcementTypes
-IntervalsForReinforcementTypes
-MercenarySetsForReinforcementTypes
-MissionTypeForClient
-StationsNeededForFirstLiberation
-StationsNeededForClient
-StationsNeededForLastUnlock
-ClientDescriptions
-ClientColours
-CoolBlue
-FriendlyBlue
-ExcitingGreen
-ExcitingOrange
-BadRed
-WarningOrange
-ElectricYellow
-ScaryPurple
-InventoryBackgroundHighlighted
-LaserRed
-DarkGrey
-SelectedColour
-UnaffordableColour
-TutorialColour
-MissionColour
-PersonalMissionColour
-RescueBonusColour
-RarityColours
-UniqueItemsUnlocked
-UniqueItems
-ItemCount
-ItemIndexes
-TraitFactionObject
-MercenaryArrays
-MercenaryArrayCounts
-MercenaryArrayPay
-RareShipmentStartDate
-RareShipmentEndDate
-RareShipmentName
-RareShipmentFactionIndex
-Difficulty
-UniqueItemsDefaultUnlocked
-PatchMessage
-PatchNotes
-TraitsUnlocked
-NPCSeat
-FiascoSeat
-FiascoDialogSeat
-NPCDialogAltSeat
-ItemIndexesUnlocked
-VapourWakeCreatedCount
-SetCreatedCount
-SetPool
-ShaderSurfaceDepth
-ViewSizePower
-AutopilotMode
-CurrentZoom
-CursorSprite
-MenuClick
-AutopilotTipIndex
-ArrivedAtPlayersBodyz
-Autopilot
-MyDestination
-FinalDestination
-DestinationObject
-JourneyDistance
-DestinationDistance
-FinalDestinationDistance
-xSpeed
-LastxSpeed
-ySpeed
-LastySpeed
-DestinationDirection
-FinalDestinationDirection
-Ship
-TrackingObject
-AutopilotZoomPriority
-Speed
-Direction
-Arrived
-xThrust
-yThrust
-MaxThrust
-xSpeedDesired
-ySpeedDesired
-Parent
-StoppingDistance
-StopDirection
-xDifferenceAchieved
-yDifferenceAchieved
-AutopilotModeZoomPriority
-FactionIndex
-Secured
-Intent
-HeadingToStation
-StationCount
-Stations
-BlackBoxCount
-BlackBoxText
-ShowFullLog
-ShowLogCount
-StandardShowTime
-HUD
-ShowLogTime
-ShowLogX
-ShowLogY
-ShowLogText
-GUIx
-GUIy
-Object
-Controlling
-MyImageAngle
-JauntyViewRotationOffset
-KeyboardDirectionsRotatedBy
-MyBuilding
-ViewTwistStrength
-CameraDistance
-PositionsUpdated
-SetFullscreenDelay
-InitialSetFullscreen
-PanFactor
-PanDirection
-SecondsToShowCollisionGrid
-ShakeOffsetX
-ShakeOffsetY
-GalaxySurfaceVanishingViewSize
-GalaxySurfaceFullViewSize
-AutoPan
-SectorX
-SectorY
-CameraMinSectorX
-CameraMaxSectorX
-CameraMinSectorY
-CameraMaxSectorY
-SecondsInManualZoomMode
-StraightenViewFrom
-StraightenViewBy
-ObjectPanningSpeed
-InteriorViewSize
-InteriorViewSizePower
-NormalMaxViewSizePower
-NormalMaxViewSize
-NormalMinViewSizePower
-MaxViewSizePower
-MaxViewSize
-MinViewSizePower
-MapViewSize
-TargetViewSizePower
-ViewSizeChangeRate
-ViewSizeIncreaseAcceleration
-ViewSizeDecreaseAcceleration
-ZoomPriority
-LastZoomPriority
-ManualZoomMode
-LeavingManualZoomMode
-ManualViewSizePower
-TemporaryViewObject
-OriginalViewSize
-TemporaryZoomDuration
-TemporaryZoomTimeLeft
-FloatingZoomPriority
-ManualZoomPriority
-TravelZoomPriority
-ShipApproachZoomPriority
-DockingZoomPriority
-MatchTargetZoomPriority
-ShipTargetZoomPriority
-AirlockEjectZoomPriority
-MapZoomPriority
-TemporaryZoomPriority
-ObjectPanningZoomPriority
-GalaxyScreenshotZoomPriority
-MissileZoomPriority
-LessUrgentCatchSelfZoomPriority
-MissionListingsZoomPriority
-InteriorZoomPriority
-LegendsPriority
-DialogZoomPriority
-EnemyAutoZoomPriority
-CaptureDockingZoomPriority
-CreditsPriority
-ShortTermManualZoomPriority
-ScanZoomPriority
-DeathZoomPriority
-CharacterSelectZoomPriority
-CatchSelfZoomPriority
-TutorialZoomPriority
-TutorialSlowZoom
-TutorialPodZoomPriority
-InstantZoomPriority
-EndGamePriority
-LocalColourHasEverBeenSet
-SecondsSinceColourChange
-LocalColour
-VapourColour
-OldLocalColour
-TargetLocalColour
-PanMode
-SecondsSinceManualZoom
-CenterOnX
-CenterOnY
-ZoomLevel
-MinimumZoomLevel
-DefaultGalacticZoomLevel
-GalacticZoomIconThreshold
-MapModeThreshold
-MinimumNormalZoomIndex
-MinimumNormalZoom
-ZoomIndex
-PreviousZoomIndex
-UndockZoomIndex
-DefaultInteriorZoom
-LastZoomLevel
-TargetZoom
-AutoZoom
-OldZoom
-ZoomHasChanged
-ZoomSmoothing
-SmoothZoom
-MapKeyMode
-MinAutoZoom
-SurfacesCreated
-HUDTrackingRange
-AnyShipsInRange
-MissionBeaconInRange
-xOffset
-yOffset
-DangerousSituation
-SecondsSinceSave
-SecondsUntilAutoZoom
-ZoomIncrement
-ZoomInMax
-SurfaceRange
-xDistanceToMoveEverything
-yDistanceToMoveEverything
-SourceObject
-SecondsToLerp
-Pan
-PanTipIndex
-PanLeft
-PanRight
-PanUp
-PanDown
-RightStickDistance
-GamepadMode
-RightStickDirection
-LeftStickDistance
-Thrust
-Acceleration
-FocusX
-FocusY
-Mode
-StraighteningSpeed
-TimeGroup
-AsteroidAlpha
-StarAlpha
-MaxColourSectorX
-MaxColourSectorY
-ColourGrid
-Radius
-ZoomTipIndex
-ManualViewSizeToRestore
-Magnitude
-TotalSeconds
-SecondsLeft
-DirectionVariance
-GameRunning
-InventoryScrollLock
-ZoomIn
-TipProgress
-ZoomOut
-GradualZoomIn
-GradualZoomOut
-Station
-ModuleCount
-ModuleList
-Segment
-MaxStations
-ObjectToUnlock
-ChallengeFilename
-ChallengeCompleted
-ChallengeStation
-CharSelectable
-Fore
-Starboard
-IsChallengeCharacter
-PersonalMission
-PersonalMissionState
-PodSaveState
-FirstAirlock
-MyAirlock
-xReal
-yReal
-Bleeding
-GettingUp
-IsPersonalMission
-GuardKit
-Inventory
-Ammo
-Description
-InventoryCount
-BaseName
-Save
-DefectorID
-Status
-GalaxyFolder
-CharExtra
-DailyChallenge
-Spin
-InRange
-CenterFore
-CenterStarboard
-State
-Walking
-CursorDistance
-NearestCharacter
-Highlighted
-Loot
-IsLiberator
-SecondsSinceLastLiberation
-PersonalMissionRescueAgent
-ExtraCharacters
-DailyChallengeType
-DailyChallengeMissionType
-Rarity
-LegendsCount
-HighestGloryLegend
-Accolades
-Legends
-HighestGloryScore
-DailyChallengeName
-DailyChallengeLeaderboard
-DailyChallengeDifficulty
-DailyChallengeArmour
-DailyChallengeShields
-DailyChallengePractice
-TraitCount
-Traits
-Money
-MoneyFromEconomy
-SpecialPodType
-SpecialPods
-DeathZoomTimeRemaining
-DeathZoomTime
-SecondsToShowUpdateFor
-Generated
-Name
-Surname
-WorkshopChar
-OriginalFactionIndex
-GloryScrollY
-GloryMaxScroll
-NextTop
-LeaderboardMode
-Title
-GloryLeaderboardDetails
-LegendsMaxScroll
-LeaderboardMaxScroll
-HighestGloryAccolade
-HighestGloryMission
-HighestGloryMissionClause
-FailedChecksum
-ContainerLeft
-ContainerTop
-ContainerRight
-ContainerBottom
-LegendsScrollY
-LiberatingStation
-ReadMode
-PrimaryItem
-SecondaryItem
-Skin
-Head
-IsSkeleton
-OriginalOwner
-CapturedByFactionIndex
-Forename
-BleedOutTime
-SecondsUntilBleedOut
-Kills
-Knockouts
-TimesInjured
-MissionsCompleted
-MissionsTaken
-ClausesTaken
-ClausesCompleted
-Alarms
-LivingWitnesses
-TimesSeen
-MissionTime
-AveragePay
-PersonalMissionCost
-PersonalMissionIntel
-EasyMissionsCompleted
-MediumMissionsCompleted
-TotalLiberationProgress
-GloryLevel
-RunningScore
-RunningDebt
-RunningPenalty
-PersonalMissionsLeft
-ObsessedMissionFactionIndex
-DyingTimer
-PodSkin
-PodThrustColour
-PodMaxFuel
-LoadedChecksum
-LoadedChecksumString
-HasEquipment
-Checksum
-ChecksumString
-StationToLiberate
-DestroyMe
-Mysterious
-PersonalMissionItem
-Value
-OriginalCharacter
-GiftID
-PriceMultiplier
-TimesUsed
-Capacity
-Uses
-MyStation
-ThrustColour
-MaxFuel
-StationSeparation
-EmergencyFuel
-Fuel
-Resting
-ScriptedDestroy
-ContainerCenter
-CursorTimer
-TextColour
-OptionButtonHeight
-InventoryY
-ForceValidSave
-CharacterFilename
-Started
-StashCount
-Stash
-SaveWarningResumeMode
-SaveWarningActionToPerform
-SaveWarningGalaxyToLoad
-ContainerMinimumVerticalSeparation
-NeedToGenerate
-GenerateFile
-ResetListings
-PreviousMenuMode
-Dead
-Owner
-Rechargeable
-ChargeRate
-Difficulty
-Pay
-Bonus
-TraitOffsets
-i
-Type
-Context
-EnemyFactionIndex
-Target
-LovedOne
-MinGuardsPerCluster
-AlarmTime
-TimeLimit
-SentriesPerSegment
-HasHeatSensors
-DesiredSegmentCount
-PracticeTutorialShip
-Practice
-KeycardGuardRole
-GlitchFailSafe
-DesiredBossCount
-DesiredGuardCount
-Warzone
-WildcardBosses
-GlitchProofHull
-InteractiveThingCount
-InteractiveThings
-DisableGamepadUseAnchorsSignal
-GamepadUseAnchorCount
-GamepadUseAnchorX
-GamepadUseAnchorY
-ClosestGamepadUseAnchorX
-ClosestGamepadUseAnchorY
-AimRange
-AutoAimTolerance
-ContentsCount
-Contents
-ControlCount
-KeyboardButton
-MouseButton
-GamepadButton
-ControlsDown
-ControlsPressed
-ControlsReleased
-ControlBeingConfigured
-AnyControlPressedSignal
-MouseWheelUp
-MouseWheelDown
-GamepadCount
-Gamepads
-Menu
-PlayerControlLock
-PlayerNextControlLock
-AimCancel
-AimedFromInventory
-SecondsUntilReady
-SecondaryAttack
-SecondsUntilSwitchBackToPrimary
-AimMode
-AimDistance
-AttackControlsTipIndex
-Step
-MarkX
-MarkY
-SlowMoScale
-AimPriority
-AimDirection
-Range
-ItemToDrawRangeFor
-CurrentlySelectedItem
-TorsoAimAnim
-MyReticule
-OnSignal
-HitHumanSoundRadius
-NoiseRadius
-DashTarget
-AutoDash
-ThrowMode
-TorsoIdleAnim
-ThrownBy
-ThrowSlowMoPriority
-AnyControlReleasedSignal
-MenuBack
-ControlsFilename
-ControlScrollPosition
-ControlNames
-MenuHeight
-ControllingType
-BridgeSeatTipIndex
-MyCursorSprite
-Docked
-Siege
-SetCourse
-LeavingSeat
-ThrusterCount
-BridgeControlTipIndex
-TurretCount
-FireShipWeapons
-BridgeTurretsTipIndex
-Turret
-SecondsUntilFiring
-TurretSeatTipIndex
-Heading
-TurretControlTipIndex
-DoorComputerTipIndex
-Security
-Hacks
-DoorComputerControlTipIndex
-Activate
-ControlApplies
-ControlPersists
-ControlTipText
-ControlGroupMembership
-Deceleration
-ForeSpeed
-ForeSpeedDesired
-StarboardSpeedDesired
-StarboardSpeed
-ContainerWidth
-ContainerHeight
-Hover
-ContainerMargin
-ConfiguringSignal
-ControlShownForSeconds
-SecondsToShowControlsFor
-SecondsToFadeControls
-ControlSlidesIn
-SecondsToSlideControls
-CenteredControlGroupX
-NormalControlGroupX
-ControlTipX
-ControlSprite
-ControlImageIndex
-ControlGroupCount
-ControlGroupShownTime
-ControlGroupX
-ControlTipCount
-Attack
-OnBoardInteractionGroup
-UseGroup
-CarriedObject
-Carrier
-CurrentControlIndex
-WrongControlName
-WrongControlKeyboardButton
-WrongControlMouseButton
-WrongControlGamepadButton
-CurrentGroup
-LastGamepadButtonPressed
-LeftStickX
-LeftStickY
-LeftStickDirection
-RightStickX
-RightStickY
-MouseGUIx
-MouseGUIy
-ConfiguringState
-AnyControlPressedState
-LeftMouseDownOverride
-LeftMousePressedOverride
-LastGUIx
-LastGUIy
-CursorMoved
-StickCount
-DefaultControlsFilename
-ShipControlsGroup
-Collected
-ForSale
-MyShop
-ItemCount
-Items
-UseHandle
-UseTip
-Passive
-InventorySlots
-HandLuggage
-HandLuggageInventorySlots
-CursorItem
-EndPracticeModeSignal
-Leaving
-Manned
-BloodScale
-OriginalShip
-Lines
-MoveLeft
-MoveRight
-MoveUp
-MoveDown
-Use
-WalkControlsTipIndex
-Item
-Brake
-OnBoardMovementGroup
-PathfindToCursor
-UniversalGroup
-HideHUD
-RestartPractice
-Throw
-Eject
-SlowMo
-FastMo
-DummyControl
-RemoteControl
-Scan
-DismissCurrentTip
-InventoryGroup
-NextItem
-PreviousItem
-CursorIsOverAnyInventoryButtonsState
-TorsoThrowAnim
-ThrowPausePriority
-PrimaryAction
-SecondaryAction
-TorsoLoops
-MoveFore
-MoveAft
-MoveStarboard
-MovePort
-MyPath
-SpeedState
-RunningSpeed
-SpeedItemScale
-EnemyTargetPriority
-NearbyLootHandleCount
-NearbyHandleCount
-NearestLoot
-MyObject
-ThingType
-Interactive
-NearbyLootHandles
-NearbyHandles
-OffsetX
-OffsetY
-UsePromptActive
-UseObject
-ShowUsePrompt
-LeftClickHandled
-RightClickHandled
-SlowMoTipIndex
-SlowMoKeyPriority
-HistoryCount
-History
-NonTargetKills
-NonTargetKnockouts
-LeaderboardScrollY
-DamageSignal
-DamageMask
-Kit
-MyExterior
-MyRadius
-Enabled
-MyTurret
-MyDoor
-HasRocks
-TargetModuleSet
-ContentsNames
-MissingContentsName
-CollisionSensorRange
-j
-StartFore
-UnitSize
-StartStarboard
-CollisionSensor
-PathfindingGrid
-NewVar
-DebugChannel
-ThingToDebug
-DebugPause
-DebugString
-DebugCount
-DebugCountMax
-DebugLastLine
-DebugRepeatedLineCount
-DebugText
-DebugTextBeforeLastUniqueString
-DebugScroll
-ModulesLong
-ModulesWide
-CollisionGrid
-CollisionColour
-ModuleLength
-ModuleWidth
-MouseFore
-MouseStarboard
-ResponseHeaderArray
-ProblemDescription
-CharactersToDraw
-TextWriteSignal
-HUDColour
-CharacterName
-EndScriptedSignal
-SensorRange
-SecurityLevelToPulse
-SecurityPulseSignal
-OpenSignal
-SecurityScaleBonus
-Left
-Right
-HalfUnit
-Top
-Bottom
-Open
-NeedsToClose
-SecondsUntilClosing
-CrashedSecondsLeft
-DoorLogCount
-DoorLog
-JustCreated
-CircleFactor
-DoorwaySprite
-Scale
-InSurfaceRange
-Warning
-ModuleSprite
-RoomSprite
-DrawAngle
-BigRoom
-ForeDoorway
-ForeWall
-PortDoorway
-PortWall
-AftDoorway
-AftWall
-StarboardDoorway
-StarboardWall
-DecoSprite
-DecoAngle
-DoorwayTintSprite
-FactionObject
-Corner
-RoomSpriteTint
-Corridor
-RoomSprite1
-CorridorSprite2Corner
-RoomSprite2Corner
-CorridorSprite2
-RoomSprite2
-CorridorSprite3
-RoomSprite3
-CorridorSprite4
-RoomSprite4
-WindowSprite
-WindowSpriteBroken
-BigRoomSprite1
-BridgeRoom
-ThrusterRoom
-TurretRoom
-TurretRoomSprite
-SensorRoom
-SensorRoomSpriteOn
-SensorRoomOff
-SensorRoomSpriteOff
-TeleporterRoom
-TeleporterRoomSpriteOn
-TeleporterRoomOff
-TeleporterRoomSpriteOff
-DrawToSurface
-SurfaceScale
-DrawScale
-CurrentShipSurface
-DrawHorizontal
-DrawVertical
-DrawingAngle
-BloodParticleCount
-BloodParticles
-OriginFore
-OriginStarboard
-EffectTimeRemaining
-ParticleSystem
-ParticleTypeCount
-ParticleTypes
-ParticleEmitterCount
-ParticleEmitters
-PauseWithGame
-FollowObject
-DirectionX
-DirectionY
-Strength
-EffectTime
-ShaderConfigured
-ShaderHandleHorizontalSize
-ShaderHandleVerticalSize
-ShaderHandleGlintAlpha
-ShaderHandlePixelOffset
-PixelOffset
-ShaderHandleGlintColour
-Saturation
-InterestPointCount
-InterestPoints
-RespondingText
-AlertSpriteOverride
-AvoidPersonFore
-AvoidPersonStarboard
-CurrentSpeed
-BounceSoundRadius
-UsedItemState
-SecondsSinceAlarmed
-SecondsToSoundAlarm
-Crashed
-ShowAlarm
-LastKnownPlayerFore
-LastKnownPlayerStarboard
-ChasePathBlocked
-LegAngle
-PlayerDirection
-SecondsUntilMeleeAttackReady
-Animation
-SwingHit
-IconPulseFraction
-TimeForIconToDecay
-LifeLink
-HeatSensorRange
-TeleportEffectTimeRemaining
-TeleportEffectTime
-TeleportEffectDirection
-TeleportEffectDistance
-RealSeconds
-HeatSensorSpriteScale
-GameSeconds
-LifeLinkDrawPeer
-SecondsSinceSensorReboot
-SecondsForSensorToBoot
-MinimumPredatorRadius
-MaximumPredatorRadius
-PredatorHeatRadius
-Hacked
-ScramblerRadius
-MyProtector
-SecondsUntilEmergencyShieldTurnsOn
-Witness
-SecondsOfOxygenLeft
-SeeingPlayerThisStep
-ObjectiveType
-Mission
-ShownAssassinationHelpMessage
-Over
-CullCounter
-HasLoot
-DailyChallengeSeed
-PathProgress
-p
-MercType
-PanicSignal
-StaggerSignal
-Conscious
-CurrentModule
-PathDirection
-DesiredImageAngle
-SecondsUntilReaction
-ObjectiveText
-Teleported
-DestinationAirlock
-InnerDoor
-WalkingSpeed
-Carried
-MySaviour
-Sucking
-ContentsMustStayActive
-OuterDoor
-CarriedTipIndex
-NewState
-FetchingBodySignal
-SecondsUntilFire
-MyPilot
-Suckable
-AngleOffset
-DistractionAngleToRestore
-PreviousState
-DistractionStateToRestore
-SecondsToBeDistracted
-SecondsDistracted
-RespondingSignal
-InvestigatingSignal
-SentrySignal
-DistractionSignal
-DistractionItem
-DistractionFore
-DistractionStarboard
-GuardCount
-Guards
-MyErrandObject
-BloodAngle
-TimeUntilBloodSplat
-GuardTipIndex
-AmmoType
-PassiveInventoryCount
-PassiveInventory
-WallSlideVelocityRetentionFactor
-SecondsUntilHitGround
-GuardCheckSignal
-MeasuredSpeed
-BloodSplatter
-BodyImpactSoundRadius
-ArrivedAtErrand
-ClusterReturnFore
-ClusterReturnStarboard
-ClusterReturnImageAngle
-ErrandTimeRemaining
-ErrandBuddySignal
-SentryAtTerminal
-OriginalFore
-OriginalStarboard
-OriginalImageAngle
-LookAngle
-EscapeTeleporter
-EscapeSecondsLeft
-TargetEscapeSecondsLeft
-TeleporterEnabled
-TeleporterSubverted
-NeedToFlee
-OriginalState
-Stuck
-SecondsUntilLeaving
-CurrentInterestPoint
-User
-TorsoAngle
-RespondingFore
-RespondingStarboard
-SearchRoomDirectionSeconds
-SearchRoomRandomTurn
-SearchRoomTimer
-SearchRoomStartAngle
-PerformedSearch
-MyModule
-RestartPracticeModeSignal
-SecondsUntilTurn
-TurnsUntilMove
-PanicTimer
-PanicDelayTurn
-DirectionToHunt
-SearchModulesCount
-SearchModules
-PatrolPathIndex
-PatrolPathCount
-PatrolPath
-PatrolBuddy
-DestinationFore
-DestinationStarboard
-StateNameOverride
-PatrolCompleted
-JammerTargetModule
-PlacementPauseTime
-PlacementTimeRemaining
-JammerSpacing
-HeatSensorDetectPlayer
-RespondingThenSearch
-StartSearchSegment
-StartSearchModule
-PreviousModule
-SeekingFore
-SeekingStarboard
-SeekingPathDelay
-SeekingPathTime
-SeekerPath
-TimeRemaining
-ErrandNeighbors
-SecondsUntilErrandCheck
-ErrandPanicCountdown
-PatrolDoors
-ErrandObjects
-StaggerStateToRestore
-SecondsUntilRestore
-InventorySelection
-HeatSensorOn
-LifeLinkPeerCount
-LifeLinkPeers
-Waiting
-VisionRange
-FieldOfView
-Role
-RandomKitGuard
-RandomKitBoss
-ArmourSkin
-ArmourHead
-ArmourLegs
-SkeletonCrew
-QuietGuns
-AttachmentSlot
-AttachmentName
-HumanHitSoundRadius
-HorizontalSpeed
-VerticalSpeed
-Armed
-RemoteTriggerSignal
-InteriorTip
-LifeLinkUpdateThisStep
-LifeLinkConnected
-LifeLinkSegment
-Female
-FemaleSkin
-Legs
-MaleSkin
-Client
-MercenaryCount
-Mercenaries
-ReactionTime
-DefaultReactionTime
-AlertReactionTime
-DefaultAlertTime
-GuardWeapon
-PredatorParticles
-ProtectionRadius
-ClusterPoint
-LootRoom
-EmitterTimeRemaining
-SizeMultiplier
-GuardKitPoints
-BossKitPoints
-Alarm
-SeenAsThreat
-SecondsSinceSeen
-FiredGun
-FireRate
-SectorSecurity
-LaserX
-LaserY
-Laser
-EmergencyShieldDuration
-SecondsUntilEmergencyShieldTurnsOff
-DefiniteArticle
-StationInterior
-StationInteriorMask
-StationDockLift
-StationResidentialLift
-FactionFolder
-ModuleRoofA
-ModuleRoofB
-ThrusterRoof
-ThrusterSprite
-TurretRoof
-TurretSprite
-SensorRoof
-BridgeRoof
-BigRoomSprite2
-BigRoomSprite2Corner
-BigRoomSprite3
-BigRoomSprite4
-DoorSprite
-TerminalSprite
-BrigRoom
-BrigRoomCollision
-Airlock
-AirlockRoof
-FringeStraight
-FringeCorner
-FringeInnerCornerLeft
-FringeInnerCornerRight
-FringeStraightInterior
-FringeCornerInterior
-FringeInnerCornerLeftInterior
-FringeInnerCornerRightInterior
-FringeWindow
-FringeDestroyed
-FringeInteriorDestroyed
-FringeInteriorDestroyedBigRoom
-FringeInteriorDestroyedDoorway
-SentryDeco
-Sentry
-SentryOff
-SentryBase
-DecoSpriteCount
-DecoSprites
-DecoCollisionMasks
-CargoSprite
-DecoTypes
-DecoMedicalIndex
-DecoOtherFanIndex
-DecoLivingBunksIndex
-DecoOtherSortingIndex
-DecoLivingMessIndex
-DecoCounts
-FringeFixed
-CornerFixed
-Fringes
-HasNeighbour
-HasDiagonalNeighbour
-FringeTint
-CornerTint
-LiberationProgress
-LiberationsAvailable
-StationConnectRange
-ConnectionCount
-RouteCount
-RouteSources
-RouteDestinations
-BlobHue
-Hue
-BlobSaturation
-Lightness
-Feature
-GalaxyScale
-Size
-InitialAlpha
-xMin
-SectorWidth
-xMax
-yMin
-SectorHeight
-yMax
-Hue2
-Saturation2
-BlobsPerFaction
-FactionsNowInThisRegion
-Blob
-Region
-CurrentBlobFaction
-NormalBlobSize
-TriesLeftToFindAFreeSpot
-RegionSeparation
-Extremity
-GalaxyRadius
-Connections
-ConnectionScales
-ConnectionAngles
-RouteIndex
-PathFromHome
-CullingVisited
-CullingScore
-BlobDistanceFactor
-CullingQueued
-Surface
-LiberationStationsCount
-FailedTechCount
-FailedDefectorCount
-Source
-Destination
-TradeRouteMinX
-TradeRouteMaxX
-TradeRouteMinY
-TradeRouteMaxY
-MinBlobSize
-MaxBlobSize
-MinFeatureSize
-MaxFeatureSize
-LiberationRange
-GalaxyFilename
-WhitelistOption
-RegionCount
-ColourCount
-ColoursA
-ColoursB
-ColourA
-ColourB
-BackgroundVapourCloud
-MinBlobsPerRegion
-MaxBlobsPerRegion
-BlobsToPlace
-BlobsOfThisFaction
-FeaturePlaced
-GalaxyLeft
-GalaxyTop
-GalaxyRight
-GalaxyBottom
-MissionsSinceLiberation
-MissionsBetweenLiberations
-LiberationMode
-MinStations
-ScreenshotStatus
-GrabbedStation
-TradeRouteSourceStation
-MyConnections
-Length
-PixelsThick
-NormalYScale
-ShowMission
-MissionType
-Stronghold
-Inset
-InsetSourceX
-InsetSourceY
-InsetDestinationX
-InsetDestinationY
-SecondsSinceLastShopRestock
-TraitToUnlock
-EconomyBoost
-Founder
-Noun
-StationNameIndex
-IsGreek
-InitialImageAngle
-GalaxySlots
-GalaxySprites
-GalaxySpriteWidths
-FriendlyStationCount
-FriendlyStations
-ColoursFilename
-DeactivatedObjectCount
-DeactivatedObjects
-Deactivated
-DeactivatedIndex
-ForceActivateNearbyGalaxyElements
-CameraSectorChecks
-ActivationLog
-SurfaceSize
-GalacticAverageBlobX
-GalacticAverageBlobY
-StarScale
-GalacticX
-GalacticY
-Width
-Height
-LargestSide
-ResumeMode
-DefaultPersonaName
-WorkshopGiftCount
-WorkshopGifts
-GenerateWithAmmo
-GiftsAvailable
-Trigger
-DamageType
-CollisionLength
-CollisionWidth
-AftMost
-ForeMost
-PortMost
-StarboardMost
-TriggerSprite
-SpriteSize
-Sticky
-MultipliedValue
-Adjectives
-CostToFire
-WeaponDamageMask
-BulletDamageMask
-BulletKnockbackSpeed
-KnockbackSpeed
-BulletSpeed
-NormalBulletSpeed
-MinBulletSpeedMultiplier
-MaxBulletSpeedMultiplier
-BulletSprite
-Firer
-FirerName
-LaunchSpeed
-Shop
-TorsoRunAnim
-TorsoAttackAnim
-GunshotSound
-Verb
-Fire
-TargetX
-TargetY
-NoiseMultiplier
-LoudNoise
-QuietNoise
-SilencedNoise
-Noise
-AudibleThroughWalls
-Weight
-DefaultKick
-KickForShotgun
-KickForSuperShotgun
-KickForSilenced
-Kick
-HighVelocityBulletSpeed
-SwitchOnPickup
-Projectiles
-Spread
-GunshotSoundIndex
-SecondsBetweenUses
-RapidFire
-ExtremeRapidFire
-ShotgunProjectiles
-SuperShotgunProjectiles
-ShotgunSpread
-SuperShotgunSpread
-TraitBoxLeft
-TraitBoxTop
-TraitTextY
-TraitBoxBottom
-TraitBoxMarginHorizontal
-DrawCircle
-ExteriorTip
-Priority
-Text
-Fraction
-Colour
-Threshold
-ThresholdColour
-Alpha
-AnnotationAlpha
-AnnotationBoxHeight
-AnnotationBoxWidth
-CursorIndex
-CursorDirection
-CursorColour
-CursorScale
-CursorObject
-GamepadAiming
-Heat
-ThrustCursorMaxImageIndex
-Completed
-RatingsBoxRight
-Tip
-LogoSprite
-RatingsTextLeft
-RatingsTextRight
-SecondsSinceAppearing
-SymbolsDrawnSoFar
-PaySymbolsFinished
-PayLineSeparation
-RatingsLineSeparation
-PatchNotesScrollY
-NewViewScaling
-ControlListTipIndex
-ScrollBlocksClick
-BottomCutoff
-ScrollLeft
-ScrollTop
-ScrollWidth
-ScrollHeight
-ScrollOffset
-ScrollButtonHeight
-Volume
-UpdateTextControl
-UpdateText
-SecondsSinceUpdateAppeared
-CenterY
-CurrentTipIndex
-ObjectiveArrowTipIndex
-TrackingSomething
-CenterX
-yScale
-xScale
-UsePromptAlpha
-PushAmount
-DisabledSignal
-UseHandleTime
-ContentsActive
-ContentsIndex
-SortDistanceSqr
-Objective
-ModuleRange
-LaserUnits
-ImpactFore
-ImpactStarboard
-SentryDamageMask
-TargetModuleCount
-TargetModules
-SecondsUntilArmed
-ArmingTime
-BlastRadius
-DiagonalBlastRadius
-SecondsAlive
-SecondsToAppear
-SecondsToSuck
-FullScale
-Done
-WindowWidth
-HalfWidth
-HalfThickness
-OnlyUseUnlockedTraits
-TraitTypes
-TraitChances
-TraitToAdd
-StuckTo
-UnlocksUniqueItem
-LastOwnerTechnophobe
-InventoryIndex
-PassiveInventoryNames
-InventoryNames
-LastPrimaryItem
-LastSecondaryItem
-SecondsToShowInventoryInfo
-TimeSincePickedUp
-StashOnExit
-SellOnExit
-Quote
-QuoteCredit
-VisitorReturnTime
-AmmoIndex
-BaseRange
-LootTypes
-LootChances
-AvailableUniques
-BounceSound
-JustDropped
-EquippedItem
-SecondsOn
-Duration
-UseItemDisplayProgress
-UseMoreDisplayProgress
-LastUseObject
-Horizontal
-Vertical
-TrailLength
-ImpactMomentumSignal
-HitHumanSound
-SticksInPeople
-PersonImStuckIn
-BounceFactor
-ImpactSignal
-StashedForHandLuggageMission
-AutoAimAngleRange
-SecondsSinceTeleported
-AimDelay
-AimTime
-DashSpeed
-RadiusAlpha
-AimSprite
-SoldByPlayer
-Shiplocked
-LockedToShip
-On
-TorsoDashAnim
-TorsoRecoveryAnim
-Count
-Grade
-SpecialItem
-OriginalID
-ScreenJoltFactor
-ScreenshakeAmount
-ExtremeSlowMoScale
-MeleeImpactPriority
-LightningTimeRemaining
-DoubleSwordTimeRemaining
-DoubleSwordType
-HitAnEnemy
-SpeedRetentionFraction
-GrenadeDamageMask
-UsedItemSignal
-ThrowControlsTipIndex
-PrimaryItemName
-InventoryMode
-BrowsingShop
-ShowHandLuggageWarning
-PanelWidth
-CursorItemTagIndent
-InventoryListItemSeparation
-CursorItemY
-CursorItemTagWidth
-Margin
-CursorIsOverAnyInventoryButtonsSignal
-MissionPanelHeight
-TraitsDescribed
-InteractiblesY
-RightPanelX
-RightPanelFullWidthTextX
-SecondsInInventoryMode
-IconSize
-DescriptionY
-DescriptionTextIndent
-DescriptionTextWidth
-AssignTipHeight
-TopY
-SmallIconSize
-ItemTopY
-LeftPanelX
-EquippedItemPanelExtension
-SwapMode
-CursorItemSpriteWidth
-ControlIconIndent
-ItemIconIndent
-InventoryListTextIndent
-ControlIconX
-ItemIconX
-InventoryListTextX
-TextIndentFromIcon
-InventoryTextWidth
-DescriptionPanelX
-HeaderHeight
-InventoryScrollY
-InteractiblesTextX
-SecondItemSlotY
-NearbyItemsCount
-SecondsUntilGlitchGrabberReady
-NearbyItems
-PracticeScenarioName
-DifficultyLogCount
-DifficultyLog
-NormalPriceItems
-Hammer
-HammerUseY
-SpecialActionSignal
-RemoteControlY
-TimeTraitsLastShown
-TipHeaderText
-TipText
-LootPromptShownFor
-LootTipText
-UsePromptShownFor
-UseTipText
-TeleportProgress
-SelectedShopItem
-ThisX
-RatingsX
-RatingsY
-RescueBonus
-EscapeProtocol
-SecurityProtocol
-SecondsUntilAttack
-MissionRatingsText
-MissionRatingColour
-NoKillsClause
-NoKnockoutsClause
-NoLivingWitnessesClause
-NoAlarmsClause
-IsGloryMission
-PersonalMissionProgressText
-NearbyToStash
-NearbyToSell
-NearbyToSellAmount
-UnsortedNearbyItems
-ItemDistances
-CanPause
-CanBeLiberated
-LiberationStations
-DefectorIconAlpha
-LiberationFailed
-HostileStations
-SpecialChallenge
-ChallengeName
-ChallengeDescription
-ChallengeFactionIndex
-LiberatableStrongholds
-ShipsCaptured
-EndGameConversationReady
-OldName
-NewName
-UnlockHeader
-UnlockText
-UnlockColour
-UnlockTypeText
-PeaceSignal
-StationIcon
-StrongholdIcon
-CurrentRouteColour
-FinalStation
-BarY
-FactionPodName
-DestinationStation
-SourceStation
-Liberator
-MinSpeed
-SpecialMissionType
-WarzoneMission
-TriggerDelivery
-IsDailyChallenge
-FleeStation
-NoKillsBonus
-NoKnockoutsBonus
-NoAlarmsBonus
-NoLivingWitnessesBonus
-ComplicationsCount
-Complications
-ObjectiveObjectAnnotated
-ClientsAssigned
-ClientlessStationsCount
-ClientlessStations
-AssassinationCompleted
-LogNextVariable
-Message
-MissionTaker
-JustAddOneExtraDifficulty
-AddRareDifficulty
-DifficultyModifiers
-TotalEnemyCount
-TotalEnemyDifficulty
-NoReductions
-ChallengeIntensity
-ScramblerGates
-AutopilotMission
-AlarmDifficulty
-ReinforcementProtocol
-s
-c
-ElseText
-GuardAKitPoints
-GuardBKitPoints
-ToughenedHull
-PayFromDifficultyType
-MinPayOverride
-SelectedMission
-DetailsTextX
-DetailsTextY
-MissionDetailsPanelLeft
-ShowHazardDetails
-MenuPriority
-SecondsSincePreviewCreated
-DetailsLineCount
-ListingsScrollY
-MissionCount
-Missions
-DetailsScrollY
-GuardA
-GuardB
-HasIntel
-DetailsBoxWidth
-DetailsTopY
-PayTextRight
-DetailsTabX
-GuardDetailsSeen
-BossDetailsSeen
-ShipText
-ClauseTitle
-ClauseText
-TargetRole
-GeneratedMissions
-AddedToArray
-CrimeVerb
-EnemyFactionObject
-EnemyFactionName
-Motive
-ClausesAvailable
-DifficultyPoints
-KitTypes
-UnchosenKitTypes
-NeedsTeleporterRoom
-DistanceToNearestStation
-Bridge
-IsGhost
-AgentDrop
-AlreadyAnnotatedSignal
-ObjectiveShip
-AverageFore
-AverageStarboard
-SecondsUntilDeparture
-PausedShips
-PausedShipCount
-PlayerBoardedShip
-PeaceMusic
-TensionMusic
-StationMusic
-PlaylistMusic
-PlaylistIndex
-AnchorX
-AnchorY
-ForeUnitX
-StarboardUnitX
-ForeUnitY
-StarboardUnitY
-DecelerationDistance
-Updated
-SpinBuffer
-MotionFactor
-LastGoodFore
-LastGoodStarboard
-Squishy
-HitWallLastStep
-FramesFailedToRemoveFromWall
-MovedByCameraThisFrame
-ParentWas
-PreImpactFore
-PreImpactStarboard
-Destroy
-TipScroll
-TipCount
-ShowInList
-TipPriority
-TipSprite
-SpriteScale
-LastModule
-BacktrackF
-BacktrackS
-ExitCount
-ExitF
-ExitS
-ThisDirectionDifference
-BestDirectionDifference
-BestFore
-BestStarboard
-ModuleWidthGrid
-RoundedFore
-RoundedStarboard
-BounceAngle
-ForeDoor
-PortDoor
-AftDoor
-StarboardDoor
-ForeSpeedUnit
-StarboardSpeedUnit
-SpeedPenalty
-LastDirection
-Row
-Column
-ModuleGrid
-PathBackup
-PathFore
-PathStarboard
-ForeSpeedCheck
-StarboardSpeedCheck
-TorsoFrame
-SecondsUntilGlitchReady
-FramesInsideWall
-StealthArcState
-StartSwinging
-GetInShip
-Ejected
-InSpace
-EnteringAirlock
-ModuleWeJustLeft
-DashItem
-Unsaveable
-SuckPathBlocked
-SuckedOut
-GiveUpTheChase
-AbandoningPlayer
-ErrandSignal
-Swinging
-SecondsUntilGetUp
-ConfrontationResolved
-DashSignal
-PickUpRange
-InitialSecondsOfOxygen
-BleedPriority
-OnState
-OldX
-OldY
-ShipwiseDashDirection
-GlitchbackTimeRemaining
-ExteriorAlpha
-BleedOutTimeReduction
-AngelBleedOutTimeReduction
-LegRate
-LegLoops
-CarryingBody
-CauseOfDeath
-CarriedTime
-ScriptedSignal
-ScriptedImageAngle
-MySeat
-RestingTorsoAnim
-DashDirection
-TorsoRate
-HitSomeoneYet
-HitWallYet
-DashPriority
-EnemyToSwingAt
-NearestStation
-ShipWeJustLeft
-AirlockWeWereEjectedFrom
-TeleporterRoomUsed
-NearestStationDistance
-SecondsSinceLastBloodDrop
-SecondsBetweenBloodDrops
-ScriptedPositionFore
-ScriptedPositionStarboard
-ScriptedStartDelay
-ScriptedDelayRemaining
-ScriptedSitAtPosition
-GlitchSick
-GlitchSickTime
-KnockOutTime
-UnconsciousPriority
-TeleporterRange
-Breach
-PlayerAboard
-OxygenPriority
-Result
-SpeedSignal
-ShieldSignal
-SecondsUnrecoverable
-WhiteWhale
-ThrowingItem
-Scrambled
-StealthArcSignal
-PracticeShip
-PracticeTerminal
-PracticeDifficulty
-PracticeOriginalPlayerName
-PreviewItem
-DeathGUIProgress
-SecondsSinceRescueBlink
-RescueImageIndex
-InstantMatch
-TargetingClickRange
-Weapon
-VoidMotherStrength
-DeathGUIStartX
-DeathGUIStartY
-ScrewedMessages
-ScrewedTimes
-TorsoFrameCount
-DyingPriority
-DyingHighPriority
-HackedSecondsLeft
-NearbyShips
-BounceVectorX
-BounceVectorY
-MyKeyControl
-MyGamepadControl
-CountdownTimer
-MyPod
-NotPressingFailureRate
-PressingWrongThingFailureRate
-SolutionRate
-DockingOffset
-DockingDistance
-GridLength
-TurnToMake
-DockingTipIndex
-FriendlyStationTipIndex
-EnemyStationTipIndex
-ThrusterOffset
-ThrustFrame
-EjectTipIndex
-DamageMessage
-DamageSpeedX
-DamageSpeedY
-ModuleDestructionSignal
-Dockable
-OldSpeed
-FuelDepletionFactor
-SpeedLimit
-CollidingWithShipAfterUndocking
-CollisionStuckBounceCount
-CollisionThrustDelayRemaining
-CollisionThrustDelay
-RelativeBounceAngle
-PlayerSpeedInBouncewardDirection
-DockedStation
-InstantDock
-HidePlayerShip
-LeavingStation
-ShowAnnotationsSignal
-SeatForeOffset
-SeatStarboardOffset
-InteriorSprite
-ColdfireThrust
-AngelPickupTimeRemaining
-AngelPickupTime
-AngelPickupRange
-TargetingMissile
-PressingHelps
-DestroySignal
-SolutionProgress
-AnimationLoops
-InteriorAlpha
-DockedSignal
-PlayerDistance
-DisableSignal
-AutoDockFailSafeTimer
-DontStraightenSignal
-HeatLoss
-SecondsToDisableManualThrust
-HeatSensorOnScreen
-MaxMatchDistance
-MinMatchDistance
-CurrentMaxMatchDistance
-MatchDistance
-NearestThing
-FuelPriority
-MatchTarget
-PotentialMatchTarget
-NearestThingDistance
-NearestShip
-NearestShipDistance
-StopTipIndex
-ColdfireThrustMultiplier
-ThrustFactor
-Braking
-ZoomedToSomething
-ZoomTarget
-MatchTargetDistance
-ThrustVolumeMax
-NeedsRocks
-DockingRange
-DockingSpeed
-SecondsUntilICanDockAgain
-ThrustDirection
-PreviousAutodocking
-Targeted
-StationUndockSignal
-UndockingFromStation
-CompletedDocking
-MaxThrustCursorDistance
-ShipRadius
-MaxThrustBarLength
-CursorDistanceForMaxThrustInWorldPixels
-ThrustTipIndex
-MouseDistance
-SkipThrustBarUpdateSignal
-ThrustBarLength
-MaxThrustTipIndex
-ContentsToMoveCount
-ContentsToMove
-PendingRescueName
-WidthDimension
-LengthDimension
-FirstColumn
-FirstRow
-HasGuards
-AirlockRow
-AirlockColumn
-AirlockModule
-IsLiberation
-TipsEnabled
-SegmentCount
-Segments
-HasSecurity
-ForeLeft
-StarTop
-ForeRight
-StarBottom
-ClearedCollisionGrid
-MyCamera
-Sector
-InteriorType
-FiringCooldown
-AimingTime
-TurretIndex
-MyBarrel
-MyThruster
-MyWindow
-EssentialObject
-ThisModule
-LastFrame
-NormalGuardRole
-BossGuardRole
-TerminalCount
-Terminals
-TargetCandidate
-EntranceModule
-HighestSecurityModule
-SegmentIndex
-SentryPositions
-SentryObject
-LootType
-DecoCollisionMask
-IsRareShipment
-PossibleWalls
-Module
-Terminal
-TerminalOffset
-StartingSegment
-SegmentsJoined
-SectorSet
-DoorCount
-Doors
-ModuleA
-ModuleB
-IgnoreDirection
-LastExitFoundLeadsToThisModule
-DoorDirection
-LastAirlockCreated
-NewAirlockDockingDistance
-Manual
-SuckOnCreate
-DistanceFromCenterOfModule
-RoomWidthGrid
-CorridorWidthGrid
-OpenDoorInset
-CollisionMask
-Index
-Freight
-IndexInSegment
-LengthInModules
-SegmentsLong
-SegmentLength
-SegmentRow
-SegmentsWide
-SegmentWidth
-SegmentColumn
-LastRow
-LastColumn
-FirstColumnInRow
-LastColumnInRow
-ExitDirection
-CurrentSegment
-ModuleFromPreviousSector
-Tutorial
-WidthInModules
-ColumnIndent
-RowIndent
-CentralColumn
-WindowCount
-ModulesToUndo
-u
-ShipDimension
-SegmentSize
-ThisSegmentFore
-ThisSegmentStarboard
-WindowStarboard
-DecoLog
-DecoType
-PossibleDecoIndexes
-BigRoomSealer
-HighestDeadEndSecurity
-LootRoomsPlaced
-DesiredLootRooms
-SideWindowPlaced
-CentralK
-EmptyModuleBorder
-FrontI
-BackRowI
-ComputerI
-ComputerPlaced
-AirlockPlaced
-RandomlyAddAirlockToThisModule
-AirlockI
-BridgeI
-FrontWindow
-SensorsPerModule
-RowsBetweenSensors
-RowWidthForDoubleSensors
-LastSensorPlacedOnRow
-EssentialI
-EssentialK
-k
-RowWidth
-Indent
-AftDoorK
-DoorPlaced
-WidestRow
-SectorCount
-Sectors
-SpecialModuleForeInset
-SpecialModuleStarboardInset
-SpecialDecoType
-ModuleType
-CurrentRevealTime
-RevealTime
-Surrounded
-SectorStartModule
-PrecedingSectorCount
-ThisSector
-SectorTypes
-SectorIndexToTry
-PrecedingSectors
-Exits
-Snaking
-DeadEnds
-DeadEndCount
-Key
-SecuritySet
-SpecialModuleType
-SectorA
-SectorB
-LongSide
-ShortSide
-ObjectiveModule
-ModulesInSector
-CreatedASector
-ModuleTintSprite
-MyFaction
-ModuleLengthGrid
-RoomLengthGrid
-PatrolSpeed
-HoldingSpeed
-TurnSpeed
-ForeOffset
-StarboardOffset
-BreakChecked
-FragmentSignificance
-TotalModulesChecked
-DestroyModuleCount
-DestroyModules
-DestroyedModule
-VacuumChecked
-ShipsCreated
-NewShip
-LastShipCreated
-OldAnchorX
-OldAnchorY
-SurfaceMode
-Icon
-IncomingShip
-ShipGenerationStep
-SecondsUntilNextSpawnCheck
-SecondsUntilRareShipment
-SecondsBetweenSpawnChecks
-MinRareShipmentDelay
-MaxRareShipmentDelay
-ChanceToSpawnShipAtSpeedLimit
-MaximumModules
-MaximumShips
-MySurface
-FreeIcons
-FreeIconCount
-FreeSurfaces
-FreeSurfaceCount
-IconDistanceAlpha
-LiveIconSurface
-CenterOffsetFore
-CenterOffsetStarboard
-ModuleIconSize
-IconScale
-CurrentIconScale
-IconXOffset
-IconYOffset
-IconX
-IconY
-IconAlpha
-IconPulseTimer
-IconPulseTime
-IconPulseDuration
-UseSurfaces
-ShipSurfaceCount
-ShipSurfaces
-ModulesOnSurface
-ExteriorAlphaDesired
-ExteriorAlphaFadeOutTime
-ExteriorAlphaFadeInTime
-AlreadyDrawnToSurface
-ContentsGrid
-IgnoreExplosive
-TargetedByOtherShip
-MyMissile
-xSpeedOriginal
-ySpeedOriginal
-TimeToHit
-MyLaser
-BeamOrigin
-BeamTarget
-FurthestShip
-FurthestDistance
-FurthestObject
-FurthestObjectDistance
-SecondsUntilNextCullCheck
-CullInterval
-TutorialShip
-Deactivatable
-SecondsUntilReinforcements
-TotalReinforcementsSpawned
-NextReinforcementName
-FleeSignal
-NewShop
-NewShopItem
-SpecialStock
-ThrustVolume
-ThrustSound
-CoolingSound
-CoolingVolume
-VoidSound
-VoidVolume
-ZoomOutLimit
-ZoomInLimit
-Coloured
-AlphaMax
-SpriteWidth
-SpriteHeight
-SecondsOffScreen
-SecondsBeforeCullingOffScreen
-ReturnToTorsoAnim
-MyLegs
-LegFrame
-TorsoCount
-LegCount
-LastTorsoSprite
-LastLegSprite
-LegFrameCount
-FactionCharacter
-CenterModule
-Fiasco
-FiascoSeatMarker
-OriginalFactionObject
-LiberationDeliveryMessageShown
-StationSprite
-NPC
-AlphaMultiplier
-MyShip
-NearbyStations
-AdjacentToTechnology
-ValidStations
-MyStationFore
-MyStationStarboard
-AsteroidScale
-InitialStarScale
-IndexWord
-CurrentAnimation
-CurrentFrame
-AnimationComplete
-DoorwaySpriteTint
-EmptySeat
-PersonaNameCache
-NeedToUploadScore
-ScoreBuffer
-CurrentEvent
-CurrentState
-RequestStartTime
-CompletedFindFriendItems
-FriendList
-BlockListLeftScroll
-BlockListSelection
-FriendBlockList
-BlockListRightScroll
-WorkshopCharacterCount
-WorkshopCharacters
-RarityItemLists
-PersonaNameQueue
-LastGiftID
-RandomRarities
-FriendItemList
-NextState
-SubscriptionQueue
-UnsubscribeQueue
-SubscribedItemList
-UserItemList
-UserItemID
-WorkshopGameItemCount
-MaxItems
-WorkshopFolder
-MaxCharacters
-ModifiedTime
-UploadTime
-CreateItemTime
-WorkshopDataFileName
-ReloadDataFromDisk
-NeedToSendData
-FriendBlockSet
-LeaderboardCache
-LeaderboardCacheSize
-PlayerScoreCache
-LeaderboardNull
-EntryHeight
-CurrentTop
-NextX
-Padding
-RankWidth
-MissionsWidth
-PurchasesWidth
-StyleWidth
-TimeWidth
-ScoreWidth
-NameWidth
-DetailEntryHeight
-LevelWidth
-AdjustWidth
-DetailWidth
-CurrentLeaderboardLookup
-NextLeaderboardLookup
-CurrentPlayerScoreLookup
-NextPlayerScoreLookup
-ScoreName
-Score
-FramesUntilBreachCheck
-CurrentTimeScalePriority
-TargetTimeScale
-TimeScaleChangePerSecond
-PauseSecondsLeft
-FPSCount
-FPSTotal
-UnacceptableFrames
-CheckToDoThisFrame
-CheckIndex
-DismissAlpha
-SecondsBetweenTipChecks
-SecondsSinceTipCheck
-SecondsSinceTipChange
-SecondsUntilDismissPrompt
-SecondsUntilForceChange
-SecondsToFadeOut
-SecondsToFadeIn
-FadeProgress
-ObjectToAnnotate
-BoxMargin
-ArrowHeight
-DismissText
-OldTip
-SoundPlayed
-SecondsPlayed
-EmptyPodTryingToDock
-NoTipIndex
-CharacterSelectTipIndex
-ScanTipIndex
-HeatSensorTipIndex
-EmptyPodDockingTipIndex
-ObjectiveLootTipIndex
-ObjectiveEnemyTipIndex
-MissionComputerArrowTipIndex
-MissionSelectTipIndex
-ShootingTipIndex
-InventoryTipIndex
-KeycardLootTipIndex
-ThrusterUpgradeTipIndex
-CoolantUpgradeTipIndex
-FloatingTipIndex
-FuelBarrelTipIndex
-RemoteControlTipIndex
-FastMoTipIndex
-DockingTipPossible
-TipObject
-UsePrompts
-TipEnabled
-BypassLootTipIndex
-DrawArrow
-TipArrivalProgress
-DrawY
-ChangeSoundPlayed
-TipIndex
-ElementsToChooseFrom
-ElementChances
-Elements
-SecondsUntilPulse
-SecondsSpentPulsing
-SecondsToNextChange
-TotalChange
-ChangePerSecond
-ListCount
-TotalAllocations
-MapCount
-ParticleSystemCount
-PathCount
-PathGridCount
-PriorityQueueCount
-QueueCount
-SpriteCount
-SpritePixelCount
-StackCount
-SurfaceCount
-CreateSampleCount
-CreateSampleMax
-CreateSamples
-TotalSample
-MaxSample
-SetCount
-NewTarget
-StepCounter
-MyTrail
-Sprite
-StandardSize
-MaxParticleLifeInSeconds
-SpriteLength
-StandardScale
-MinSize
-MinScale
-Emitter
-MaxParticleLifeInSteps
-ParticleTypeIndex
-InitialX
-InitialY
-LastEmitterX
-LastEmitterY
-CurrentStrength
-StrengthGain
-StrengthDecay
-SystemX
-SystemY
-EmitterX
-EmitterY
-InitialRed
-FinalRed
-InitialGreen
-FinalGreen
-InitialBlue
-FinalBlue
-FinalVapourColour
-VapourLifeRatio
-LastVapour
-StandardLife
-LifeInSeconds
-InitialLife
-InitialVapourColour
-PulsePhase
-ModuleTarget
-SecondsUntilNextTurn
-PreviousHeading
-DesiredHeading
-Progress
-BridgeModule
-ExitWindow
-DialogueIndex
-DialogueCount
-SlideProgress
-UseMaxWidth
-TipX
-TopTipY
-TipHeight
-TipY
-TipControl
-DistanceFromHomeStation
-WindowModule
-Security1Door
-LockedDoor
-Keycard
-BurstWindowModule
-Corpses
-FirstGuard
-FirstGuardsGun
-HitFirstGuardMarker
-AmbushMarker
-SecondGuard
-TipOffset
-Dialogue
-SecondsMovingAtFullSpeed
-FadeInFraction
-Bartender
-SecondsHighlighted
-BartenderDialogueFile
-ShowText
-EngineSound
-RouteColour
-TerritoryName
-LiberationBackgroundColour
-Tracked
-LeftX
-RightX
-BottomY
-SecondsLerping
-SecondsShown
-SlideInTime
-ClosestGamepadUseAnchor
-CreditCount
-Roles
-Names
-CreditIndex
-Seconds
-ShowAll
-FullCreditsText
-GalaxyZoomTime
-TimeToStartCredits
-TotalCreditsDuration
-TimeChunks
-TotalTimeBetweenCredits
-SecondsBetweenCredits
-FadedInBy
-StartFadingOutAt
-FadedOutBy
-StartNextCreditAt
-yDifference
-Dashable
-Log
-PlayersDestination
-LiberationShip
-ShowColourInfo
-DrawTradeRoutes
-CheckOnScreen
-GalaxyCoordsSetup
-ShowAllRoutes
-ColdSpriteWidth
-HotSpriteWidth
-HeatProgress
-MyOwner
-ShowInterior
-MaxAlpha
-DetectedSignal
-DetectedObject
-SensorScale
-ChangeModeOnDestroy
-ClientMessage
-Watermark
-ClosestTip
-ControlText
-ControlTextLastFrame
-ControlAlpha
-ControlFadeTime
-TitleTime
-Tick
-Help
-SecondsSinceEndGame
-GloryHue
-GalaxyToDelete
-ChallengeCharacter
-DebugPositionFore
-DebugPositionStarboard
-Credits
-VictoryScreenShown
-DifferenceX
-DifferenceY
-ChosenTargetName
-ChosenReason
-UseTipShown
-AnnotationText
-GhostBonus
-SpeedToUse
-MyMenuMode
-BonusPay
-BonusText
-ThisMissionsLiberationProgress
-LiberationBarStartTime
-SecondsToSlideIn
-DailyChallengeOver
-EndOfMissionCalculationsDone
-PreviousLiberationProgress
-BoxSpacing
-RatingsBoxWidth
-RatingsBoxLeft
-RatingsBoxHeight
-RatingsBoxBottom
-Distance
-MaxSpeed
-IntroMusic
-TensionSignal
-StationSignal
-IntroSignal
-PeaceVolume
-TensionVolume
-StationVolume
-JukeboxVolume
-PeaceTracks
-PeaceCount
-PeaceIndex
-TensionTracks
-TensionCount
-TensionIndex
-StationTracks
-StationIndex
-StationTrackCount
-PlaylistCount
-PlaylistTracks
-ChangeTrackSignal
-TensionDistance
-FadeOutAmount
-FadeInAmount
-ProblemProgress
-Shake
-SecondsUntilOn
-SecondsUntilRemoved
-Condition
-Position
-ButtonText
-ProblemText
-LastEnemyCreated
-BlurredSurface
-ShaderHandleResolution
-ShaderHandleHorizontal
-ShaderHandleStrength
-SurfacesAllocated
-AllSurfaces
-AllIcons
-SecondsSinceCreation
-SpriteRadius
-MaxScale
-StateNames
-RecreateUserItem
-RequestItemID
-ScreenshotRequested
-LeaderboardSize
-TopLeaderboardSize
-PlayerScoreLookupSize
-WorkshopItemCount
-SoundLastPlayed
-InitialSecondsUntilFastMoKeyWorks
-SecondsUntilFastMoKeyWorks
-ShipSeenPriority
-FastMoKeyPriority
-TutorialPriority
-FastMoScale
-MissileSlowMoScale
-SleepSeconds
-FramesBeforeReset
-SecondsUntilEarliestPossibleFrameRateChange
-SlowMoVisualsStrength
-CanFastMo
-Gun
-LogoAlpha
-DialogueTop
-SecondsFastForwarding
-InitialDistanceToHome
-PracticeCompleteSignal
-MusicTimer
-BurstOverride
-ThisTipX
-MovingFocus
-MinViewSize
-MinViewPower
-GalaxyCenter
-MovingFocusProgress
-ProgressFraction
-TipOffsetFraction
-Highlight
-DisabledFor
-ConeAlpha
-AngryConeAlpha
-ConeFactor
-MeleeRange
-Repulsor
-PreciseCollision
-InteriorRevealed
-BulletRadius
-ReflectedByShield
-TrailSprite
-SlowMoBulletSpeedMultiplier
-FirstStep
-BulletHasEverMoved
-TrailSpriteLength
-DistanceTravelled
-SwappedTimer
-Override
-AnimationSpeed
-DesiredFrame
-NormalSecondsUntilClosing
-OpeningCost
-ForceOpen
-CrashDuration
-ForeOnDestruction
-StarboardOnDestruction
-ModuleOnDestruction
-SecondsUntilAutoOpenAgain
-MissingThingName
-LookTimer
-TurnDirection
-NormalInteriorTip
-TutorialInteriorTip
-SecondsUntilExplosion
-RadiusScale
-MyLid
-MyLoot
-Workshop
-LootTypeOverride
-Price
-Opening
-MyBox
-Sounded
-Setup
-SecondsBetweenTurns
-SecondsToBeamFor
-SecondsUntilBeamFinishes
-BeamDirection
-BeamDistance
-BaseSprite
-OnSprite
-OffSprite
-DirectionCount
-Directions
-DirectionIndex
-SentryDanger
-InitialSecondsToReturn
-SecondsUntilReturn
-ColourOffset
-RedAngle
-BlueAngle
-GreenAngle
-Burst
-DestinationX
-DestinationY
-EffectImageIndex
-UnpoweredDamageMask
-PoweredDamageMask
-NormalSprite
-StuckSprite
-DefaultAimRange
-SovereignAimRange
-ShotSpeed
-IsWeapon
-SecondsOfSlipstreamLeft
-SecondsOfSlipstreamMax
-RadiusColour
-RadiusOfEffect
-BeamWidth
-TrapFore
-TrapStarboard
-TeleportDirection
-TeleportDistance
-TriggerRadius
-TimerSeconds
-SecondsUntilDetonation
-MaxLaunchSpeed
-LootBox
-StealthArc
-SecondsFromOff
-ParentName
-DockedState
-LeftSide
-RightSide
-PlayerSide
-PlayerInner
-InnerLimit
-MiddleLimit
-OuterLimit
-DetectionLineX
-DetectionLineY
-DetectionLineLength
-DetectionFactorFromDistance
-DetectionFactorFromHeat
-DetectionFraction
-DetectionLength
-DetectionDirection
-HeatDetectionThreshold
-LoseRange
-LoseRangeStandard
-RadiusSprite
-RadiusSpriteWidth
-DistanceToTarget
-JudgementErrorX
-JudgementErrorY
-NormalUseTip
-AutopilotInteriorTip
-SecondsUntilReact
-MinPatrolRadius
-MaxPatrolRadius
-ShipHadEnemiesButIsNowSecure
-Tension
-MoveFreely
-Used
-DrawSensor
-SensorColour
-WarningAlpha
-SensorRoomSprite
-SecondsUntilReveal
-TeleporterRoomSprite
-HackedParticles
-Torque
-LastThingToSetThrust
-Readout
-ThrustAngle
-ThrustPerThruster
-AnimationFrame
-AnimationRate
-NumberOfFrames
-MyCone
-SecondsDetected
-Controls
-Annotation
-AnnotationColour
-AnnotationCanFade
-Sound
-DialogueFile
-DialogueType
-SwitchAnimTime
-ExplosiveAnnotationAlpha
-AlertSpriteFrames
-Draw
-LaserScale
-ModuleLastFrame
-ReadyToFire
-Turning
-EverRecognizedPlayer
-SwapperTimer
-SecondsSpentExploding
-ExplosionTime
-NormalScale
-ApparentScale
-DeathRadius
-InsideAStationsRadiusLastFrame
-SensorRangeAlpha
-SensorRangeFlashMargin
-SensorRangeSpriteWidth
-SensorRangeScale
-ScanSprite
-ScanSpriteWidth
-ScanFraction
-CurrentScanRange
-ScanTime
-ExteriorColour
-Collision
-DamageDestructionTime
-HotSprite
-MyInterior
-HeatGainFactor
-ShipMatchRange
-SecondsToStayScanned
-SecondsSinceScanned
-SurfaceLog
-SecondsUntilClusterErrand
-ErrandTimer
-MaximumErrandOffset
-SecondsBetweenErrands
-MyLift
-AlarmSecondsLeft
-HighestSecurityLootModule
-SecondsToDelayDeparture
-PlayerSpeedLimit
-NeedModulesToDrawLastStep
-ViewSizeAboveWhichToDrawAsIcon
-PlayerShipCollisionPossibleLastStep
-DrawnAsIconLastStep
-MissileCloseLastStep
-MissileClose
-TargetedByOtherShipLastStep
-IconWidth
-IconLength
-BodyCount
-ScramblerCount
-TimerOffset
-TradeRouteDestination
-HideInteriorOnceSurfaceIsReady
-WingWidth
-CollisionGridChanged
-ModuleDrawn
-InVisionRange
-Steps
-StepsToLog
-TotalThrustNeeded
-ThrustDirections
-PathfindingInitialised
-CargoCount
-ObjectiveCargoIndex
-DistanceCheckInterval
-FirstFreeRoom
-NearestAirlockSoFar
-CurrentSegmentIndex
-SectorDepth
-KeycardsPlaced
-Scramblers
-Bodies
-ModuleActivationCheck
-StayScannedFor
-ZoomAlpha
-SecondsLived
-ThrustIndex
-Initialised
-xStartOffset
-yStartOffset
-RemainingTimeToHit
-SetMyOwnColour
-Additive
-xFlip
-yFlip
-OldNearestBlob
-CurrentNearestBlob
-ZoomOutSuccessor
-ZoomInSuccessor
-WidthToCover
-HeightToCover
-MinWidth
-DeliverText
-GiftText
-StationLightsTimer
-InUse
-GiveMissionsWithinRadius
-HologramAngle
-RockDistanceMultiplier
-RockScaleMultiplier
-SecondsForAnnotationsToFade
-SpawnRange
-ExteriorAlphaSignal
-MyRock
-SecondsToHangOnToRocks
-DockingAirlock
-NormalBuildingOffset
-BuildingOffset
-Capturable
-AngularVelocity
-OrbitDistance
-AngleFromStation
-DesiredStrength
-StrengthAdjustmentRate
-FadeTime
-ShaderSupported
-ShaderHandleScanlineStrength
-ShaderHandlePhosphorGlow
-ShaderHandlePhosphorDarkness
-CycleTime
-GlintTime
-ShaderHandleSaturation
-ShaderHandleHorizontalRatio
-ShaderHandleMinRadius
-ShaderHandleMaxRadius
-ShaderHandleMinSaturation
-ShaderHandleMaxSaturation
-MaxStrength
-ShaderHandleDirection
-ShaderHandleGreenOffset
-ShaderHandleBlueOffset
-OffsetFore
-OffsetStarboard
-x
-y
-id
-object_index
-view_hview
-view_hport
-current_hour
-current_minute
-current_second
-view_angle
-view_wport
-view_wview
-depth
-background_colour
-application_surface
-image_alpha
-mouse_x
-mouse_y
-image_blend
-room_speed
-Rarities
-keyboard_string
-sprite_index
-image_index
-image_speed
-RandomIndices
-image_angle
-keyboard_lastkey
-visible
-mouse_lastbutton
-working_directory
-PlayerScore
-DataArray
-DataBlock
-ResponseTextArray
-TextBlockArray
-ErrorText
-undefined
-CurrentTextBlocks
-CurrentResponseText
-CurrentResponseHeaders
-ResponseHeaders
-image_xscale
-image_yscale
-RandomDirections
-Buddies
-sprite_width
-ReachedFaction
-FactionQueues
-current_year
-current_month
-current_day
-RandomizedStation
-Indices
-room_width
-room_height
-ItemInfo
-GiftFriends
-UniqueFriends
-Gifts
-SelectedGift
-image_number
-DiscountedItems
-OverpricedItems
-ThisMercenaryArray
-ThisArray
-HardMissions
-view_xview
-view_yview
-ThingsToTeleport
-StashedItems
-ItemsToStash
-ToStash
-AirlockSegments
-GuardSegments
-BossRandomization
-GuardRandomization
-MercRandomization
-SortedSegments
-SecureSegments
-TopSegments
-ForwardSegments
-BottomSegments
-SegmentIndices
-ForeIndices
-StarboardIndices
-DestroyedModules
-TotalAmmo
-ToSell
-MercenaryArray
-ObjectList
-DailyItems
-RemainingItems
-bbox_right
-bbox_left
-ItemData
-IndexArray
-async_load
-MetaData
-Leaderboard
-NewPlayerScore
-ThisEntry
-ThisLeaderboard
-ThisPlayerScore
-A
-B
-TraitFactionCounts
-StationFactionCounts
-StationFactionHeaps
-StationFactionExtras
-bbox_bottom
-bbox_top
-Array
-instance_count
-current_time
-ItemArray
-FieldArray
-view_yport
-alarm
-fps_real
-TagArray
-PlayerEntry
-LastEntry
-HitableThings
-HitableDistance
-NewHitableThings
-NewHitableDistance
+   0 (   0): StationSensorRange
+   1 (   1): HomeStation
+   2 (   2): Mission
+   3 (   3): PlayerFactionIndex
+   4 (   4): Debug
+   5 (   5): Player
+   6 (   6): Objective
+   7 (   7): PlayerShip
+   8 (   8): CameraDepth
+   9 (   9): TradeRouteYScale
+  10 (   A): TimeScale
+  11 (   B): TrailerMode
+  12 (   C): CaptureCursorMode
+  13 (   D): ViewScaling
+  14 (   E): GameWidth
+  15 (   F): GameHeight
+  16 (  10): ScreenWidth
+  17 (  11): ScreenHeight
+  18 (  12): AutoZoomEnabled
+  19 (  13): PauseInBackgroundMode
+  20 (  14): WindowedMode
+  21 (  15): AltSync
+  22 (  16): FastVertexBufferMode
+  23 (  17): SpecialChallengeFolder
+  24 (  18): SaveFileExtension
+  25 (  19): NormalChallengeFolder
+  26 (  1A): CurrentDefectorStation
+  27 (  1B): CurrentDefectorFilename
+  28 (  1C): CurrentDefectorID
+  29 (  1D): EncodeSaves
+  30 (  1E): StationCharacterSeats
+  31 (  1F): DesiredSecondsBetweenLiberations
+  32 (  20): LastDailyChallenge
+  33 (  21): CurrencyMultiplier
+  34 (  22): Economy
+  35 (  23): CapturedAgent
+  36 (  24): NPCDialogSeat
+  37 (  25): CharacterSeats
+  38 (  26): GloryLeaderboard
+  39 (  27): Gold
+  40 (  28): UnselectedColour
+  41 (  29): SteamEnabled
+  42 (  2A): UniqueItemCount
+  43 (  2B): UniqueItemsInUse
+  44 (  2C): GloryColour
+  45 (  2D): AppealingGreen
+  46 (  2E): RareShipmentType
+  47 (  2F): RareShipmentOwnerName
+  48 (  30): EnemyFactionCount
+  49 (  31): MaxAmmo
+  50 (  32): LogExtra
+  51 (  33): ForenameCount
+  52 (  34): Forenames
+  53 (  35): SurnameCount
+  54 (  36): Surnames
+  55 (  37): DisabledColour
+  56 (  38): StashPink
+  57 (  39): PersonalItemColour
+  58 (  3A): DeveloperMode
+  59 (  3B): SaveFileVersion
+  60 (  3C): CharacterTraitTypes
+  61 (  3D): LiberationColour
+  62 (  3E): DailyChallengeColour
+  63 (  3F): DisabledRed
+  64 (  40): PaleFriendlyBlue
+  65 (  41): CharacterTraitNames
+  66 (  42): CharacterTraitDescriptions
+  67 (  43): StationsNeededForDifficulty
+  68 (  44): StationsNeededForMissionType
+  69 (  45): CharacterTraitChallengeScores
+  70 (  46): MaxGloryModifier
+  71 (  47): LuckyTraitRarityChanceMultiplier
+  72 (  48): CompatibilityMode
+  73 (  49): GuardRoleNames
+  74 (  4A): GamepadEnabled
+  75 (  4B): ControlList
+  76 (  4C): ShipCrewDepth
+  77 (  4D): NormalItemPickUpRange
+  78 (  4E): LastDailyChallengeSubmitted
+  79 (  4F): DailyChallengeSubmittedStreak
+  80 (  50): DailyChallengeEnabled
+  81 (  51): DailyChallengeHourOffset
+  82 (  52): DailyChallengeMissionCount
+  83 (  53): DailyChallengeMissionScores
+  84 (  54): DailyChallengeLeaderboardVersion
+  85 (  55): DailyChallengeKillPenalty
+  86 (  56): DailyChallengeHarmPenalty
+  87 (  57): DailyChallengeSeenPenalty
+  88 (  58): DailyChallengeAlarmPenalty
+  89 (  59): DailyChallengeTimePenalty
+  90 (  5A): MaxDailyChallengeTimeBonus
+  91 (  5B): LastDailyChallengeWin
+  92 (  5C): DailyChallengeWinStreak
+  93 (  5D): LastDailyChallengeScore
+  94 (  5E): MaxPossibleDailyChallengeScore
+  95 (  5F): DailyChallengeMissionDifficulties
+  96 (  60): DailyChallengeEasyMissionDifficulties
+  97 (  61): DailyChallengeDefaultScore
+  98 (  62): DailyChallengeDebugSeedOffset
+  99 (  63): DeactivatedInstances
+ 100 (  64): CollisionSensor
+ 101 (  65): CrashedOnce
+ 102 (  66): PatchVersion
+ 103 (  67): LogToDisk
+ 104 (  68): AmmoTypeCount
+ 105 (  69): LogFilename
+ 106 (  6A): LogLineCount
+ 107 (  6B): LogLineIndex
+ 108 (  6C): LogLineMaxCount
+ 109 (  6D): LogLines
+ 110 (  6E): EngineVersion
+ 111 (  6F): BuildMode
+ 112 (  70): GalaxyVersion
+ 113 (  71): DialogHistory
+ 114 (  72): DialogHeader
+ 115 (  73): DialogHeaderBlock
+ 116 (  74): DialogData
+ 117 (  75): DialogSpeakerName
+ 118 (  76): DialogPortrait
+ 119 (  77): DialogName
+ 120 (  78): DialogOptionColour
+ 121 (  79): DoorOpenDepth
+ 122 (  7A): DoorClosedDepth
+ 123 (  7B): Factions
+ 124 (  7C): WindowParticleDepth
+ 125 (  7D): ShadersEnabled
+ 126 (  7E): ScratchList
+ 127 (  7F): GodMode
+ 128 (  80): CorpseDepth
+ 129 (  81): JammerSpacingMax
+ 130 (  82): JammerSpacingMin
+ 131 (  83): KitNames
+ 132 (  84): KnockoutMomentum
+ 133 (  85): MomentumToTriggerGun
+ 134 (  86): MercenaryNames
+ 135 (  87): ScratchHeap
+ 136 (  88): MercenaryString
+ 137 (  89): JammerDeviceRange
+ 138 (  8A): OffsetCount
+ 139 (  8B): OffsetArray
+ 140 (  8C): GhostMode
+ 141 (  8D): FactionCount
+ 142 (  8E): HighVisibility
+ 143 (  8F): FactionSpriteMap
+ 144 (  90): FactionNames
+ 145 (  91): GlitchersFactionIndex
+ 146 (  92): FoundryFactionIndex
+ 147 (  93): OffworldFactionIndex
+ 148 (  94): SovereignFactionIndex
+ 149 (  95): IndependentFactionIndex
+ 150 (  96): Fringes
+ 151 (  97): HomeStationName
+ 152 (  98): CenterX
+ 153 (  99): CenterY
+ 154 (  9A): VapourWakePool
+ 155 (  9B): GalaxyEditingMode
+ 156 (  9C): TradeRouteDepth
+ 157 (  9D): ClientNames
+ 158 (  9E): SpriteIndexes
+ 159 (  9F): SpriteIndexCount
+ 160 (  A0): TraitCount
+ 161 (  A1): TraitDefaultLockStatus
+ 162 (  A2): ObjectForTrait
+ 163 (  A3): Traits
+ 164 (  A4): DoorScrambleRange
+ 165 (  A5): Root2Over2
+ 166 (  A6): DiscountMultiplier
+ 167 (  A7): CreatedSprites
+ 168 (  A8): SoundVolume
+ 169 (  A9): GuardDropsShiplocked
+ 170 (  AA): StationOffsetScale
+ 171 (  AB): UnlockedAchievements
+ 172 (  AC): SpecialItemDue
+ 173 (  AD): TipCount
+ 174 (  AE): Tips
+ 175 (  AF): TipIndex
+ 176 (  B0): MissionGenerationDebug
+ 177 (  B1): LiberationAssist
+ 178 (  B2): Heirlooms
+ 179 (  B3): Permadeath
+ 180 (  B4): ExplosiveWarnings
+ 181 (  B5): DeveloperShortcut
+ 182 (  B6): ScreenshakeEnabled
+ 183 (  B7): SpeedLimit
+ 184 (  B8): BigShipSpeedLimit
+ 185 (  B9): BigShipCruiseSpeed
+ 186 (  BA): ThrusterThrust
+ 187 (  BB): PlayerSensorRange
+ 188 (  BC): WASD
+ 189 (  BD): FactionToDescribe
+ 190 (  BE): EconomyBoostPerStation
+ 191 (  BF): EconomyBoostWindfallMultiplier
+ 192 (  C0): PersonalMissionIntelCostReduction
+ 193 (  C1): LongDashRange
+ 194 (  C2): ShortDashRange
+ 195 (  C3): ShopRestockTime
+ 196 (  C4): AdditionalDelayBeforeFirstLiberator
+ 197 (  C5): LiberationProgressSlopesOffAfter
+ 198 (  C6): LiberationProgressLimitPerCharacter
+ 199 (  C7): PayForOneLiberation
+ 200 (  C8): PayForLiberations
+ 201 (  C9): MaxThrowSpeed
+ 202 (  CA): WindowBreakMomentum
+ 203 (  CB): StunMomentum
+ 204 (  CC): ShipsSecured
+ 205 (  CD): ShipsNeededForLiberation
+ 206 (  CE): FancyMode
+ 207 (  CF): VapourBurn
+ 208 (  D0): LowerModulesDrawnToSurfaceRate
+ 209 (  D1): ModulesDrawnToSurfacePerFrame
+ 210 (  D2): SurfaceSizeLimit
+ 211 (  D3): SurfaceSize
+ 212 (  D4): Nebulae
+ 213 (  D5): BackgroundLayers
+ 214 (  D6): Surfaces
+ 215 (  D7): ParticleTrails
+ 216 (  D8): ShipSurfaceSize
+ 217 (  D9): ShipSurfaceCount
+ 218 (  DA): ShipSurfaceModuleOffset
+ 219 (  DB): IconSurfaceSize
+ 220 (  DC): IconSurfaceCount
+ 221 (  DD): MinModulesForSurface
+ 222 (  DE): GreekLetters
+ 223 (  DF): GreekLetterCount
+ 224 (  E0): AmmoNames
+ 225 (  E1): AmmoSprites
+ 226 (  E2): RarityNames
+ 227 (  E3): MediumCapacity
+ 228 (  E4): HighCapacity
+ 229 (  E5): LongRange
+ 230 (  E6): ExtremeRange
+ 231 (  E7): CapacityForRechargeableGun
+ 232 (  E8): WorkshopItemsInUse
+ 233 (  E9): MaxValueForRarity
+ 234 (  EA): ChanceOfRarity
+ 235 (  EB): DesiredWorkshopItemCount
+ 236 (  EC): WorkshopChanceForRarity
+ 237 (  ED): MaxRarity
+ 238 (  EE): MaxThrustVolume
+ 239 (  EF): RecentUnlocks
+ 240 (  F0): RecentUnlockCount
+ 241 (  F1): RecentUnlockMax
+ 242 (  F2): AllModulesWeveDestroyed
+ 243 (  F3): GiftBox
+ 244 (  F4): CollisionMask
+ 245 (  F5): Saving
+ 246 (  F6): MissionsCompleted
+ 247 (  F7): EnableSharing
+ 248 (  F8): SeasonalEvents
+ 249 (  F9): FirstLaunch
+ 250 (  FA): PausedMission
+ 251 (  FB): PausedObjective
+ 252 (  FC): PausedObjectiveInInventory
+ 253 (  FD): GiftFriendsReceived
+ 254 (  FE): GiftsReceived
+ 255 (  FF): LastGiftSentTime
+ 256 ( 100): LastGiftReceivedTime
+ 257 ( 101): GunSpriteNameMap
+ 258 ( 102): GunSpriteRifleSet
+ 259 ( 103): LootDepth
+ 260 ( 104): CursorTipCircleDepth
+ 261 ( 105): GalaxySurfaceDepth
+ 262 ( 106): DustLayerDepth
+ 263 ( 107): StarDepth
+ 264 ( 108): VapourCloudDepth
+ 265 ( 109): NebulaFeatureDepth
+ 266 ( 10A): VapourShadowDepth
+ 267 ( 10B): ShipVisionConeDepth
+ 268 ( 10C): FloatingObjectsDepth
+ 269 ( 10D): StationRockDepth
+ 270 ( 10E): StationDepth
+ 271 ( 10F): VapourTrailDepth
+ 272 ( 110): ScreenMaskDepth
+ 273 ( 111): ShipHUDDepth
+ 274 ( 112): TransitTubeDepth
+ 275 ( 113): ShipFloorDepth
+ 276 ( 114): ShipFloorFeaturesDepth
+ 277 ( 115): AirlockInteriorDepth
+ 278 ( 116): ForcefieldJoinerDepth
+ 279 ( 117): PlayerShipDockedDepth
+ 280 ( 118): TerminalDepth
+ 281 ( 119): BloodSplatterDepth
+ 282 ( 11A): LootBoxDepth
+ 283 ( 11B): LootBoxLidDepth
+ 284 ( 11C): ShipFloorMarkerDepth
+ 285 ( 11D): KeycardDepth
+ 286 ( 11E): ShopDepth
+ 287 ( 11F): PersonalBulletDepth
+ 288 ( 120): PlayerDepth
+ 289 ( 121): BloodDepth
+ 290 ( 122): WindowGlassDepth
+ 291 ( 123): SecurityCameraDepth
+ 292 ( 124): StationLiftRoofDepth
+ 293 ( 125): ShipHullDepth
+ 294 ( 126): ShipHullFeaturesDepth
+ 295 ( 127): AsteroidExteriorDepth
+ 296 ( 128): AirlockExteriorDepth
+ 297 ( 129): ShipOverlayDepth
+ 298 ( 12A): PlayerShipDepth
+ 299 ( 12B): MissileDepth
+ 300 ( 12C): ExplosionDepth
+ 301 ( 12D): SlowMotionEffectDepth
+ 302 ( 12E): SaturationEffectDepth
+ 303 ( 12F): TeleportEffectDepth
+ 304 ( 130): BlackoutEffectDepth
+ 305 ( 131): CrtEffectDepth
+ 306 ( 132): GunRangeDepth
+ 307 ( 133): CharacterMarkerDepth
+ 308 ( 134): HighlightedCharacterMarkerDepth
+ 309 ( 135): SoundPingDepth
+ 310 ( 136): ReticuleDepth
+ 311 ( 137): MenuDepth
+ 312 ( 138): LiberationShipDepth
+ 313 ( 139): CursorDepth
+ 314 ( 13A): TipsDepth
+ 315 ( 13B): TutorialDepth
+ 316 ( 13C): DebugStuffDepth
+ 317 ( 13D): DifficultyMap
+ 318 ( 13E): BreakMap
+ 319 ( 13F): RareDifficulties
+ 320 ( 140): DifficultyLevelNames
+ 321 ( 141): MaxPayForDifficultyLevel
+ 322 ( 142): MinPayForDifficultyLevel
+ 323 ( 143): MaxPayForOverrideMission
+ 324 ( 144): MercenaryDescriptions
+ 325 ( 145): KitDescriptions
+ 326 ( 146): KitCosts
+ 327 ( 147): DifficultyTypeNames
+ 328 ( 148): NamesForReinforcementTypes
+ 329 ( 149): IntervalsForReinforcementTypes
+ 330 ( 14A): MercenarySetsForReinforcementTypes
+ 331 ( 14B): MissionTypeForClient
+ 332 ( 14C): StationsNeededForFirstLiberation
+ 333 ( 14D): StationsNeededForClient
+ 334 ( 14E): StationsNeededForLastUnlock
+ 335 ( 14F): ClientDescriptions
+ 336 ( 150): ClientColours
+ 337 ( 151): CoolBlue
+ 338 ( 152): FriendlyBlue
+ 339 ( 153): ExcitingGreen
+ 340 ( 154): ExcitingOrange
+ 341 ( 155): BadRed
+ 342 ( 156): WarningOrange
+ 343 ( 157): ElectricYellow
+ 344 ( 158): ScaryPurple
+ 345 ( 159): InventoryBackgroundHighlighted
+ 346 ( 15A): LaserRed
+ 347 ( 15B): DarkGrey
+ 348 ( 15C): SelectedColour
+ 349 ( 15D): UnaffordableColour
+ 350 ( 15E): TutorialColour
+ 351 ( 15F): MissionColour
+ 352 ( 160): PersonalMissionColour
+ 353 ( 161): RescueBonusColour
+ 354 ( 162): RarityColours
+ 355 ( 163): UniqueItemsUnlocked
+ 356 ( 164): UniqueItems
+ 357 ( 165): ItemCount
+ 358 ( 166): ItemIndexes
+ 359 ( 167): TraitFactionObject
+ 360 ( 168): MercenaryArrays
+ 361 ( 169): MercenaryArrayCounts
+ 362 ( 16A): MercenaryArrayPay
+ 363 ( 16B): RareShipmentStartDate
+ 364 ( 16C): RareShipmentEndDate
+ 365 ( 16D): RareShipmentName
+ 366 ( 16E): RareShipmentFactionIndex
+ 367 ( 16F): Difficulty
+ 368 ( 170): UniqueItemsDefaultUnlocked
+ 369 ( 171): PatchMessage
+ 370 ( 172): PatchNotes
+ 371 ( 173): TraitsUnlocked
+ 372 ( 174): NPCSeat
+ 373 ( 175): FiascoSeat
+ 374 ( 176): FiascoDialogSeat
+ 375 ( 177): NPCDialogAltSeat
+ 376 ( 178): ItemIndexesUnlocked
+ 377 ( 179): VapourWakeCreatedCount
+ 378 ( 17A): SetCreatedCount
+ 379 ( 17B): SetPool
+ 380 ( 17C): ShaderSurfaceDepth
+ 381 ( 17D): ViewSizePower
+ 382 ( 17E): AutopilotMode
+ 383 ( 17F): CurrentZoom
+ 384 ( 180): CursorSprite
+ 385 ( 181): MenuClick
+ 386 ( 182): AutopilotTipIndex
+ 387 ( 183): ArrivedAtPlayersBodyz
+ 388 ( 184): Autopilot
+ 389 ( 185): MyDestination
+ 390 ( 186): FinalDestination
+ 391 ( 187): DestinationObject
+ 392 ( 188): JourneyDistance
+ 393 ( 189): DestinationDistance
+ 394 ( 18A): FinalDestinationDistance
+ 395 ( 18B): xSpeed
+ 396 ( 18C): LastxSpeed
+ 397 ( 18D): ySpeed
+ 398 ( 18E): LastySpeed
+ 399 ( 18F): DestinationDirection
+ 400 ( 190): FinalDestinationDirection
+ 401 ( 191): Ship
+ 402 ( 192): TrackingObject
+ 403 ( 193): AutopilotZoomPriority
+ 404 ( 194): Speed
+ 405 ( 195): Direction
+ 406 ( 196): Arrived
+ 407 ( 197): xThrust
+ 408 ( 198): yThrust
+ 409 ( 199): MaxThrust
+ 410 ( 19A): xSpeedDesired
+ 411 ( 19B): ySpeedDesired
+ 412 ( 19C): Parent
+ 413 ( 19D): StoppingDistance
+ 414 ( 19E): StopDirection
+ 415 ( 19F): xDifferenceAchieved
+ 416 ( 1A0): yDifferenceAchieved
+ 417 ( 1A1): AutopilotModeZoomPriority
+ 418 ( 1A2): FactionIndex
+ 419 ( 1A3): Secured
+ 420 ( 1A4): Intent
+ 421 ( 1A5): HeadingToStation
+ 422 ( 1A6): StationCount
+ 423 ( 1A7): Stations
+ 424 ( 1A8): BlackBoxCount
+ 425 ( 1A9): BlackBoxText
+ 426 ( 1AA): ShowFullLog
+ 427 ( 1AB): ShowLogCount
+ 428 ( 1AC): StandardShowTime
+ 429 ( 1AD): HUD
+ 430 ( 1AE): ShowLogTime
+ 431 ( 1AF): ShowLogX
+ 432 ( 1B0): ShowLogY
+ 433 ( 1B1): ShowLogText
+ 434 ( 1B2): GUIx
+ 435 ( 1B3): GUIy
+ 436 ( 1B4): Object
+ 437 ( 1B5): Controlling
+ 438 ( 1B6): MyImageAngle
+ 439 ( 1B7): JauntyViewRotationOffset
+ 440 ( 1B8): KeyboardDirectionsRotatedBy
+ 441 ( 1B9): MyBuilding
+ 442 ( 1BA): ViewTwistStrength
+ 443 ( 1BB): CameraDistance
+ 444 ( 1BC): PositionsUpdated
+ 445 ( 1BD): SetFullscreenDelay
+ 446 ( 1BE): InitialSetFullscreen
+ 447 ( 1BF): PanFactor
+ 448 ( 1C0): PanDirection
+ 449 ( 1C1): SecondsToShowCollisionGrid
+ 450 ( 1C2): ShakeOffsetX
+ 451 ( 1C3): ShakeOffsetY
+ 452 ( 1C4): GalaxySurfaceVanishingViewSize
+ 453 ( 1C5): GalaxySurfaceFullViewSize
+ 454 ( 1C6): AutoPan
+ 455 ( 1C7): SectorX
+ 456 ( 1C8): SectorY
+ 457 ( 1C9): CameraMinSectorX
+ 458 ( 1CA): CameraMaxSectorX
+ 459 ( 1CB): CameraMinSectorY
+ 460 ( 1CC): CameraMaxSectorY
+ 461 ( 1CD): SecondsInManualZoomMode
+ 462 ( 1CE): StraightenViewFrom
+ 463 ( 1CF): StraightenViewBy
+ 464 ( 1D0): ObjectPanningSpeed
+ 465 ( 1D1): InteriorViewSize
+ 466 ( 1D2): InteriorViewSizePower
+ 467 ( 1D3): NormalMaxViewSizePower
+ 468 ( 1D4): NormalMaxViewSize
+ 469 ( 1D5): NormalMinViewSizePower
+ 470 ( 1D6): MaxViewSizePower
+ 471 ( 1D7): MaxViewSize
+ 472 ( 1D8): MinViewSizePower
+ 473 ( 1D9): MapViewSize
+ 474 ( 1DA): TargetViewSizePower
+ 475 ( 1DB): ViewSizeChangeRate
+ 476 ( 1DC): ViewSizeIncreaseAcceleration
+ 477 ( 1DD): ViewSizeDecreaseAcceleration
+ 478 ( 1DE): ZoomPriority
+ 479 ( 1DF): LastZoomPriority
+ 480 ( 1E0): ManualZoomMode
+ 481 ( 1E1): LeavingManualZoomMode
+ 482 ( 1E2): ManualViewSizePower
+ 483 ( 1E3): TemporaryViewObject
+ 484 ( 1E4): OriginalViewSize
+ 485 ( 1E5): TemporaryZoomDuration
+ 486 ( 1E6): TemporaryZoomTimeLeft
+ 487 ( 1E7): FloatingZoomPriority
+ 488 ( 1E8): ManualZoomPriority
+ 489 ( 1E9): TravelZoomPriority
+ 490 ( 1EA): ShipApproachZoomPriority
+ 491 ( 1EB): DockingZoomPriority
+ 492 ( 1EC): MatchTargetZoomPriority
+ 493 ( 1ED): ShipTargetZoomPriority
+ 494 ( 1EE): AirlockEjectZoomPriority
+ 495 ( 1EF): MapZoomPriority
+ 496 ( 1F0): TemporaryZoomPriority
+ 497 ( 1F1): ObjectPanningZoomPriority
+ 498 ( 1F2): GalaxyScreenshotZoomPriority
+ 499 ( 1F3): MissileZoomPriority
+ 500 ( 1F4): LessUrgentCatchSelfZoomPriority
+ 501 ( 1F5): MissionListingsZoomPriority
+ 502 ( 1F6): InteriorZoomPriority
+ 503 ( 1F7): LegendsPriority
+ 504 ( 1F8): DialogZoomPriority
+ 505 ( 1F9): EnemyAutoZoomPriority
+ 506 ( 1FA): CaptureDockingZoomPriority
+ 507 ( 1FB): CreditsPriority
+ 508 ( 1FC): ShortTermManualZoomPriority
+ 509 ( 1FD): ScanZoomPriority
+ 510 ( 1FE): DeathZoomPriority
+ 511 ( 1FF): CharacterSelectZoomPriority
+ 512 ( 200): CatchSelfZoomPriority
+ 513 ( 201): TutorialZoomPriority
+ 514 ( 202): TutorialSlowZoom
+ 515 ( 203): TutorialPodZoomPriority
+ 516 ( 204): InstantZoomPriority
+ 517 ( 205): EndGamePriority
+ 518 ( 206): LocalColourHasEverBeenSet
+ 519 ( 207): SecondsSinceColourChange
+ 520 ( 208): LocalColour
+ 521 ( 209): VapourColour
+ 522 ( 20A): OldLocalColour
+ 523 ( 20B): TargetLocalColour
+ 524 ( 20C): PanMode
+ 525 ( 20D): SecondsSinceManualZoom
+ 526 ( 20E): CenterOnX
+ 527 ( 20F): CenterOnY
+ 528 ( 210): ZoomLevel
+ 529 ( 211): MinimumZoomLevel
+ 530 ( 212): DefaultGalacticZoomLevel
+ 531 ( 213): GalacticZoomIconThreshold
+ 532 ( 214): MapModeThreshold
+ 533 ( 215): MinimumNormalZoomIndex
+ 534 ( 216): MinimumNormalZoom
+ 535 ( 217): ZoomIndex
+ 536 ( 218): PreviousZoomIndex
+ 537 ( 219): UndockZoomIndex
+ 538 ( 21A): DefaultInteriorZoom
+ 539 ( 21B): LastZoomLevel
+ 540 ( 21C): TargetZoom
+ 541 ( 21D): AutoZoom
+ 542 ( 21E): OldZoom
+ 543 ( 21F): ZoomHasChanged
+ 544 ( 220): ZoomSmoothing
+ 545 ( 221): SmoothZoom
+ 546 ( 222): MapKeyMode
+ 547 ( 223): MinAutoZoom
+ 548 ( 224): SurfacesCreated
+ 549 ( 225): HUDTrackingRange
+ 550 ( 226): AnyShipsInRange
+ 551 ( 227): MissionBeaconInRange
+ 552 ( 228): xOffset
+ 553 ( 229): yOffset
+ 554 ( 22A): DangerousSituation
+ 555 ( 22B): SecondsSinceSave
+ 556 ( 22C): SecondsUntilAutoZoom
+ 557 ( 22D): ZoomIncrement
+ 558 ( 22E): ZoomInMax
+ 559 ( 22F): SurfaceRange
+ 560 ( 230): xDistanceToMoveEverything
+ 561 ( 231): yDistanceToMoveEverything
+ 562 ( 232): SourceObject
+ 563 ( 233): SecondsToLerp
+ 564 ( 234): Pan
+ 565 ( 235): PanTipIndex
+ 566 ( 236): PanLeft
+ 567 ( 237): PanRight
+ 568 ( 238): PanUp
+ 569 ( 239): PanDown
+ 570 ( 23A): RightStickDistance
+ 571 ( 23B): GamepadMode
+ 572 ( 23C): RightStickDirection
+ 573 ( 23D): LeftStickDistance
+ 574 ( 23E): Thrust
+ 575 ( 23F): Acceleration
+ 576 ( 240): FocusX
+ 577 ( 241): FocusY
+ 578 ( 242): Mode
+ 579 ( 243): StraighteningSpeed
+ 580 ( 244): TimeGroup
+ 581 ( 245): AsteroidAlpha
+ 582 ( 246): StarAlpha
+ 583 ( 247): MaxColourSectorX
+ 584 ( 248): MaxColourSectorY
+ 585 ( 249): ColourGrid
+ 586 ( 24A): Radius
+ 587 ( 24B): ZoomTipIndex
+ 588 ( 24C): ManualViewSizeToRestore
+ 589 ( 24D): Magnitude
+ 590 ( 24E): TotalSeconds
+ 591 ( 24F): SecondsLeft
+ 592 ( 250): DirectionVariance
+ 593 ( 251): GameRunning
+ 594 ( 252): InventoryScrollLock
+ 595 ( 253): ZoomIn
+ 596 ( 254): TipProgress
+ 597 ( 255): ZoomOut
+ 598 ( 256): GradualZoomIn
+ 599 ( 257): GradualZoomOut
+ 600 ( 258): Station
+ 601 ( 259): ModuleCount
+ 602 ( 25A): ModuleList
+ 603 ( 25B): Segment
+ 604 ( 25C): MaxStations
+ 605 ( 25D): ObjectToUnlock
+ 606 ( 25E): ChallengeFilename
+ 607 ( 25F): ChallengeCompleted
+ 608 ( 260): ChallengeStation
+ 609 ( 261): CharSelectable
+ 610 ( 262): Fore
+ 611 ( 263): Starboard
+ 612 ( 264): IsChallengeCharacter
+ 613 ( 265): PersonalMission
+ 614 ( 266): PersonalMissionState
+ 615 ( 267): PodSaveState
+ 616 ( 268): FirstAirlock
+ 617 ( 269): MyAirlock
+ 618 ( 26A): xReal
+ 619 ( 26B): yReal
+ 620 ( 26C): Bleeding
+ 621 ( 26D): GettingUp
+ 622 ( 26E): IsPersonalMission
+ 623 ( 26F): GuardKit
+ 624 ( 270): Inventory
+ 625 ( 271): Ammo
+ 626 ( 272): Description
+ 627 ( 273): InventoryCount
+ 628 ( 274): BaseName
+ 629 ( 275): Save
+ 630 ( 276): DefectorID
+ 631 ( 277): Status
+ 632 ( 278): GalaxyFolder
+ 633 ( 279): CharExtra
+ 634 ( 27A): DailyChallenge
+ 635 ( 27B): Spin
+ 636 ( 27C): InRange
+ 637 ( 27D): CenterFore
+ 638 ( 27E): CenterStarboard
+ 639 ( 27F): State
+ 640 ( 280): Walking
+ 641 ( 281): CursorDistance
+ 642 ( 282): NearestCharacter
+ 643 ( 283): Highlighted
+ 644 ( 284): Loot
+ 645 ( 285): IsLiberator
+ 646 ( 286): SecondsSinceLastLiberation
+ 647 ( 287): PersonalMissionRescueAgent
+ 648 ( 288): ExtraCharacters
+ 649 ( 289): DailyChallengeType
+ 650 ( 28A): DailyChallengeMissionType
+ 651 ( 28B): Rarity
+ 652 ( 28C): LegendsCount
+ 653 ( 28D): HighestGloryLegend
+ 654 ( 28E): Accolades
+ 655 ( 28F): Legends
+ 656 ( 290): HighestGloryScore
+ 657 ( 291): DailyChallengeName
+ 658 ( 292): DailyChallengeLeaderboard
+ 659 ( 293): DailyChallengeDifficulty
+ 660 ( 294): DailyChallengeArmour
+ 661 ( 295): DailyChallengeShields
+ 662 ( 296): DailyChallengePractice
+ 663 ( 297): TraitCount
+ 664 ( 298): Traits
+ 665 ( 299): Money
+ 666 ( 29A): MoneyFromEconomy
+ 667 ( 29B): SpecialPodType
+ 668 ( 29C): SpecialPods
+ 669 ( 29D): DeathZoomTimeRemaining
+ 670 ( 29E): DeathZoomTime
+ 671 ( 29F): SecondsToShowUpdateFor
+ 672 ( 2A0): Generated
+ 673 ( 2A1): Name
+ 674 ( 2A2): Surname
+ 675 ( 2A3): WorkshopChar
+ 676 ( 2A4): OriginalFactionIndex
+ 677 ( 2A5): GloryScrollY
+ 678 ( 2A6): GloryMaxScroll
+ 679 ( 2A7): NextTop
+ 680 ( 2A8): LeaderboardMode
+ 681 ( 2A9): Title
+ 682 ( 2AA): GloryLeaderboardDetails
+ 683 ( 2AB): LegendsMaxScroll
+ 684 ( 2AC): LeaderboardMaxScroll
+ 685 ( 2AD): HighestGloryAccolade
+ 686 ( 2AE): HighestGloryMission
+ 687 ( 2AF): HighestGloryMissionClause
+ 688 ( 2B0): FailedChecksum
+ 689 ( 2B1): ContainerLeft
+ 690 ( 2B2): ContainerTop
+ 691 ( 2B3): ContainerRight
+ 692 ( 2B4): ContainerBottom
+ 693 ( 2B5): LegendsScrollY
+ 694 ( 2B6): LiberatingStation
+ 695 ( 2B7): ReadMode
+ 696 ( 2B8): PrimaryItem
+ 697 ( 2B9): SecondaryItem
+ 698 ( 2BA): Skin
+ 699 ( 2BB): Head
+ 700 ( 2BC): IsSkeleton
+ 701 ( 2BD): OriginalOwner
+ 702 ( 2BE): CapturedByFactionIndex
+ 703 ( 2BF): Forename
+ 704 ( 2C0): BleedOutTime
+ 705 ( 2C1): SecondsUntilBleedOut
+ 706 ( 2C2): Kills
+ 707 ( 2C3): Knockouts
+ 708 ( 2C4): TimesInjured
+ 709 ( 2C5): MissionsCompleted
+ 710 ( 2C6): MissionsTaken
+ 711 ( 2C7): ClausesTaken
+ 712 ( 2C8): ClausesCompleted
+ 713 ( 2C9): Alarms
+ 714 ( 2CA): LivingWitnesses
+ 715 ( 2CB): TimesSeen
+ 716 ( 2CC): MissionTime
+ 717 ( 2CD): AveragePay
+ 718 ( 2CE): PersonalMissionCost
+ 719 ( 2CF): PersonalMissionIntel
+ 720 ( 2D0): EasyMissionsCompleted
+ 721 ( 2D1): MediumMissionsCompleted
+ 722 ( 2D2): TotalLiberationProgress
+ 723 ( 2D3): GloryLevel
+ 724 ( 2D4): RunningScore
+ 725 ( 2D5): RunningDebt
+ 726 ( 2D6): RunningPenalty
+ 727 ( 2D7): PersonalMissionsLeft
+ 728 ( 2D8): ObsessedMissionFactionIndex
+ 729 ( 2D9): DyingTimer
+ 730 ( 2DA): PodSkin
+ 731 ( 2DB): PodThrustColour
+ 732 ( 2DC): PodMaxFuel
+ 733 ( 2DD): LoadedChecksum
+ 734 ( 2DE): LoadedChecksumString
+ 735 ( 2DF): HasEquipment
+ 736 ( 2E0): Checksum
+ 737 ( 2E1): ChecksumString
+ 738 ( 2E2): StationToLiberate
+ 739 ( 2E3): DestroyMe
+ 740 ( 2E4): Mysterious
+ 741 ( 2E5): PersonalMissionItem
+ 742 ( 2E6): Value
+ 743 ( 2E7): OriginalCharacter
+ 744 ( 2E8): GiftID
+ 745 ( 2E9): PriceMultiplier
+ 746 ( 2EA): TimesUsed
+ 747 ( 2EB): Capacity
+ 748 ( 2EC): Uses
+ 749 ( 2ED): MyStation
+ 750 ( 2EE): ThrustColour
+ 751 ( 2EF): MaxFuel
+ 752 ( 2F0): StationSeparation
+ 753 ( 2F1): EmergencyFuel
+ 754 ( 2F2): Fuel
+ 755 ( 2F3): Resting
+ 756 ( 2F4): ScriptedDestroy
+ 757 ( 2F5): ContainerCenter
+ 758 ( 2F6): CursorTimer
+ 759 ( 2F7): TextColour
+ 760 ( 2F8): OptionButtonHeight
+ 761 ( 2F9): InventoryY
+ 762 ( 2FA): ForceValidSave
+ 763 ( 2FB): CharacterFilename
+ 764 ( 2FC): Started
+ 765 ( 2FD): StashCount
+ 766 ( 2FE): Stash
+ 767 ( 2FF): SaveWarningResumeMode
+ 768 ( 300): SaveWarningActionToPerform
+ 769 ( 301): SaveWarningGalaxyToLoad
+ 770 ( 302): ContainerMinimumVerticalSeparation
+ 771 ( 303): NeedToGenerate
+ 772 ( 304): GenerateFile
+ 773 ( 305): ResetListings
+ 774 ( 306): PreviousMenuMode
+ 775 ( 307): Dead
+ 776 ( 308): Owner
+ 777 ( 309): Rechargeable
+ 778 ( 30A): ChargeRate
+ 779 ( 30B): Difficulty
+ 780 ( 30C): Pay
+ 781 ( 30D): Bonus
+ 782 ( 30E): TraitOffsets
+ 783 ( 30F): i
+ 784 ( 310): Type
+ 785 ( 311): Context
+ 786 ( 312): EnemyFactionIndex
+ 787 ( 313): Target
+ 788 ( 314): LovedOne
+ 789 ( 315): MinGuardsPerCluster
+ 790 ( 316): AlarmTime
+ 791 ( 317): TimeLimit
+ 792 ( 318): SentriesPerSegment
+ 793 ( 319): HasHeatSensors
+ 794 ( 31A): DesiredSegmentCount
+ 795 ( 31B): PracticeTutorialShip
+ 796 ( 31C): Practice
+ 797 ( 31D): KeycardGuardRole
+ 798 ( 31E): GlitchFailSafe
+ 799 ( 31F): DesiredBossCount
+ 800 ( 320): DesiredGuardCount
+ 801 ( 321): Warzone
+ 802 ( 322): WildcardBosses
+ 803 ( 323): GlitchProofHull
+ 804 ( 324): InteractiveThingCount
+ 805 ( 325): InteractiveThings
+ 806 ( 326): DisableGamepadUseAnchorsSignal
+ 807 ( 327): GamepadUseAnchorCount
+ 808 ( 328): GamepadUseAnchorX
+ 809 ( 329): GamepadUseAnchorY
+ 810 ( 32A): ClosestGamepadUseAnchorX
+ 811 ( 32B): ClosestGamepadUseAnchorY
+ 812 ( 32C): AimRange
+ 813 ( 32D): AutoAimTolerance
+ 814 ( 32E): ContentsCount
+ 815 ( 32F): Contents
+ 816 ( 330): ControlCount
+ 817 ( 331): KeyboardButton
+ 818 ( 332): MouseButton
+ 819 ( 333): GamepadButton
+ 820 ( 334): ControlsDown
+ 821 ( 335): ControlsPressed
+ 822 ( 336): ControlsReleased
+ 823 ( 337): ControlBeingConfigured
+ 824 ( 338): AnyControlPressedSignal
+ 825 ( 339): MouseWheelUp
+ 826 ( 33A): MouseWheelDown
+ 827 ( 33B): GamepadCount
+ 828 ( 33C): Gamepads
+ 829 ( 33D): Menu
+ 830 ( 33E): PlayerControlLock
+ 831 ( 33F): PlayerNextControlLock
+ 832 ( 340): AimCancel
+ 833 ( 341): AimedFromInventory
+ 834 ( 342): SecondsUntilReady
+ 835 ( 343): SecondaryAttack
+ 836 ( 344): SecondsUntilSwitchBackToPrimary
+ 837 ( 345): AimMode
+ 838 ( 346): AimDistance
+ 839 ( 347): AttackControlsTipIndex
+ 840 ( 348): Step
+ 841 ( 349): MarkX
+ 842 ( 34A): MarkY
+ 843 ( 34B): SlowMoScale
+ 844 ( 34C): AimPriority
+ 845 ( 34D): AimDirection
+ 846 ( 34E): Range
+ 847 ( 34F): ItemToDrawRangeFor
+ 848 ( 350): CurrentlySelectedItem
+ 849 ( 351): TorsoAimAnim
+ 850 ( 352): MyReticule
+ 851 ( 353): OnSignal
+ 852 ( 354): HitHumanSoundRadius
+ 853 ( 355): NoiseRadius
+ 854 ( 356): DashTarget
+ 855 ( 357): AutoDash
+ 856 ( 358): ThrowMode
+ 857 ( 359): TorsoIdleAnim
+ 858 ( 35A): ThrownBy
+ 859 ( 35B): ThrowSlowMoPriority
+ 860 ( 35C): AnyControlReleasedSignal
+ 861 ( 35D): MenuBack
+ 862 ( 35E): ControlsFilename
+ 863 ( 35F): ControlScrollPosition
+ 864 ( 360): ControlNames
+ 865 ( 361): MenuHeight
+ 866 ( 362): ControllingType
+ 867 ( 363): BridgeSeatTipIndex
+ 868 ( 364): MyCursorSprite
+ 869 ( 365): Docked
+ 870 ( 366): Siege
+ 871 ( 367): SetCourse
+ 872 ( 368): LeavingSeat
+ 873 ( 369): ThrusterCount
+ 874 ( 36A): BridgeControlTipIndex
+ 875 ( 36B): TurretCount
+ 876 ( 36C): FireShipWeapons
+ 877 ( 36D): BridgeTurretsTipIndex
+ 878 ( 36E): Turret
+ 879 ( 36F): SecondsUntilFiring
+ 880 ( 370): TurretSeatTipIndex
+ 881 ( 371): Heading
+ 882 ( 372): TurretControlTipIndex
+ 883 ( 373): DoorComputerTipIndex
+ 884 ( 374): Security
+ 885 ( 375): Hacks
+ 886 ( 376): DoorComputerControlTipIndex
+ 887 ( 377): Activate
+ 888 ( 378): ControlApplies
+ 889 ( 379): ControlPersists
+ 890 ( 37A): ControlTipText
+ 891 ( 37B): ControlGroupMembership
+ 892 ( 37C): Deceleration
+ 893 ( 37D): ForeSpeed
+ 894 ( 37E): ForeSpeedDesired
+ 895 ( 37F): StarboardSpeedDesired
+ 896 ( 380): StarboardSpeed
+ 897 ( 381): ContainerWidth
+ 898 ( 382): ContainerHeight
+ 899 ( 383): Hover
+ 900 ( 384): ContainerMargin
+ 901 ( 385): ConfiguringSignal
+ 902 ( 386): ControlShownForSeconds
+ 903 ( 387): SecondsToShowControlsFor
+ 904 ( 388): SecondsToFadeControls
+ 905 ( 389): ControlSlidesIn
+ 906 ( 38A): SecondsToSlideControls
+ 907 ( 38B): CenteredControlGroupX
+ 908 ( 38C): NormalControlGroupX
+ 909 ( 38D): ControlTipX
+ 910 ( 38E): ControlSprite
+ 911 ( 38F): ControlImageIndex
+ 912 ( 390): ControlGroupCount
+ 913 ( 391): ControlGroupShownTime
+ 914 ( 392): ControlGroupX
+ 915 ( 393): ControlTipCount
+ 916 ( 394): Attack
+ 917 ( 395): OnBoardInteractionGroup
+ 918 ( 396): UseGroup
+ 919 ( 397): CarriedObject
+ 920 ( 398): Carrier
+ 921 ( 399): CurrentControlIndex
+ 922 ( 39A): WrongControlName
+ 923 ( 39B): WrongControlKeyboardButton
+ 924 ( 39C): WrongControlMouseButton
+ 925 ( 39D): WrongControlGamepadButton
+ 926 ( 39E): CurrentGroup
+ 927 ( 39F): LastGamepadButtonPressed
+ 928 ( 3A0): LeftStickX
+ 929 ( 3A1): LeftStickY
+ 930 ( 3A2): LeftStickDirection
+ 931 ( 3A3): RightStickX
+ 932 ( 3A4): RightStickY
+ 933 ( 3A5): MouseGUIx
+ 934 ( 3A6): MouseGUIy
+ 935 ( 3A7): ConfiguringState
+ 936 ( 3A8): AnyControlPressedState
+ 937 ( 3A9): LeftMouseDownOverride
+ 938 ( 3AA): LeftMousePressedOverride
+ 939 ( 3AB): LastGUIx
+ 940 ( 3AC): LastGUIy
+ 941 ( 3AD): CursorMoved
+ 942 ( 3AE): StickCount
+ 943 ( 3AF): DefaultControlsFilename
+ 944 ( 3B0): ShipControlsGroup
+ 945 ( 3B1): Collected
+ 946 ( 3B2): ForSale
+ 947 ( 3B3): MyShop
+ 948 ( 3B4): ItemCount
+ 949 ( 3B5): Items
+ 950 ( 3B6): UseHandle
+ 951 ( 3B7): UseTip
+ 952 ( 3B8): Passive
+ 953 ( 3B9): InventorySlots
+ 954 ( 3BA): HandLuggage
+ 955 ( 3BB): HandLuggageInventorySlots
+ 956 ( 3BC): CursorItem
+ 957 ( 3BD): EndPracticeModeSignal
+ 958 ( 3BE): Leaving
+ 959 ( 3BF): Manned
+ 960 ( 3C0): BloodScale
+ 961 ( 3C1): OriginalShip
+ 962 ( 3C2): Lines
+ 963 ( 3C3): MoveLeft
+ 964 ( 3C4): MoveRight
+ 965 ( 3C5): MoveUp
+ 966 ( 3C6): MoveDown
+ 967 ( 3C7): Use
+ 968 ( 3C8): WalkControlsTipIndex
+ 969 ( 3C9): Item
+ 970 ( 3CA): Brake
+ 971 ( 3CB): OnBoardMovementGroup
+ 972 ( 3CC): PathfindToCursor
+ 973 ( 3CD): UniversalGroup
+ 974 ( 3CE): HideHUD
+ 975 ( 3CF): RestartPractice
+ 976 ( 3D0): Throw
+ 977 ( 3D1): Eject
+ 978 ( 3D2): SlowMo
+ 979 ( 3D3): FastMo
+ 980 ( 3D4): DummyControl
+ 981 ( 3D5): RemoteControl
+ 982 ( 3D6): Scan
+ 983 ( 3D7): DismissCurrentTip
+ 984 ( 3D8): InventoryGroup
+ 985 ( 3D9): NextItem
+ 986 ( 3DA): PreviousItem
+ 987 ( 3DB): CursorIsOverAnyInventoryButtonsState
+ 988 ( 3DC): TorsoThrowAnim
+ 989 ( 3DD): ThrowPausePriority
+ 990 ( 3DE): PrimaryAction
+ 991 ( 3DF): SecondaryAction
+ 992 ( 3E0): TorsoLoops
+ 993 ( 3E1): MoveFore
+ 994 ( 3E2): MoveAft
+ 995 ( 3E3): MoveStarboard
+ 996 ( 3E4): MovePort
+ 997 ( 3E5): MyPath
+ 998 ( 3E6): SpeedState
+ 999 ( 3E7): RunningSpeed
+1000 ( 3E8): SpeedItemScale
+1001 ( 3E9): EnemyTargetPriority
+1002 ( 3EA): NearbyLootHandleCount
+1003 ( 3EB): NearbyHandleCount
+1004 ( 3EC): NearestLoot
+1005 ( 3ED): MyObject
+1006 ( 3EE): ThingType
+1007 ( 3EF): Interactive
+1008 ( 3F0): NearbyLootHandles
+1009 ( 3F1): NearbyHandles
+1010 ( 3F2): OffsetX
+1011 ( 3F3): OffsetY
+1012 ( 3F4): UsePromptActive
+1013 ( 3F5): UseObject
+1014 ( 3F6): ShowUsePrompt
+1015 ( 3F7): LeftClickHandled
+1016 ( 3F8): RightClickHandled
+1017 ( 3F9): SlowMoTipIndex
+1018 ( 3FA): SlowMoKeyPriority
+1019 ( 3FB): HistoryCount
+1020 ( 3FC): History
+1021 ( 3FD): NonTargetKills
+1022 ( 3FE): NonTargetKnockouts
+1023 ( 3FF): LeaderboardScrollY
+1024 ( 400): DamageSignal
+1025 ( 401): DamageMask
+1026 ( 402): Kit
+1027 ( 403): MyExterior
+1028 ( 404): MyRadius
+1029 ( 405): Enabled
+1030 ( 406): MyTurret
+1031 ( 407): MyDoor
+1032 ( 408): HasRocks
+1033 ( 409): TargetModuleSet
+1034 ( 40A): ContentsNames
+1035 ( 40B): MissingContentsName
+1036 ( 40C): CollisionSensorRange
+1037 ( 40D): j
+1038 ( 40E): StartFore
+1039 ( 40F): UnitSize
+1040 ( 410): StartStarboard
+1041 ( 411): CollisionSensor
+1042 ( 412): PathfindingGrid
+1043 ( 413): NewVar
+1044 ( 414): DebugChannel
+1045 ( 415): ThingToDebug
+1046 ( 416): DebugPause
+1047 ( 417): DebugString
+1048 ( 418): DebugCount
+1049 ( 419): DebugCountMax
+1050 ( 41A): DebugLastLine
+1051 ( 41B): DebugRepeatedLineCount
+1052 ( 41C): DebugText
+1053 ( 41D): DebugTextBeforeLastUniqueString
+1054 ( 41E): DebugScroll
+1055 ( 41F): ModulesLong
+1056 ( 420): ModulesWide
+1057 ( 421): CollisionGrid
+1058 ( 422): CollisionColour
+1059 ( 423): ModuleLength
+1060 ( 424): ModuleWidth
+1061 ( 425): MouseFore
+1062 ( 426): MouseStarboard
+1063 ( 427): ResponseHeaderArray
+1064 ( 428): ProblemDescription
+1065 ( 429): CharactersToDraw
+1066 ( 42A): TextWriteSignal
+1067 ( 42B): HUDColour
+1068 ( 42C): CharacterName
+1069 ( 42D): EndScriptedSignal
+1070 ( 42E): SensorRange
+1071 ( 42F): SecurityLevelToPulse
+1072 ( 430): SecurityPulseSignal
+1073 ( 431): OpenSignal
+1074 ( 432): SecurityScaleBonus
+1075 ( 433): Left
+1076 ( 434): Right
+1077 ( 435): HalfUnit
+1078 ( 436): Top
+1079 ( 437): Bottom
+1080 ( 438): Open
+1081 ( 439): NeedsToClose
+1082 ( 43A): SecondsUntilClosing
+1083 ( 43B): CrashedSecondsLeft
+1084 ( 43C): DoorLogCount
+1085 ( 43D): DoorLog
+1086 ( 43E): JustCreated
+1087 ( 43F): CircleFactor
+1088 ( 440): DoorwaySprite
+1089 ( 441): Scale
+1090 ( 442): InSurfaceRange
+1091 ( 443): Warning
+1092 ( 444): ModuleSprite
+1093 ( 445): RoomSprite
+1094 ( 446): DrawAngle
+1095 ( 447): BigRoom
+1096 ( 448): ForeDoorway
+1097 ( 449): ForeWall
+1098 ( 44A): PortDoorway
+1099 ( 44B): PortWall
+1100 ( 44C): AftDoorway
+1101 ( 44D): AftWall
+1102 ( 44E): StarboardDoorway
+1103 ( 44F): StarboardWall
+1104 ( 450): DecoSprite
+1105 ( 451): DecoAngle
+1106 ( 452): DoorwayTintSprite
+1107 ( 453): FactionObject
+1108 ( 454): Corner
+1109 ( 455): RoomSpriteTint
+1110 ( 456): Corridor
+1111 ( 457): RoomSprite1
+1112 ( 458): CorridorSprite2Corner
+1113 ( 459): RoomSprite2Corner
+1114 ( 45A): CorridorSprite2
+1115 ( 45B): RoomSprite2
+1116 ( 45C): CorridorSprite3
+1117 ( 45D): RoomSprite3
+1118 ( 45E): CorridorSprite4
+1119 ( 45F): RoomSprite4
+1120 ( 460): WindowSprite
+1121 ( 461): WindowSpriteBroken
+1122 ( 462): BigRoomSprite1
+1123 ( 463): BridgeRoom
+1124 ( 464): ThrusterRoom
+1125 ( 465): TurretRoom
+1126 ( 466): TurretRoomSprite
+1127 ( 467): SensorRoom
+1128 ( 468): SensorRoomSpriteOn
+1129 ( 469): SensorRoomOff
+1130 ( 46A): SensorRoomSpriteOff
+1131 ( 46B): TeleporterRoom
+1132 ( 46C): TeleporterRoomSpriteOn
+1133 ( 46D): TeleporterRoomOff
+1134 ( 46E): TeleporterRoomSpriteOff
+1135 ( 46F): DrawToSurface
+1136 ( 470): SurfaceScale
+1137 ( 471): DrawScale
+1138 ( 472): CurrentShipSurface
+1139 ( 473): DrawHorizontal
+1140 ( 474): DrawVertical
+1141 ( 475): DrawingAngle
+1142 ( 476): BloodParticleCount
+1143 ( 477): BloodParticles
+1144 ( 478): OriginFore
+1145 ( 479): OriginStarboard
+1146 ( 47A): EffectTimeRemaining
+1147 ( 47B): ParticleSystem
+1148 ( 47C): ParticleTypeCount
+1149 ( 47D): ParticleTypes
+1150 ( 47E): ParticleEmitterCount
+1151 ( 47F): ParticleEmitters
+1152 ( 480): PauseWithGame
+1153 ( 481): FollowObject
+1154 ( 482): DirectionX
+1155 ( 483): DirectionY
+1156 ( 484): Strength
+1157 ( 485): EffectTime
+1158 ( 486): ShaderConfigured
+1159 ( 487): ShaderHandleHorizontalSize
+1160 ( 488): ShaderHandleVerticalSize
+1161 ( 489): ShaderHandleGlintAlpha
+1162 ( 48A): ShaderHandlePixelOffset
+1163 ( 48B): PixelOffset
+1164 ( 48C): ShaderHandleGlintColour
+1165 ( 48D): Saturation
+1166 ( 48E): InterestPointCount
+1167 ( 48F): InterestPoints
+1168 ( 490): RespondingText
+1169 ( 491): AlertSpriteOverride
+1170 ( 492): AvoidPersonFore
+1171 ( 493): AvoidPersonStarboard
+1172 ( 494): CurrentSpeed
+1173 ( 495): BounceSoundRadius
+1174 ( 496): UsedItemState
+1175 ( 497): SecondsSinceAlarmed
+1176 ( 498): SecondsToSoundAlarm
+1177 ( 499): Crashed
+1178 ( 49A): ShowAlarm
+1179 ( 49B): LastKnownPlayerFore
+1180 ( 49C): LastKnownPlayerStarboard
+1181 ( 49D): ChasePathBlocked
+1182 ( 49E): LegAngle
+1183 ( 49F): PlayerDirection
+1184 ( 4A0): SecondsUntilMeleeAttackReady
+1185 ( 4A1): Animation
+1186 ( 4A2): SwingHit
+1187 ( 4A3): IconPulseFraction
+1188 ( 4A4): TimeForIconToDecay
+1189 ( 4A5): LifeLink
+1190 ( 4A6): HeatSensorRange
+1191 ( 4A7): TeleportEffectTimeRemaining
+1192 ( 4A8): TeleportEffectTime
+1193 ( 4A9): TeleportEffectDirection
+1194 ( 4AA): TeleportEffectDistance
+1195 ( 4AB): RealSeconds
+1196 ( 4AC): HeatSensorSpriteScale
+1197 ( 4AD): GameSeconds
+1198 ( 4AE): LifeLinkDrawPeer
+1199 ( 4AF): SecondsSinceSensorReboot
+1200 ( 4B0): SecondsForSensorToBoot
+1201 ( 4B1): MinimumPredatorRadius
+1202 ( 4B2): MaximumPredatorRadius
+1203 ( 4B3): PredatorHeatRadius
+1204 ( 4B4): Hacked
+1205 ( 4B5): ScramblerRadius
+1206 ( 4B6): MyProtector
+1207 ( 4B7): SecondsUntilEmergencyShieldTurnsOn
+1208 ( 4B8): Witness
+1209 ( 4B9): SecondsOfOxygenLeft
+1210 ( 4BA): SeeingPlayerThisStep
+1211 ( 4BB): ObjectiveType
+1212 ( 4BC): Mission
+1213 ( 4BD): ShownAssassinationHelpMessage
+1214 ( 4BE): Over
+1215 ( 4BF): CullCounter
+1216 ( 4C0): HasLoot
+1217 ( 4C1): DailyChallengeSeed
+1218 ( 4C2): PathProgress
+1219 ( 4C3): p
+1220 ( 4C4): MercType
+1221 ( 4C5): PanicSignal
+1222 ( 4C6): StaggerSignal
+1223 ( 4C7): Conscious
+1224 ( 4C8): CurrentModule
+1225 ( 4C9): PathDirection
+1226 ( 4CA): DesiredImageAngle
+1227 ( 4CB): SecondsUntilReaction
+1228 ( 4CC): ObjectiveText
+1229 ( 4CD): Teleported
+1230 ( 4CE): DestinationAirlock
+1231 ( 4CF): InnerDoor
+1232 ( 4D0): WalkingSpeed
+1233 ( 4D1): Carried
+1234 ( 4D2): MySaviour
+1235 ( 4D3): Sucking
+1236 ( 4D4): ContentsMustStayActive
+1237 ( 4D5): OuterDoor
+1238 ( 4D6): CarriedTipIndex
+1239 ( 4D7): NewState
+1240 ( 4D8): FetchingBodySignal
+1241 ( 4D9): SecondsUntilFire
+1242 ( 4DA): MyPilot
+1243 ( 4DB): Suckable
+1244 ( 4DC): AngleOffset
+1245 ( 4DD): DistractionAngleToRestore
+1246 ( 4DE): PreviousState
+1247 ( 4DF): DistractionStateToRestore
+1248 ( 4E0): SecondsToBeDistracted
+1249 ( 4E1): SecondsDistracted
+1250 ( 4E2): RespondingSignal
+1251 ( 4E3): InvestigatingSignal
+1252 ( 4E4): SentrySignal
+1253 ( 4E5): DistractionSignal
+1254 ( 4E6): DistractionItem
+1255 ( 4E7): DistractionFore
+1256 ( 4E8): DistractionStarboard
+1257 ( 4E9): GuardCount
+1258 ( 4EA): Guards
+1259 ( 4EB): MyErrandObject
+1260 ( 4EC): BloodAngle
+1261 ( 4ED): TimeUntilBloodSplat
+1262 ( 4EE): GuardTipIndex
+1263 ( 4EF): AmmoType
+1264 ( 4F0): PassiveInventoryCount
+1265 ( 4F1): PassiveInventory
+1266 ( 4F2): WallSlideVelocityRetentionFactor
+1267 ( 4F3): SecondsUntilHitGround
+1268 ( 4F4): GuardCheckSignal
+1269 ( 4F5): MeasuredSpeed
+1270 ( 4F6): BloodSplatter
+1271 ( 4F7): BodyImpactSoundRadius
+1272 ( 4F8): ArrivedAtErrand
+1273 ( 4F9): ClusterReturnFore
+1274 ( 4FA): ClusterReturnStarboard
+1275 ( 4FB): ClusterReturnImageAngle
+1276 ( 4FC): ErrandTimeRemaining
+1277 ( 4FD): ErrandBuddySignal
+1278 ( 4FE): SentryAtTerminal
+1279 ( 4FF): OriginalFore
+1280 ( 500): OriginalStarboard
+1281 ( 501): OriginalImageAngle
+1282 ( 502): LookAngle
+1283 ( 503): EscapeTeleporter
+1284 ( 504): EscapeSecondsLeft
+1285 ( 505): TargetEscapeSecondsLeft
+1286 ( 506): TeleporterEnabled
+1287 ( 507): TeleporterSubverted
+1288 ( 508): NeedToFlee
+1289 ( 509): OriginalState
+1290 ( 50A): Stuck
+1291 ( 50B): SecondsUntilLeaving
+1292 ( 50C): CurrentInterestPoint
+1293 ( 50D): User
+1294 ( 50E): TorsoAngle
+1295 ( 50F): RespondingFore
+1296 ( 510): RespondingStarboard
+1297 ( 511): SearchRoomDirectionSeconds
+1298 ( 512): SearchRoomRandomTurn
+1299 ( 513): SearchRoomTimer
+1300 ( 514): SearchRoomStartAngle
+1301 ( 515): PerformedSearch
+1302 ( 516): MyModule
+1303 ( 517): RestartPracticeModeSignal
+1304 ( 518): SecondsUntilTurn
+1305 ( 519): TurnsUntilMove
+1306 ( 51A): PanicTimer
+1307 ( 51B): PanicDelayTurn
+1308 ( 51C): DirectionToHunt
+1309 ( 51D): SearchModulesCount
+1310 ( 51E): SearchModules
+1311 ( 51F): PatrolPathIndex
+1312 ( 520): PatrolPathCount
+1313 ( 521): PatrolPath
+1314 ( 522): PatrolBuddy
+1315 ( 523): DestinationFore
+1316 ( 524): DestinationStarboard
+1317 ( 525): StateNameOverride
+1318 ( 526): PatrolCompleted
+1319 ( 527): JammerTargetModule
+1320 ( 528): PlacementPauseTime
+1321 ( 529): PlacementTimeRemaining
+1322 ( 52A): JammerSpacing
+1323 ( 52B): HeatSensorDetectPlayer
+1324 ( 52C): RespondingThenSearch
+1325 ( 52D): StartSearchSegment
+1326 ( 52E): StartSearchModule
+1327 ( 52F): PreviousModule
+1328 ( 530): SeekingFore
+1329 ( 531): SeekingStarboard
+1330 ( 532): SeekingPathDelay
+1331 ( 533): SeekingPathTime
+1332 ( 534): SeekerPath
+1333 ( 535): TimeRemaining
+1334 ( 536): ErrandNeighbors
+1335 ( 537): SecondsUntilErrandCheck
+1336 ( 538): ErrandPanicCountdown
+1337 ( 539): PatrolDoors
+1338 ( 53A): ErrandObjects
+1339 ( 53B): StaggerStateToRestore
+1340 ( 53C): SecondsUntilRestore
+1341 ( 53D): InventorySelection
+1342 ( 53E): HeatSensorOn
+1343 ( 53F): LifeLinkPeerCount
+1344 ( 540): LifeLinkPeers
+1345 ( 541): Waiting
+1346 ( 542): VisionRange
+1347 ( 543): FieldOfView
+1348 ( 544): Role
+1349 ( 545): RandomKitGuard
+1350 ( 546): RandomKitBoss
+1351 ( 547): ArmourSkin
+1352 ( 548): ArmourHead
+1353 ( 549): ArmourLegs
+1354 ( 54A): SkeletonCrew
+1355 ( 54B): QuietGuns
+1356 ( 54C): AttachmentSlot
+1357 ( 54D): AttachmentName
+1358 ( 54E): HumanHitSoundRadius
+1359 ( 54F): HorizontalSpeed
+1360 ( 550): VerticalSpeed
+1361 ( 551): Armed
+1362 ( 552): RemoteTriggerSignal
+1363 ( 553): InteriorTip
+1364 ( 554): LifeLinkUpdateThisStep
+1365 ( 555): LifeLinkConnected
+1366 ( 556): LifeLinkSegment
+1367 ( 557): Female
+1368 ( 558): FemaleSkin
+1369 ( 559): Legs
+1370 ( 55A): MaleSkin
+1371 ( 55B): Client
+1372 ( 55C): MercenaryCount
+1373 ( 55D): Mercenaries
+1374 ( 55E): ReactionTime
+1375 ( 55F): DefaultReactionTime
+1376 ( 560): AlertReactionTime
+1377 ( 561): DefaultAlertTime
+1378 ( 562): GuardWeapon
+1379 ( 563): PredatorParticles
+1380 ( 564): ProtectionRadius
+1381 ( 565): ClusterPoint
+1382 ( 566): LootRoom
+1383 ( 567): EmitterTimeRemaining
+1384 ( 568): SizeMultiplier
+1385 ( 569): GuardKitPoints
+1386 ( 56A): BossKitPoints
+1387 ( 56B): Alarm
+1388 ( 56C): SeenAsThreat
+1389 ( 56D): SecondsSinceSeen
+1390 ( 56E): FiredGun
+1391 ( 56F): FireRate
+1392 ( 570): SectorSecurity
+1393 ( 571): LaserX
+1394 ( 572): LaserY
+1395 ( 573): Laser
+1396 ( 574): EmergencyShieldDuration
+1397 ( 575): SecondsUntilEmergencyShieldTurnsOff
+1398 ( 576): DefiniteArticle
+1399 ( 577): StationInterior
+1400 ( 578): StationInteriorMask
+1401 ( 579): StationDockLift
+1402 ( 57A): StationResidentialLift
+1403 ( 57B): FactionFolder
+1404 ( 57C): ModuleRoofA
+1405 ( 57D): ModuleRoofB
+1406 ( 57E): ThrusterRoof
+1407 ( 57F): ThrusterSprite
+1408 ( 580): TurretRoof
+1409 ( 581): TurretSprite
+1410 ( 582): SensorRoof
+1411 ( 583): BridgeRoof
+1412 ( 584): BigRoomSprite2
+1413 ( 585): BigRoomSprite2Corner
+1414 ( 586): BigRoomSprite3
+1415 ( 587): BigRoomSprite4
+1416 ( 588): DoorSprite
+1417 ( 589): TerminalSprite
+1418 ( 58A): BrigRoom
+1419 ( 58B): BrigRoomCollision
+1420 ( 58C): Airlock
+1421 ( 58D): AirlockRoof
+1422 ( 58E): FringeStraight
+1423 ( 58F): FringeCorner
+1424 ( 590): FringeInnerCornerLeft
+1425 ( 591): FringeInnerCornerRight
+1426 ( 592): FringeStraightInterior
+1427 ( 593): FringeCornerInterior
+1428 ( 594): FringeInnerCornerLeftInterior
+1429 ( 595): FringeInnerCornerRightInterior
+1430 ( 596): FringeWindow
+1431 ( 597): FringeDestroyed
+1432 ( 598): FringeInteriorDestroyed
+1433 ( 599): FringeInteriorDestroyedBigRoom
+1434 ( 59A): FringeInteriorDestroyedDoorway
+1435 ( 59B): SentryDeco
+1436 ( 59C): Sentry
+1437 ( 59D): SentryOff
+1438 ( 59E): SentryBase
+1439 ( 59F): DecoSpriteCount
+1440 ( 5A0): DecoSprites
+1441 ( 5A1): DecoCollisionMasks
+1442 ( 5A2): CargoSprite
+1443 ( 5A3): DecoTypes
+1444 ( 5A4): DecoMedicalIndex
+1445 ( 5A5): DecoOtherFanIndex
+1446 ( 5A6): DecoLivingBunksIndex
+1447 ( 5A7): DecoOtherSortingIndex
+1448 ( 5A8): DecoLivingMessIndex
+1449 ( 5A9): DecoCounts
+1450 ( 5AA): FringeFixed
+1451 ( 5AB): CornerFixed
+1452 ( 5AC): Fringes
+1453 ( 5AD): HasNeighbour
+1454 ( 5AE): HasDiagonalNeighbour
+1455 ( 5AF): FringeTint
+1456 ( 5B0): CornerTint
+1457 ( 5B1): LiberationProgress
+1458 ( 5B2): LiberationsAvailable
+1459 ( 5B3): StationConnectRange
+1460 ( 5B4): ConnectionCount
+1461 ( 5B5): RouteCount
+1462 ( 5B6): RouteSources
+1463 ( 5B7): RouteDestinations
+1464 ( 5B8): BlobHue
+1465 ( 5B9): Hue
+1466 ( 5BA): BlobSaturation
+1467 ( 5BB): Lightness
+1468 ( 5BC): Feature
+1469 ( 5BD): GalaxyScale
+1470 ( 5BE): Size
+1471 ( 5BF): InitialAlpha
+1472 ( 5C0): xMin
+1473 ( 5C1): SectorWidth
+1474 ( 5C2): xMax
+1475 ( 5C3): yMin
+1476 ( 5C4): SectorHeight
+1477 ( 5C5): yMax
+1478 ( 5C6): Hue2
+1479 ( 5C7): Saturation2
+1480 ( 5C8): BlobsPerFaction
+1481 ( 5C9): FactionsNowInThisRegion
+1482 ( 5CA): Blob
+1483 ( 5CB): Region
+1484 ( 5CC): CurrentBlobFaction
+1485 ( 5CD): NormalBlobSize
+1486 ( 5CE): TriesLeftToFindAFreeSpot
+1487 ( 5CF): RegionSeparation
+1488 ( 5D0): Extremity
+1489 ( 5D1): GalaxyRadius
+1490 ( 5D2): Connections
+1491 ( 5D3): ConnectionScales
+1492 ( 5D4): ConnectionAngles
+1493 ( 5D5): RouteIndex
+1494 ( 5D6): PathFromHome
+1495 ( 5D7): CullingVisited
+1496 ( 5D8): CullingScore
+1497 ( 5D9): BlobDistanceFactor
+1498 ( 5DA): CullingQueued
+1499 ( 5DB): Surface
+1500 ( 5DC): LiberationStationsCount
+1501 ( 5DD): FailedTechCount
+1502 ( 5DE): FailedDefectorCount
+1503 ( 5DF): Source
+1504 ( 5E0): Destination
+1505 ( 5E1): TradeRouteMinX
+1506 ( 5E2): TradeRouteMaxX
+1507 ( 5E3): TradeRouteMinY
+1508 ( 5E4): TradeRouteMaxY
+1509 ( 5E5): MinBlobSize
+1510 ( 5E6): MaxBlobSize
+1511 ( 5E7): MinFeatureSize
+1512 ( 5E8): MaxFeatureSize
+1513 ( 5E9): LiberationRange
+1514 ( 5EA): GalaxyFilename
+1515 ( 5EB): WhitelistOption
+1516 ( 5EC): RegionCount
+1517 ( 5ED): ColourCount
+1518 ( 5EE): ColoursA
+1519 ( 5EF): ColoursB
+1520 ( 5F0): ColourA
+1521 ( 5F1): ColourB
+1522 ( 5F2): BackgroundVapourCloud
+1523 ( 5F3): MinBlobsPerRegion
+1524 ( 5F4): MaxBlobsPerRegion
+1525 ( 5F5): BlobsToPlace
+1526 ( 5F6): BlobsOfThisFaction
+1527 ( 5F7): FeaturePlaced
+1528 ( 5F8): GalaxyLeft
+1529 ( 5F9): GalaxyTop
+1530 ( 5FA): GalaxyRight
+1531 ( 5FB): GalaxyBottom
+1532 ( 5FC): MissionsSinceLiberation
+1533 ( 5FD): MissionsBetweenLiberations
+1534 ( 5FE): LiberationMode
+1535 ( 5FF): MinStations
+1536 ( 600): ScreenshotStatus
+1537 ( 601): GrabbedStation
+1538 ( 602): TradeRouteSourceStation
+1539 ( 603): MyConnections
+1540 ( 604): Length
+1541 ( 605): PixelsThick
+1542 ( 606): NormalYScale
+1543 ( 607): ShowMission
+1544 ( 608): MissionType
+1545 ( 609): Stronghold
+1546 ( 60A): Inset
+1547 ( 60B): InsetSourceX
+1548 ( 60C): InsetSourceY
+1549 ( 60D): InsetDestinationX
+1550 ( 60E): InsetDestinationY
+1551 ( 60F): SecondsSinceLastShopRestock
+1552 ( 610): TraitToUnlock
+1553 ( 611): EconomyBoost
+1554 ( 612): Founder
+1555 ( 613): Noun
+1556 ( 614): StationNameIndex
+1557 ( 615): IsGreek
+1558 ( 616): InitialImageAngle
+1559 ( 617): GalaxySlots
+1560 ( 618): GalaxySprites
+1561 ( 619): GalaxySpriteWidths
+1562 ( 61A): FriendlyStationCount
+1563 ( 61B): FriendlyStations
+1564 ( 61C): ColoursFilename
+1565 ( 61D): DeactivatedObjectCount
+1566 ( 61E): DeactivatedObjects
+1567 ( 61F): Deactivated
+1568 ( 620): DeactivatedIndex
+1569 ( 621): ForceActivateNearbyGalaxyElements
+1570 ( 622): CameraSectorChecks
+1571 ( 623): ActivationLog
+1572 ( 624): SurfaceSize
+1573 ( 625): GalacticAverageBlobX
+1574 ( 626): GalacticAverageBlobY
+1575 ( 627): StarScale
+1576 ( 628): GalacticX
+1577 ( 629): GalacticY
+1578 ( 62A): Width
+1579 ( 62B): Height
+1580 ( 62C): LargestSide
+1581 ( 62D): ResumeMode
+1582 ( 62E): DefaultPersonaName
+1583 ( 62F): WorkshopGiftCount
+1584 ( 630): WorkshopGifts
+1585 ( 631): GenerateWithAmmo
+1586 ( 632): GiftsAvailable
+1587 ( 633): Trigger
+1588 ( 634): DamageType
+1589 ( 635): CollisionLength
+1590 ( 636): CollisionWidth
+1591 ( 637): AftMost
+1592 ( 638): ForeMost
+1593 ( 639): PortMost
+1594 ( 63A): StarboardMost
+1595 ( 63B): TriggerSprite
+1596 ( 63C): SpriteSize
+1597 ( 63D): Sticky
+1598 ( 63E): MultipliedValue
+1599 ( 63F): Adjectives
+1600 ( 640): CostToFire
+1601 ( 641): WeaponDamageMask
+1602 ( 642): BulletDamageMask
+1603 ( 643): BulletKnockbackSpeed
+1604 ( 644): KnockbackSpeed
+1605 ( 645): BulletSpeed
+1606 ( 646): NormalBulletSpeed
+1607 ( 647): MinBulletSpeedMultiplier
+1608 ( 648): MaxBulletSpeedMultiplier
+1609 ( 649): BulletSprite
+1610 ( 64A): Firer
+1611 ( 64B): FirerName
+1612 ( 64C): LaunchSpeed
+1613 ( 64D): Shop
+1614 ( 64E): TorsoRunAnim
+1615 ( 64F): TorsoAttackAnim
+1616 ( 650): GunshotSound
+1617 ( 651): Verb
+1618 ( 652): Fire
+1619 ( 653): TargetX
+1620 ( 654): TargetY
+1621 ( 655): NoiseMultiplier
+1622 ( 656): LoudNoise
+1623 ( 657): QuietNoise
+1624 ( 658): SilencedNoise
+1625 ( 659): Noise
+1626 ( 65A): AudibleThroughWalls
+1627 ( 65B): Weight
+1628 ( 65C): DefaultKick
+1629 ( 65D): KickForShotgun
+1630 ( 65E): KickForSuperShotgun
+1631 ( 65F): KickForSilenced
+1632 ( 660): Kick
+1633 ( 661): HighVelocityBulletSpeed
+1634 ( 662): SwitchOnPickup
+1635 ( 663): Projectiles
+1636 ( 664): Spread
+1637 ( 665): GunshotSoundIndex
+1638 ( 666): SecondsBetweenUses
+1639 ( 667): RapidFire
+1640 ( 668): ExtremeRapidFire
+1641 ( 669): ShotgunProjectiles
+1642 ( 66A): SuperShotgunProjectiles
+1643 ( 66B): ShotgunSpread
+1644 ( 66C): SuperShotgunSpread
+1645 ( 66D): TraitBoxLeft
+1646 ( 66E): TraitBoxTop
+1647 ( 66F): TraitTextY
+1648 ( 670): TraitBoxBottom
+1649 ( 671): TraitBoxMarginHorizontal
+1650 ( 672): DrawCircle
+1651 ( 673): ExteriorTip
+1652 ( 674): Priority
+1653 ( 675): Text
+1654 ( 676): Fraction
+1655 ( 677): Colour
+1656 ( 678): Threshold
+1657 ( 679): ThresholdColour
+1658 ( 67A): Alpha
+1659 ( 67B): AnnotationAlpha
+1660 ( 67C): AnnotationBoxHeight
+1661 ( 67D): AnnotationBoxWidth
+1662 ( 67E): CursorIndex
+1663 ( 67F): CursorDirection
+1664 ( 680): CursorColour
+1665 ( 681): CursorScale
+1666 ( 682): CursorObject
+1667 ( 683): GamepadAiming
+1668 ( 684): Heat
+1669 ( 685): ThrustCursorMaxImageIndex
+1670 ( 686): Completed
+1671 ( 687): RatingsBoxRight
+1672 ( 688): Tip
+1673 ( 689): LogoSprite
+1674 ( 68A): RatingsTextLeft
+1675 ( 68B): RatingsTextRight
+1676 ( 68C): SecondsSinceAppearing
+1677 ( 68D): SymbolsDrawnSoFar
+1678 ( 68E): PaySymbolsFinished
+1679 ( 68F): PayLineSeparation
+1680 ( 690): RatingsLineSeparation
+1681 ( 691): PatchNotesScrollY
+1682 ( 692): NewViewScaling
+1683 ( 693): ControlListTipIndex
+1684 ( 694): ScrollBlocksClick
+1685 ( 695): BottomCutoff
+1686 ( 696): ScrollLeft
+1687 ( 697): ScrollTop
+1688 ( 698): ScrollWidth
+1689 ( 699): ScrollHeight
+1690 ( 69A): ScrollOffset
+1691 ( 69B): ScrollButtonHeight
+1692 ( 69C): Volume
+1693 ( 69D): UpdateTextControl
+1694 ( 69E): UpdateText
+1695 ( 69F): SecondsSinceUpdateAppeared
+1696 ( 6A0): CenterY
+1697 ( 6A1): CurrentTipIndex
+1698 ( 6A2): ObjectiveArrowTipIndex
+1699 ( 6A3): TrackingSomething
+1700 ( 6A4): CenterX
+1701 ( 6A5): yScale
+1702 ( 6A6): xScale
+1703 ( 6A7): UsePromptAlpha
+1704 ( 6A8): PushAmount
+1705 ( 6A9): DisabledSignal
+1706 ( 6AA): UseHandleTime
+1707 ( 6AB): ContentsActive
+1708 ( 6AC): ContentsIndex
+1709 ( 6AD): SortDistanceSqr
+1710 ( 6AE): Objective
+1711 ( 6AF): ModuleRange
+1712 ( 6B0): LaserUnits
+1713 ( 6B1): ImpactFore
+1714 ( 6B2): ImpactStarboard
+1715 ( 6B3): SentryDamageMask
+1716 ( 6B4): TargetModuleCount
+1717 ( 6B5): TargetModules
+1718 ( 6B6): SecondsUntilArmed
+1719 ( 6B7): ArmingTime
+1720 ( 6B8): BlastRadius
+1721 ( 6B9): DiagonalBlastRadius
+1722 ( 6BA): SecondsAlive
+1723 ( 6BB): SecondsToAppear
+1724 ( 6BC): SecondsToSuck
+1725 ( 6BD): FullScale
+1726 ( 6BE): Done
+1727 ( 6BF): WindowWidth
+1728 ( 6C0): HalfWidth
+1729 ( 6C1): HalfThickness
+1730 ( 6C2): OnlyUseUnlockedTraits
+1731 ( 6C3): TraitTypes
+1732 ( 6C4): TraitChances
+1733 ( 6C5): TraitToAdd
+1734 ( 6C6): StuckTo
+1735 ( 6C7): UnlocksUniqueItem
+1736 ( 6C8): LastOwnerTechnophobe
+1737 ( 6C9): InventoryIndex
+1738 ( 6CA): PassiveInventoryNames
+1739 ( 6CB): InventoryNames
+1740 ( 6CC): LastPrimaryItem
+1741 ( 6CD): LastSecondaryItem
+1742 ( 6CE): SecondsToShowInventoryInfo
+1743 ( 6CF): TimeSincePickedUp
+1744 ( 6D0): StashOnExit
+1745 ( 6D1): SellOnExit
+1746 ( 6D2): Quote
+1747 ( 6D3): QuoteCredit
+1748 ( 6D4): VisitorReturnTime
+1749 ( 6D5): AmmoIndex
+1750 ( 6D6): BaseRange
+1751 ( 6D7): LootTypes
+1752 ( 6D8): LootChances
+1753 ( 6D9): AvailableUniques
+1754 ( 6DA): BounceSound
+1755 ( 6DB): JustDropped
+1756 ( 6DC): EquippedItem
+1757 ( 6DD): SecondsOn
+1758 ( 6DE): Duration
+1759 ( 6DF): UseItemDisplayProgress
+1760 ( 6E0): UseMoreDisplayProgress
+1761 ( 6E1): LastUseObject
+1762 ( 6E2): Horizontal
+1763 ( 6E3): Vertical
+1764 ( 6E4): TrailLength
+1765 ( 6E5): ImpactMomentumSignal
+1766 ( 6E6): HitHumanSound
+1767 ( 6E7): SticksInPeople
+1768 ( 6E8): PersonImStuckIn
+1769 ( 6E9): BounceFactor
+1770 ( 6EA): ImpactSignal
+1771 ( 6EB): StashedForHandLuggageMission
+1772 ( 6EC): AutoAimAngleRange
+1773 ( 6ED): SecondsSinceTeleported
+1774 ( 6EE): AimDelay
+1775 ( 6EF): AimTime
+1776 ( 6F0): DashSpeed
+1777 ( 6F1): RadiusAlpha
+1778 ( 6F2): AimSprite
+1779 ( 6F3): SoldByPlayer
+1780 ( 6F4): Shiplocked
+1781 ( 6F5): LockedToShip
+1782 ( 6F6): On
+1783 ( 6F7): TorsoDashAnim
+1784 ( 6F8): TorsoRecoveryAnim
+1785 ( 6F9): Count
+1786 ( 6FA): Grade
+1787 ( 6FB): SpecialItem
+1788 ( 6FC): OriginalID
+1789 ( 6FD): ScreenJoltFactor
+1790 ( 6FE): ScreenshakeAmount
+1791 ( 6FF): ExtremeSlowMoScale
+1792 ( 700): MeleeImpactPriority
+1793 ( 701): LightningTimeRemaining
+1794 ( 702): DoubleSwordTimeRemaining
+1795 ( 703): DoubleSwordType
+1796 ( 704): HitAnEnemy
+1797 ( 705): SpeedRetentionFraction
+1798 ( 706): GrenadeDamageMask
+1799 ( 707): UsedItemSignal
+1800 ( 708): ThrowControlsTipIndex
+1801 ( 709): PrimaryItemName
+1802 ( 70A): InventoryMode
+1803 ( 70B): BrowsingShop
+1804 ( 70C): ShowHandLuggageWarning
+1805 ( 70D): PanelWidth
+1806 ( 70E): CursorItemTagIndent
+1807 ( 70F): InventoryListItemSeparation
+1808 ( 710): CursorItemY
+1809 ( 711): CursorItemTagWidth
+1810 ( 712): Margin
+1811 ( 713): CursorIsOverAnyInventoryButtonsSignal
+1812 ( 714): MissionPanelHeight
+1813 ( 715): TraitsDescribed
+1814 ( 716): InteractiblesY
+1815 ( 717): RightPanelX
+1816 ( 718): RightPanelFullWidthTextX
+1817 ( 719): SecondsInInventoryMode
+1818 ( 71A): IconSize
+1819 ( 71B): DescriptionY
+1820 ( 71C): DescriptionTextIndent
+1821 ( 71D): DescriptionTextWidth
+1822 ( 71E): AssignTipHeight
+1823 ( 71F): TopY
+1824 ( 720): SmallIconSize
+1825 ( 721): ItemTopY
+1826 ( 722): LeftPanelX
+1827 ( 723): EquippedItemPanelExtension
+1828 ( 724): SwapMode
+1829 ( 725): CursorItemSpriteWidth
+1830 ( 726): ControlIconIndent
+1831 ( 727): ItemIconIndent
+1832 ( 728): InventoryListTextIndent
+1833 ( 729): ControlIconX
+1834 ( 72A): ItemIconX
+1835 ( 72B): InventoryListTextX
+1836 ( 72C): TextIndentFromIcon
+1837 ( 72D): InventoryTextWidth
+1838 ( 72E): DescriptionPanelX
+1839 ( 72F): HeaderHeight
+1840 ( 730): InventoryScrollY
+1841 ( 731): InteractiblesTextX
+1842 ( 732): SecondItemSlotY
+1843 ( 733): NearbyItemsCount
+1844 ( 734): SecondsUntilGlitchGrabberReady
+1845 ( 735): NearbyItems
+1846 ( 736): PracticeScenarioName
+1847 ( 737): DifficultyLogCount
+1848 ( 738): DifficultyLog
+1849 ( 739): NormalPriceItems
+1850 ( 73A): Hammer
+1851 ( 73B): HammerUseY
+1852 ( 73C): SpecialActionSignal
+1853 ( 73D): RemoteControlY
+1854 ( 73E): TimeTraitsLastShown
+1855 ( 73F): TipHeaderText
+1856 ( 740): TipText
+1857 ( 741): LootPromptShownFor
+1858 ( 742): LootTipText
+1859 ( 743): UsePromptShownFor
+1860 ( 744): UseTipText
+1861 ( 745): TeleportProgress
+1862 ( 746): SelectedShopItem
+1863 ( 747): ThisX
+1864 ( 748): RatingsX
+1865 ( 749): RatingsY
+1866 ( 74A): RescueBonus
+1867 ( 74B): EscapeProtocol
+1868 ( 74C): SecurityProtocol
+1869 ( 74D): SecondsUntilAttack
+1870 ( 74E): MissionRatingsText
+1871 ( 74F): MissionRatingColour
+1872 ( 750): NoKillsClause
+1873 ( 751): NoKnockoutsClause
+1874 ( 752): NoLivingWitnessesClause
+1875 ( 753): NoAlarmsClause
+1876 ( 754): IsGloryMission
+1877 ( 755): PersonalMissionProgressText
+1878 ( 756): NearbyToStash
+1879 ( 757): NearbyToSell
+1880 ( 758): NearbyToSellAmount
+1881 ( 759): UnsortedNearbyItems
+1882 ( 75A): ItemDistances
+1883 ( 75B): CanPause
+1884 ( 75C): CanBeLiberated
+1885 ( 75D): LiberationStations
+1886 ( 75E): DefectorIconAlpha
+1887 ( 75F): LiberationFailed
+1888 ( 760): HostileStations
+1889 ( 761): SpecialChallenge
+1890 ( 762): ChallengeName
+1891 ( 763): ChallengeDescription
+1892 ( 764): ChallengeFactionIndex
+1893 ( 765): LiberatableStrongholds
+1894 ( 766): ShipsCaptured
+1895 ( 767): EndGameConversationReady
+1896 ( 768): OldName
+1897 ( 769): NewName
+1898 ( 76A): UnlockHeader
+1899 ( 76B): UnlockText
+1900 ( 76C): UnlockColour
+1901 ( 76D): UnlockTypeText
+1902 ( 76E): PeaceSignal
+1903 ( 76F): StationIcon
+1904 ( 770): StrongholdIcon
+1905 ( 771): CurrentRouteColour
+1906 ( 772): FinalStation
+1907 ( 773): BarY
+1908 ( 774): FactionPodName
+1909 ( 775): DestinationStation
+1910 ( 776): SourceStation
+1911 ( 777): Liberator
+1912 ( 778): MinSpeed
+1913 ( 779): SpecialMissionType
+1914 ( 77A): WarzoneMission
+1915 ( 77B): TriggerDelivery
+1916 ( 77C): IsDailyChallenge
+1917 ( 77D): FleeStation
+1918 ( 77E): NoKillsBonus
+1919 ( 77F): NoKnockoutsBonus
+1920 ( 780): NoAlarmsBonus
+1921 ( 781): NoLivingWitnessesBonus
+1922 ( 782): ComplicationsCount
+1923 ( 783): Complications
+1924 ( 784): ObjectiveObjectAnnotated
+1925 ( 785): ClientsAssigned
+1926 ( 786): ClientlessStationsCount
+1927 ( 787): ClientlessStations
+1928 ( 788): AssassinationCompleted
+1929 ( 789): LogNextVariable
+1930 ( 78A): Message
+1931 ( 78B): MissionTaker
+1932 ( 78C): JustAddOneExtraDifficulty
+1933 ( 78D): AddRareDifficulty
+1934 ( 78E): DifficultyModifiers
+1935 ( 78F): TotalEnemyCount
+1936 ( 790): TotalEnemyDifficulty
+1937 ( 791): NoReductions
+1938 ( 792): ChallengeIntensity
+1939 ( 793): ScramblerGates
+1940 ( 794): AutopilotMission
+1941 ( 795): AlarmDifficulty
+1942 ( 796): ReinforcementProtocol
+1943 ( 797): s
+1944 ( 798): c
+1945 ( 799): ElseText
+1946 ( 79A): GuardAKitPoints
+1947 ( 79B): GuardBKitPoints
+1948 ( 79C): ToughenedHull
+1949 ( 79D): PayFromDifficultyType
+1950 ( 79E): MinPayOverride
+1951 ( 79F): SelectedMission
+1952 ( 7A0): DetailsTextX
+1953 ( 7A1): DetailsTextY
+1954 ( 7A2): MissionDetailsPanelLeft
+1955 ( 7A3): ShowHazardDetails
+1956 ( 7A4): MenuPriority
+1957 ( 7A5): SecondsSincePreviewCreated
+1958 ( 7A6): DetailsLineCount
+1959 ( 7A7): ListingsScrollY
+1960 ( 7A8): MissionCount
+1961 ( 7A9): Missions
+1962 ( 7AA): DetailsScrollY
+1963 ( 7AB): GuardA
+1964 ( 7AC): GuardB
+1965 ( 7AD): HasIntel
+1966 ( 7AE): DetailsBoxWidth
+1967 ( 7AF): DetailsTopY
+1968 ( 7B0): PayTextRight
+1969 ( 7B1): DetailsTabX
+1970 ( 7B2): GuardDetailsSeen
+1971 ( 7B3): BossDetailsSeen
+1972 ( 7B4): ShipText
+1973 ( 7B5): ClauseTitle
+1974 ( 7B6): ClauseText
+1975 ( 7B7): TargetRole
+1976 ( 7B8): GeneratedMissions
+1977 ( 7B9): AddedToArray
+1978 ( 7BA): CrimeVerb
+1979 ( 7BB): EnemyFactionObject
+1980 ( 7BC): EnemyFactionName
+1981 ( 7BD): Motive
+1982 ( 7BE): ClausesAvailable
+1983 ( 7BF): DifficultyPoints
+1984 ( 7C0): KitTypes
+1985 ( 7C1): UnchosenKitTypes
+1986 ( 7C2): NeedsTeleporterRoom
+1987 ( 7C3): DistanceToNearestStation
+1988 ( 7C4): Bridge
+1989 ( 7C5): IsGhost
+1990 ( 7C6): AgentDrop
+1991 ( 7C7): AlreadyAnnotatedSignal
+1992 ( 7C8): ObjectiveShip
+1993 ( 7C9): AverageFore
+1994 ( 7CA): AverageStarboard
+1995 ( 7CB): SecondsUntilDeparture
+1996 ( 7CC): PausedShips
+1997 ( 7CD): PausedShipCount
+1998 ( 7CE): PlayerBoardedShip
+1999 ( 7CF): PeaceMusic
+2000 ( 7D0): TensionMusic
+2001 ( 7D1): StationMusic
+2002 ( 7D2): PlaylistMusic
+2003 ( 7D3): PlaylistIndex
+2004 ( 7D4): AnchorX
+2005 ( 7D5): AnchorY
+2006 ( 7D6): ForeUnitX
+2007 ( 7D7): StarboardUnitX
+2008 ( 7D8): ForeUnitY
+2009 ( 7D9): StarboardUnitY
+2010 ( 7DA): DecelerationDistance
+2011 ( 7DB): Updated
+2012 ( 7DC): SpinBuffer
+2013 ( 7DD): MotionFactor
+2014 ( 7DE): LastGoodFore
+2015 ( 7DF): LastGoodStarboard
+2016 ( 7E0): Squishy
+2017 ( 7E1): HitWallLastStep
+2018 ( 7E2): FramesFailedToRemoveFromWall
+2019 ( 7E3): MovedByCameraThisFrame
+2020 ( 7E4): ParentWas
+2021 ( 7E5): PreImpactFore
+2022 ( 7E6): PreImpactStarboard
+2023 ( 7E7): Destroy
+2024 ( 7E8): TipScroll
+2025 ( 7E9): TipCount
+2026 ( 7EA): ShowInList
+2027 ( 7EB): TipPriority
+2028 ( 7EC): TipSprite
+2029 ( 7ED): SpriteScale
+2030 ( 7EE): LastModule
+2031 ( 7EF): BacktrackF
+2032 ( 7F0): BacktrackS
+2033 ( 7F1): ExitCount
+2034 ( 7F2): ExitF
+2035 ( 7F3): ExitS
+2036 ( 7F4): ThisDirectionDifference
+2037 ( 7F5): BestDirectionDifference
+2038 ( 7F6): BestFore
+2039 ( 7F7): BestStarboard
+2040 ( 7F8): ModuleWidthGrid
+2041 ( 7F9): RoundedFore
+2042 ( 7FA): RoundedStarboard
+2043 ( 7FB): BounceAngle
+2044 ( 7FC): ForeDoor
+2045 ( 7FD): PortDoor
+2046 ( 7FE): AftDoor
+2047 ( 7FF): StarboardDoor
+2048 ( 800): ForeSpeedUnit
+2049 ( 801): StarboardSpeedUnit
+2050 ( 802): SpeedPenalty
+2051 ( 803): LastDirection
+2052 ( 804): Row
+2053 ( 805): Column
+2054 ( 806): ModuleGrid
+2055 ( 807): PathBackup
+2056 ( 808): PathFore
+2057 ( 809): PathStarboard
+2058 ( 80A): ForeSpeedCheck
+2059 ( 80B): StarboardSpeedCheck
+2060 ( 80C): TorsoFrame
+2061 ( 80D): SecondsUntilGlitchReady
+2062 ( 80E): FramesInsideWall
+2063 ( 80F): StealthArcState
+2064 ( 810): StartSwinging
+2065 ( 811): GetInShip
+2066 ( 812): Ejected
+2067 ( 813): InSpace
+2068 ( 814): EnteringAirlock
+2069 ( 815): ModuleWeJustLeft
+2070 ( 816): DashItem
+2071 ( 817): Unsaveable
+2072 ( 818): SuckPathBlocked
+2073 ( 819): SuckedOut
+2074 ( 81A): GiveUpTheChase
+2075 ( 81B): AbandoningPlayer
+2076 ( 81C): ErrandSignal
+2077 ( 81D): Swinging
+2078 ( 81E): SecondsUntilGetUp
+2079 ( 81F): ConfrontationResolved
+2080 ( 820): DashSignal
+2081 ( 821): PickUpRange
+2082 ( 822): InitialSecondsOfOxygen
+2083 ( 823): BleedPriority
+2084 ( 824): OnState
+2085 ( 825): OldX
+2086 ( 826): OldY
+2087 ( 827): ShipwiseDashDirection
+2088 ( 828): GlitchbackTimeRemaining
+2089 ( 829): ExteriorAlpha
+2090 ( 82A): BleedOutTimeReduction
+2091 ( 82B): AngelBleedOutTimeReduction
+2092 ( 82C): LegRate
+2093 ( 82D): LegLoops
+2094 ( 82E): CarryingBody
+2095 ( 82F): CauseOfDeath
+2096 ( 830): CarriedTime
+2097 ( 831): ScriptedSignal
+2098 ( 832): ScriptedImageAngle
+2099 ( 833): MySeat
+2100 ( 834): RestingTorsoAnim
+2101 ( 835): DashDirection
+2102 ( 836): TorsoRate
+2103 ( 837): HitSomeoneYet
+2104 ( 838): HitWallYet
+2105 ( 839): DashPriority
+2106 ( 83A): EnemyToSwingAt
+2107 ( 83B): NearestStation
+2108 ( 83C): ShipWeJustLeft
+2109 ( 83D): AirlockWeWereEjectedFrom
+2110 ( 83E): TeleporterRoomUsed
+2111 ( 83F): NearestStationDistance
+2112 ( 840): SecondsSinceLastBloodDrop
+2113 ( 841): SecondsBetweenBloodDrops
+2114 ( 842): ScriptedPositionFore
+2115 ( 843): ScriptedPositionStarboard
+2116 ( 844): ScriptedStartDelay
+2117 ( 845): ScriptedDelayRemaining
+2118 ( 846): ScriptedSitAtPosition
+2119 ( 847): GlitchSick
+2120 ( 848): GlitchSickTime
+2121 ( 849): KnockOutTime
+2122 ( 84A): UnconsciousPriority
+2123 ( 84B): TeleporterRange
+2124 ( 84C): Breach
+2125 ( 84D): PlayerAboard
+2126 ( 84E): OxygenPriority
+2127 ( 84F): Result
+2128 ( 850): SpeedSignal
+2129 ( 851): ShieldSignal
+2130 ( 852): SecondsUnrecoverable
+2131 ( 853): WhiteWhale
+2132 ( 854): ThrowingItem
+2133 ( 855): Scrambled
+2134 ( 856): StealthArcSignal
+2135 ( 857): PracticeShip
+2136 ( 858): PracticeTerminal
+2137 ( 859): PracticeDifficulty
+2138 ( 85A): PracticeOriginalPlayerName
+2139 ( 85B): PreviewItem
+2140 ( 85C): DeathGUIProgress
+2141 ( 85D): SecondsSinceRescueBlink
+2142 ( 85E): RescueImageIndex
+2143 ( 85F): InstantMatch
+2144 ( 860): TargetingClickRange
+2145 ( 861): Weapon
+2146 ( 862): VoidMotherStrength
+2147 ( 863): DeathGUIStartX
+2148 ( 864): DeathGUIStartY
+2149 ( 865): ScrewedMessages
+2150 ( 866): ScrewedTimes
+2151 ( 867): TorsoFrameCount
+2152 ( 868): DyingPriority
+2153 ( 869): DyingHighPriority
+2154 ( 86A): HackedSecondsLeft
+2155 ( 86B): NearbyShips
+2156 ( 86C): BounceVectorX
+2157 ( 86D): BounceVectorY
+2158 ( 86E): MyKeyControl
+2159 ( 86F): MyGamepadControl
+2160 ( 870): CountdownTimer
+2161 ( 871): MyPod
+2162 ( 872): NotPressingFailureRate
+2163 ( 873): PressingWrongThingFailureRate
+2164 ( 874): SolutionRate
+2165 ( 875): DockingOffset
+2166 ( 876): DockingDistance
+2167 ( 877): GridLength
+2168 ( 878): TurnToMake
+2169 ( 879): DockingTipIndex
+2170 ( 87A): FriendlyStationTipIndex
+2171 ( 87B): EnemyStationTipIndex
+2172 ( 87C): ThrusterOffset
+2173 ( 87D): ThrustFrame
+2174 ( 87E): EjectTipIndex
+2175 ( 87F): DamageMessage
+2176 ( 880): DamageSpeedX
+2177 ( 881): DamageSpeedY
+2178 ( 882): ModuleDestructionSignal
+2179 ( 883): Dockable
+2180 ( 884): OldSpeed
+2181 ( 885): FuelDepletionFactor
+2182 ( 886): SpeedLimit
+2183 ( 887): CollidingWithShipAfterUndocking
+2184 ( 888): CollisionStuckBounceCount
+2185 ( 889): CollisionThrustDelayRemaining
+2186 ( 88A): CollisionThrustDelay
+2187 ( 88B): RelativeBounceAngle
+2188 ( 88C): PlayerSpeedInBouncewardDirection
+2189 ( 88D): DockedStation
+2190 ( 88E): InstantDock
+2191 ( 88F): HidePlayerShip
+2192 ( 890): LeavingStation
+2193 ( 891): ShowAnnotationsSignal
+2194 ( 892): SeatForeOffset
+2195 ( 893): SeatStarboardOffset
+2196 ( 894): InteriorSprite
+2197 ( 895): ColdfireThrust
+2198 ( 896): AngelPickupTimeRemaining
+2199 ( 897): AngelPickupTime
+2200 ( 898): AngelPickupRange
+2201 ( 899): TargetingMissile
+2202 ( 89A): PressingHelps
+2203 ( 89B): DestroySignal
+2204 ( 89C): SolutionProgress
+2205 ( 89D): AnimationLoops
+2206 ( 89E): InteriorAlpha
+2207 ( 89F): DockedSignal
+2208 ( 8A0): PlayerDistance
+2209 ( 8A1): DisableSignal
+2210 ( 8A2): AutoDockFailSafeTimer
+2211 ( 8A3): DontStraightenSignal
+2212 ( 8A4): HeatLoss
+2213 ( 8A5): SecondsToDisableManualThrust
+2214 ( 8A6): HeatSensorOnScreen
+2215 ( 8A7): MaxMatchDistance
+2216 ( 8A8): MinMatchDistance
+2217 ( 8A9): CurrentMaxMatchDistance
+2218 ( 8AA): MatchDistance
+2219 ( 8AB): NearestThing
+2220 ( 8AC): FuelPriority
+2221 ( 8AD): MatchTarget
+2222 ( 8AE): PotentialMatchTarget
+2223 ( 8AF): NearestThingDistance
+2224 ( 8B0): NearestShip
+2225 ( 8B1): NearestShipDistance
+2226 ( 8B2): StopTipIndex
+2227 ( 8B3): ColdfireThrustMultiplier
+2228 ( 8B4): ThrustFactor
+2229 ( 8B5): Braking
+2230 ( 8B6): ZoomedToSomething
+2231 ( 8B7): ZoomTarget
+2232 ( 8B8): MatchTargetDistance
+2233 ( 8B9): ThrustVolumeMax
+2234 ( 8BA): NeedsRocks
+2235 ( 8BB): DockingRange
+2236 ( 8BC): DockingSpeed
+2237 ( 8BD): SecondsUntilICanDockAgain
+2238 ( 8BE): ThrustDirection
+2239 ( 8BF): PreviousAutodocking
+2240 ( 8C0): Targeted
+2241 ( 8C1): StationUndockSignal
+2242 ( 8C2): UndockingFromStation
+2243 ( 8C3): CompletedDocking
+2244 ( 8C4): MaxThrustCursorDistance
+2245 ( 8C5): ShipRadius
+2246 ( 8C6): MaxThrustBarLength
+2247 ( 8C7): CursorDistanceForMaxThrustInWorldPixels
+2248 ( 8C8): ThrustTipIndex
+2249 ( 8C9): MouseDistance
+2250 ( 8CA): SkipThrustBarUpdateSignal
+2251 ( 8CB): ThrustBarLength
+2252 ( 8CC): MaxThrustTipIndex
+2253 ( 8CD): ContentsToMoveCount
+2254 ( 8CE): ContentsToMove
+2255 ( 8CF): PendingRescueName
+2256 ( 8D0): WidthDimension
+2257 ( 8D1): LengthDimension
+2258 ( 8D2): FirstColumn
+2259 ( 8D3): FirstRow
+2260 ( 8D4): HasGuards
+2261 ( 8D5): AirlockRow
+2262 ( 8D6): AirlockColumn
+2263 ( 8D7): AirlockModule
+2264 ( 8D8): IsLiberation
+2265 ( 8D9): TipsEnabled
+2266 ( 8DA): SegmentCount
+2267 ( 8DB): Segments
+2268 ( 8DC): HasSecurity
+2269 ( 8DD): ForeLeft
+2270 ( 8DE): StarTop
+2271 ( 8DF): ForeRight
+2272 ( 8E0): StarBottom
+2273 ( 8E1): ClearedCollisionGrid
+2274 ( 8E2): MyCamera
+2275 ( 8E3): Sector
+2276 ( 8E4): InteriorType
+2277 ( 8E5): FiringCooldown
+2278 ( 8E6): AimingTime
+2279 ( 8E7): TurretIndex
+2280 ( 8E8): MyBarrel
+2281 ( 8E9): MyThruster
+2282 ( 8EA): MyWindow
+2283 ( 8EB): EssentialObject
+2284 ( 8EC): ThisModule
+2285 ( 8ED): LastFrame
+2286 ( 8EE): NormalGuardRole
+2287 ( 8EF): BossGuardRole
+2288 ( 8F0): TerminalCount
+2289 ( 8F1): Terminals
+2290 ( 8F2): TargetCandidate
+2291 ( 8F3): EntranceModule
+2292 ( 8F4): HighestSecurityModule
+2293 ( 8F5): SegmentIndex
+2294 ( 8F6): SentryPositions
+2295 ( 8F7): SentryObject
+2296 ( 8F8): LootType
+2297 ( 8F9): DecoCollisionMask
+2298 ( 8FA): IsRareShipment
+2299 ( 8FB): PossibleWalls
+2300 ( 8FC): Module
+2301 ( 8FD): Terminal
+2302 ( 8FE): TerminalOffset
+2303 ( 8FF): StartingSegment
+2304 ( 900): SegmentsJoined
+2305 ( 901): SectorSet
+2306 ( 902): DoorCount
+2307 ( 903): Doors
+2308 ( 904): ModuleA
+2309 ( 905): ModuleB
+2310 ( 906): IgnoreDirection
+2311 ( 907): LastExitFoundLeadsToThisModule
+2312 ( 908): DoorDirection
+2313 ( 909): LastAirlockCreated
+2314 ( 90A): NewAirlockDockingDistance
+2315 ( 90B): Manual
+2316 ( 90C): SuckOnCreate
+2317 ( 90D): DistanceFromCenterOfModule
+2318 ( 90E): RoomWidthGrid
+2319 ( 90F): CorridorWidthGrid
+2320 ( 910): OpenDoorInset
+2321 ( 911): CollisionMask
+2322 ( 912): Index
+2323 ( 913): Freight
+2324 ( 914): IndexInSegment
+2325 ( 915): LengthInModules
+2326 ( 916): SegmentsLong
+2327 ( 917): SegmentLength
+2328 ( 918): SegmentRow
+2329 ( 919): SegmentsWide
+2330 ( 91A): SegmentWidth
+2331 ( 91B): SegmentColumn
+2332 ( 91C): LastRow
+2333 ( 91D): LastColumn
+2334 ( 91E): FirstColumnInRow
+2335 ( 91F): LastColumnInRow
+2336 ( 920): ExitDirection
+2337 ( 921): CurrentSegment
+2338 ( 922): ModuleFromPreviousSector
+2339 ( 923): Tutorial
+2340 ( 924): WidthInModules
+2341 ( 925): ColumnIndent
+2342 ( 926): RowIndent
+2343 ( 927): CentralColumn
+2344 ( 928): WindowCount
+2345 ( 929): ModulesToUndo
+2346 ( 92A): u
+2347 ( 92B): ShipDimension
+2348 ( 92C): SegmentSize
+2349 ( 92D): ThisSegmentFore
+2350 ( 92E): ThisSegmentStarboard
+2351 ( 92F): WindowStarboard
+2352 ( 930): DecoLog
+2353 ( 931): DecoType
+2354 ( 932): PossibleDecoIndexes
+2355 ( 933): BigRoomSealer
+2356 ( 934): HighestDeadEndSecurity
+2357 ( 935): LootRoomsPlaced
+2358 ( 936): DesiredLootRooms
+2359 ( 937): SideWindowPlaced
+2360 ( 938): CentralK
+2361 ( 939): EmptyModuleBorder
+2362 ( 93A): FrontI
+2363 ( 93B): BackRowI
+2364 ( 93C): ComputerI
+2365 ( 93D): ComputerPlaced
+2366 ( 93E): AirlockPlaced
+2367 ( 93F): RandomlyAddAirlockToThisModule
+2368 ( 940): AirlockI
+2369 ( 941): BridgeI
+2370 ( 942): FrontWindow
+2371 ( 943): SensorsPerModule
+2372 ( 944): RowsBetweenSensors
+2373 ( 945): RowWidthForDoubleSensors
+2374 ( 946): LastSensorPlacedOnRow
+2375 ( 947): EssentialI
+2376 ( 948): EssentialK
+2377 ( 949): k
+2378 ( 94A): RowWidth
+2379 ( 94B): Indent
+2380 ( 94C): AftDoorK
+2381 ( 94D): DoorPlaced
+2382 ( 94E): WidestRow
+2383 ( 94F): SectorCount
+2384 ( 950): Sectors
+2385 ( 951): SpecialModuleForeInset
+2386 ( 952): SpecialModuleStarboardInset
+2387 ( 953): SpecialDecoType
+2388 ( 954): ModuleType
+2389 ( 955): CurrentRevealTime
+2390 ( 956): RevealTime
+2391 ( 957): Surrounded
+2392 ( 958): SectorStartModule
+2393 ( 959): PrecedingSectorCount
+2394 ( 95A): ThisSector
+2395 ( 95B): SectorTypes
+2396 ( 95C): SectorIndexToTry
+2397 ( 95D): PrecedingSectors
+2398 ( 95E): Exits
+2399 ( 95F): Snaking
+2400 ( 960): DeadEnds
+2401 ( 961): DeadEndCount
+2402 ( 962): Key
+2403 ( 963): SecuritySet
+2404 ( 964): SpecialModuleType
+2405 ( 965): SectorA
+2406 ( 966): SectorB
+2407 ( 967): LongSide
+2408 ( 968): ShortSide
+2409 ( 969): ObjectiveModule
+2410 ( 96A): ModulesInSector
+2411 ( 96B): CreatedASector
+2412 ( 96C): ModuleTintSprite
+2413 ( 96D): MyFaction
+2414 ( 96E): ModuleLengthGrid
+2415 ( 96F): RoomLengthGrid
+2416 ( 970): PatrolSpeed
+2417 ( 971): HoldingSpeed
+2418 ( 972): TurnSpeed
+2419 ( 973): ForeOffset
+2420 ( 974): StarboardOffset
+2421 ( 975): BreakChecked
+2422 ( 976): FragmentSignificance
+2423 ( 977): TotalModulesChecked
+2424 ( 978): DestroyModuleCount
+2425 ( 979): DestroyModules
+2426 ( 97A): DestroyedModule
+2427 ( 97B): VacuumChecked
+2428 ( 97C): ShipsCreated
+2429 ( 97D): NewShip
+2430 ( 97E): LastShipCreated
+2431 ( 97F): OldAnchorX
+2432 ( 980): OldAnchorY
+2433 ( 981): SurfaceMode
+2434 ( 982): Icon
+2435 ( 983): IncomingShip
+2436 ( 984): ShipGenerationStep
+2437 ( 985): SecondsUntilNextSpawnCheck
+2438 ( 986): SecondsUntilRareShipment
+2439 ( 987): SecondsBetweenSpawnChecks
+2440 ( 988): MinRareShipmentDelay
+2441 ( 989): MaxRareShipmentDelay
+2442 ( 98A): ChanceToSpawnShipAtSpeedLimit
+2443 ( 98B): MaximumModules
+2444 ( 98C): MaximumShips
+2445 ( 98D): MySurface
+2446 ( 98E): FreeIcons
+2447 ( 98F): FreeIconCount
+2448 ( 990): FreeSurfaces
+2449 ( 991): FreeSurfaceCount
+2450 ( 992): IconDistanceAlpha
+2451 ( 993): LiveIconSurface
+2452 ( 994): CenterOffsetFore
+2453 ( 995): CenterOffsetStarboard
+2454 ( 996): ModuleIconSize
+2455 ( 997): IconScale
+2456 ( 998): CurrentIconScale
+2457 ( 999): IconXOffset
+2458 ( 99A): IconYOffset
+2459 ( 99B): IconX
+2460 ( 99C): IconY
+2461 ( 99D): IconAlpha
+2462 ( 99E): IconPulseTimer
+2463 ( 99F): IconPulseTime
+2464 ( 9A0): IconPulseDuration
+2465 ( 9A1): UseSurfaces
+2466 ( 9A2): ShipSurfaceCount
+2467 ( 9A3): ShipSurfaces
+2468 ( 9A4): ModulesOnSurface
+2469 ( 9A5): ExteriorAlphaDesired
+2470 ( 9A6): ExteriorAlphaFadeOutTime
+2471 ( 9A7): ExteriorAlphaFadeInTime
+2472 ( 9A8): AlreadyDrawnToSurface
+2473 ( 9A9): ContentsGrid
+2474 ( 9AA): IgnoreExplosive
+2475 ( 9AB): TargetedByOtherShip
+2476 ( 9AC): MyMissile
+2477 ( 9AD): xSpeedOriginal
+2478 ( 9AE): ySpeedOriginal
+2479 ( 9AF): TimeToHit
+2480 ( 9B0): MyLaser
+2481 ( 9B1): BeamOrigin
+2482 ( 9B2): BeamTarget
+2483 ( 9B3): FurthestShip
+2484 ( 9B4): FurthestDistance
+2485 ( 9B5): FurthestObject
+2486 ( 9B6): FurthestObjectDistance
+2487 ( 9B7): SecondsUntilNextCullCheck
+2488 ( 9B8): CullInterval
+2489 ( 9B9): TutorialShip
+2490 ( 9BA): Deactivatable
+2491 ( 9BB): SecondsUntilReinforcements
+2492 ( 9BC): TotalReinforcementsSpawned
+2493 ( 9BD): NextReinforcementName
+2494 ( 9BE): FleeSignal
+2495 ( 9BF): NewShop
+2496 ( 9C0): NewShopItem
+2497 ( 9C1): SpecialStock
+2498 ( 9C2): ThrustVolume
+2499 ( 9C3): ThrustSound
+2500 ( 9C4): CoolingSound
+2501 ( 9C5): CoolingVolume
+2502 ( 9C6): VoidSound
+2503 ( 9C7): VoidVolume
+2504 ( 9C8): ZoomOutLimit
+2505 ( 9C9): ZoomInLimit
+2506 ( 9CA): Coloured
+2507 ( 9CB): AlphaMax
+2508 ( 9CC): SpriteWidth
+2509 ( 9CD): SpriteHeight
+2510 ( 9CE): SecondsOffScreen
+2511 ( 9CF): SecondsBeforeCullingOffScreen
+2512 ( 9D0): ReturnToTorsoAnim
+2513 ( 9D1): MyLegs
+2514 ( 9D2): LegFrame
+2515 ( 9D3): TorsoCount
+2516 ( 9D4): LegCount
+2517 ( 9D5): LastTorsoSprite
+2518 ( 9D6): LastLegSprite
+2519 ( 9D7): LegFrameCount
+2520 ( 9D8): FactionCharacter
+2521 ( 9D9): CenterModule
+2522 ( 9DA): Fiasco
+2523 ( 9DB): FiascoSeatMarker
+2524 ( 9DC): OriginalFactionObject
+2525 ( 9DD): LiberationDeliveryMessageShown
+2526 ( 9DE): StationSprite
+2527 ( 9DF): NPC
+2528 ( 9E0): AlphaMultiplier
+2529 ( 9E1): MyShip
+2530 ( 9E2): NearbyStations
+2531 ( 9E3): AdjacentToTechnology
+2532 ( 9E4): ValidStations
+2533 ( 9E5): MyStationFore
+2534 ( 9E6): MyStationStarboard
+2535 ( 9E7): AsteroidScale
+2536 ( 9E8): InitialStarScale
+2537 ( 9E9): IndexWord
+2538 ( 9EA): CurrentAnimation
+2539 ( 9EB): CurrentFrame
+2540 ( 9EC): AnimationComplete
+2541 ( 9ED): DoorwaySpriteTint
+2542 ( 9EE): EmptySeat
+2543 ( 9EF): PersonaNameCache
+2544 ( 9F0): NeedToUploadScore
+2545 ( 9F1): ScoreBuffer
+2546 ( 9F2): CurrentEvent
+2547 ( 9F3): CurrentState
+2548 ( 9F4): RequestStartTime
+2549 ( 9F5): CompletedFindFriendItems
+2550 ( 9F6): FriendList
+2551 ( 9F7): BlockListLeftScroll
+2552 ( 9F8): BlockListSelection
+2553 ( 9F9): FriendBlockList
+2554 ( 9FA): BlockListRightScroll
+2555 ( 9FB): WorkshopCharacterCount
+2556 ( 9FC): WorkshopCharacters
+2557 ( 9FD): RarityItemLists
+2558 ( 9FE): PersonaNameQueue
+2559 ( 9FF): LastGiftID
+2560 ( A00): RandomRarities
+2561 ( A01): FriendItemList
+2562 ( A02): NextState
+2563 ( A03): SubscriptionQueue
+2564 ( A04): UnsubscribeQueue
+2565 ( A05): SubscribedItemList
+2566 ( A06): UserItemList
+2567 ( A07): UserItemID
+2568 ( A08): WorkshopGameItemCount
+2569 ( A09): MaxItems
+2570 ( A0A): WorkshopFolder
+2571 ( A0B): MaxCharacters
+2572 ( A0C): ModifiedTime
+2573 ( A0D): UploadTime
+2574 ( A0E): CreateItemTime
+2575 ( A0F): WorkshopDataFileName
+2576 ( A10): ReloadDataFromDisk
+2577 ( A11): NeedToSendData
+2578 ( A12): FriendBlockSet
+2579 ( A13): LeaderboardCache
+2580 ( A14): LeaderboardCacheSize
+2581 ( A15): PlayerScoreCache
+2582 ( A16): LeaderboardNull
+2583 ( A17): EntryHeight
+2584 ( A18): CurrentTop
+2585 ( A19): NextX
+2586 ( A1A): Padding
+2587 ( A1B): RankWidth
+2588 ( A1C): MissionsWidth
+2589 ( A1D): PurchasesWidth
+2590 ( A1E): StyleWidth
+2591 ( A1F): TimeWidth
+2592 ( A20): ScoreWidth
+2593 ( A21): NameWidth
+2594 ( A22): DetailEntryHeight
+2595 ( A23): LevelWidth
+2596 ( A24): AdjustWidth
+2597 ( A25): DetailWidth
+2598 ( A26): CurrentLeaderboardLookup
+2599 ( A27): NextLeaderboardLookup
+2600 ( A28): CurrentPlayerScoreLookup
+2601 ( A29): NextPlayerScoreLookup
+2602 ( A2A): ScoreName
+2603 ( A2B): Score
+2604 ( A2C): FramesUntilBreachCheck
+2605 ( A2D): CurrentTimeScalePriority
+2606 ( A2E): TargetTimeScale
+2607 ( A2F): TimeScaleChangePerSecond
+2608 ( A30): PauseSecondsLeft
+2609 ( A31): FPSCount
+2610 ( A32): FPSTotal
+2611 ( A33): UnacceptableFrames
+2612 ( A34): CheckToDoThisFrame
+2613 ( A35): CheckIndex
+2614 ( A36): DismissAlpha
+2615 ( A37): SecondsBetweenTipChecks
+2616 ( A38): SecondsSinceTipCheck
+2617 ( A39): SecondsSinceTipChange
+2618 ( A3A): SecondsUntilDismissPrompt
+2619 ( A3B): SecondsUntilForceChange
+2620 ( A3C): SecondsToFadeOut
+2621 ( A3D): SecondsToFadeIn
+2622 ( A3E): FadeProgress
+2623 ( A3F): ObjectToAnnotate
+2624 ( A40): BoxMargin
+2625 ( A41): ArrowHeight
+2626 ( A42): DismissText
+2627 ( A43): OldTip
+2628 ( A44): SoundPlayed
+2629 ( A45): SecondsPlayed
+2630 ( A46): EmptyPodTryingToDock
+2631 ( A47): NoTipIndex
+2632 ( A48): CharacterSelectTipIndex
+2633 ( A49): ScanTipIndex
+2634 ( A4A): HeatSensorTipIndex
+2635 ( A4B): EmptyPodDockingTipIndex
+2636 ( A4C): ObjectiveLootTipIndex
+2637 ( A4D): ObjectiveEnemyTipIndex
+2638 ( A4E): MissionComputerArrowTipIndex
+2639 ( A4F): MissionSelectTipIndex
+2640 ( A50): ShootingTipIndex
+2641 ( A51): InventoryTipIndex
+2642 ( A52): KeycardLootTipIndex
+2643 ( A53): ThrusterUpgradeTipIndex
+2644 ( A54): CoolantUpgradeTipIndex
+2645 ( A55): FloatingTipIndex
+2646 ( A56): FuelBarrelTipIndex
+2647 ( A57): RemoteControlTipIndex
+2648 ( A58): FastMoTipIndex
+2649 ( A59): DockingTipPossible
+2650 ( A5A): TipObject
+2651 ( A5B): UsePrompts
+2652 ( A5C): TipEnabled
+2653 ( A5D): BypassLootTipIndex
+2654 ( A5E): DrawArrow
+2655 ( A5F): TipArrivalProgress
+2656 ( A60): DrawY
+2657 ( A61): ChangeSoundPlayed
+2658 ( A62): TipIndex
+2659 ( A63): ElementsToChooseFrom
+2660 ( A64): ElementChances
+2661 ( A65): Elements
+2662 ( A66): SecondsUntilPulse
+2663 ( A67): SecondsSpentPulsing
+2664 ( A68): SecondsToNextChange
+2665 ( A69): TotalChange
+2666 ( A6A): ChangePerSecond
+2667 ( A6B): ListCount
+2668 ( A6C): TotalAllocations
+2669 ( A6D): MapCount
+2670 ( A6E): ParticleSystemCount
+2671 ( A6F): PathCount
+2672 ( A70): PathGridCount
+2673 ( A71): PriorityQueueCount
+2674 ( A72): QueueCount
+2675 ( A73): SpriteCount
+2676 ( A74): SpritePixelCount
+2677 ( A75): StackCount
+2678 ( A76): SurfaceCount
+2679 ( A77): CreateSampleCount
+2680 ( A78): CreateSampleMax
+2681 ( A79): CreateSamples
+2682 ( A7A): TotalSample
+2683 ( A7B): MaxSample
+2684 ( A7C): SetCount
+2685 ( A7D): NewTarget
+2686 ( A7E): StepCounter
+2687 ( A7F): MyTrail
+2688 ( A80): Sprite
+2689 ( A81): StandardSize
+2690 ( A82): MaxParticleLifeInSeconds
+2691 ( A83): SpriteLength
+2692 ( A84): StandardScale
+2693 ( A85): MinSize
+2694 ( A86): MinScale
+2695 ( A87): Emitter
+2696 ( A88): MaxParticleLifeInSteps
+2697 ( A89): ParticleTypeIndex
+2698 ( A8A): InitialX
+2699 ( A8B): InitialY
+2700 ( A8C): LastEmitterX
+2701 ( A8D): LastEmitterY
+2702 ( A8E): CurrentStrength
+2703 ( A8F): StrengthGain
+2704 ( A90): StrengthDecay
+2705 ( A91): SystemX
+2706 ( A92): SystemY
+2707 ( A93): EmitterX
+2708 ( A94): EmitterY
+2709 ( A95): InitialRed
+2710 ( A96): FinalRed
+2711 ( A97): InitialGreen
+2712 ( A98): FinalGreen
+2713 ( A99): InitialBlue
+2714 ( A9A): FinalBlue
+2715 ( A9B): FinalVapourColour
+2716 ( A9C): VapourLifeRatio
+2717 ( A9D): LastVapour
+2718 ( A9E): StandardLife
+2719 ( A9F): LifeInSeconds
+2720 ( AA0): InitialLife
+2721 ( AA1): InitialVapourColour
+2722 ( AA2): PulsePhase
+2723 ( AA3): ModuleTarget
+2724 ( AA4): SecondsUntilNextTurn
+2725 ( AA5): PreviousHeading
+2726 ( AA6): DesiredHeading
+2727 ( AA7): Progress
+2728 ( AA8): BridgeModule
+2729 ( AA9): ExitWindow
+2730 ( AAA): DialogueIndex
+2731 ( AAB): DialogueCount
+2732 ( AAC): SlideProgress
+2733 ( AAD): UseMaxWidth
+2734 ( AAE): TipX
+2735 ( AAF): TopTipY
+2736 ( AB0): TipHeight
+2737 ( AB1): TipY
+2738 ( AB2): TipControl
+2739 ( AB3): DistanceFromHomeStation
+2740 ( AB4): WindowModule
+2741 ( AB5): Security1Door
+2742 ( AB6): LockedDoor
+2743 ( AB7): Keycard
+2744 ( AB8): BurstWindowModule
+2745 ( AB9): Corpses
+2746 ( ABA): FirstGuard
+2747 ( ABB): FirstGuardsGun
+2748 ( ABC): HitFirstGuardMarker
+2749 ( ABD): AmbushMarker
+2750 ( ABE): SecondGuard
+2751 ( ABF): TipOffset
+2752 ( AC0): Dialogue
+2753 ( AC1): SecondsMovingAtFullSpeed
+2754 ( AC2): FadeInFraction
+2755 ( AC3): Bartender
+2756 ( AC4): SecondsHighlighted
+2757 ( AC5): BartenderDialogueFile
+2758 ( AC6): ShowText
+2759 ( AC7): EngineSound
+2760 ( AC8): RouteColour
+2761 ( AC9): TerritoryName
+2762 ( ACA): LiberationBackgroundColour
+2763 ( ACB): Tracked
+2764 ( ACC): LeftX
+2765 ( ACD): RightX
+2766 ( ACE): BottomY
+2767 ( ACF): SecondsLerping
+2768 ( AD0): SecondsShown
+2769 ( AD1): SlideInTime
+2770 ( AD2): ClosestGamepadUseAnchor
+2771 ( AD3): CreditCount
+2772 ( AD4): Roles
+2773 ( AD5): Names
+2774 ( AD6): CreditIndex
+2775 ( AD7): Seconds
+2776 ( AD8): ShowAll
+2777 ( AD9): FullCreditsText
+2778 ( ADA): GalaxyZoomTime
+2779 ( ADB): TimeToStartCredits
+2780 ( ADC): TotalCreditsDuration
+2781 ( ADD): TimeChunks
+2782 ( ADE): TotalTimeBetweenCredits
+2783 ( ADF): SecondsBetweenCredits
+2784 ( AE0): FadedInBy
+2785 ( AE1): StartFadingOutAt
+2786 ( AE2): FadedOutBy
+2787 ( AE3): StartNextCreditAt
+2788 ( AE4): yDifference
+2789 ( AE5): Dashable
+2790 ( AE6): Log
+2791 ( AE7): PlayersDestination
+2792 ( AE8): LiberationShip
+2793 ( AE9): ShowColourInfo
+2794 ( AEA): DrawTradeRoutes
+2795 ( AEB): CheckOnScreen
+2796 ( AEC): GalaxyCoordsSetup
+2797 ( AED): ShowAllRoutes
+2798 ( AEE): ColdSpriteWidth
+2799 ( AEF): HotSpriteWidth
+2800 ( AF0): HeatProgress
+2801 ( AF1): MyOwner
+2802 ( AF2): ShowInterior
+2803 ( AF3): MaxAlpha
+2804 ( AF4): DetectedSignal
+2805 ( AF5): DetectedObject
+2806 ( AF6): SensorScale
+2807 ( AF7): ChangeModeOnDestroy
+2808 ( AF8): ClientMessage
+2809 ( AF9): Watermark
+2810 ( AFA): ClosestTip
+2811 ( AFB): ControlText
+2812 ( AFC): ControlTextLastFrame
+2813 ( AFD): ControlAlpha
+2814 ( AFE): ControlFadeTime
+2815 ( AFF): TitleTime
+2816 ( B00): Tick
+2817 ( B01): Help
+2818 ( B02): SecondsSinceEndGame
+2819 ( B03): GloryHue
+2820 ( B04): GalaxyToDelete
+2821 ( B05): ChallengeCharacter
+2822 ( B06): DebugPositionFore
+2823 ( B07): DebugPositionStarboard
+2824 ( B08): Credits
+2825 ( B09): VictoryScreenShown
+2826 ( B0A): DifferenceX
+2827 ( B0B): DifferenceY
+2828 ( B0C): ChosenTargetName
+2829 ( B0D): ChosenReason
+2830 ( B0E): UseTipShown
+2831 ( B0F): AnnotationText
+2832 ( B10): GhostBonus
+2833 ( B11): SpeedToUse
+2834 ( B12): MyMenuMode
+2835 ( B13): BonusPay
+2836 ( B14): BonusText
+2837 ( B15): ThisMissionsLiberationProgress
+2838 ( B16): LiberationBarStartTime
+2839 ( B17): SecondsToSlideIn
+2840 ( B18): DailyChallengeOver
+2841 ( B19): EndOfMissionCalculationsDone
+2842 ( B1A): PreviousLiberationProgress
+2843 ( B1B): BoxSpacing
+2844 ( B1C): RatingsBoxWidth
+2845 ( B1D): RatingsBoxLeft
+2846 ( B1E): RatingsBoxHeight
+2847 ( B1F): RatingsBoxBottom
+2848 ( B20): Distance
+2849 ( B21): MaxSpeed
+2850 ( B22): IntroMusic
+2851 ( B23): TensionSignal
+2852 ( B24): StationSignal
+2853 ( B25): IntroSignal
+2854 ( B26): PeaceVolume
+2855 ( B27): TensionVolume
+2856 ( B28): StationVolume
+2857 ( B29): JukeboxVolume
+2858 ( B2A): PeaceTracks
+2859 ( B2B): PeaceCount
+2860 ( B2C): PeaceIndex
+2861 ( B2D): TensionTracks
+2862 ( B2E): TensionCount
+2863 ( B2F): TensionIndex
+2864 ( B30): StationTracks
+2865 ( B31): StationIndex
+2866 ( B32): StationTrackCount
+2867 ( B33): PlaylistCount
+2868 ( B34): PlaylistTracks
+2869 ( B35): ChangeTrackSignal
+2870 ( B36): TensionDistance
+2871 ( B37): FadeOutAmount
+2872 ( B38): FadeInAmount
+2873 ( B39): ProblemProgress
+2874 ( B3A): Shake
+2875 ( B3B): SecondsUntilOn
+2876 ( B3C): SecondsUntilRemoved
+2877 ( B3D): Condition
+2878 ( B3E): Position
+2879 ( B3F): ButtonText
+2880 ( B40): ProblemText
+2881 ( B41): LastEnemyCreated
+2882 ( B42): BlurredSurface
+2883 ( B43): ShaderHandleResolution
+2884 ( B44): ShaderHandleHorizontal
+2885 ( B45): ShaderHandleStrength
+2886 ( B46): SurfacesAllocated
+2887 ( B47): AllSurfaces
+2888 ( B48): AllIcons
+2889 ( B49): SecondsSinceCreation
+2890 ( B4A): SpriteRadius
+2891 ( B4B): MaxScale
+2892 ( B4C): StateNames
+2893 ( B4D): RecreateUserItem
+2894 ( B4E): RequestItemID
+2895 ( B4F): ScreenshotRequested
+2896 ( B50): LeaderboardSize
+2897 ( B51): TopLeaderboardSize
+2898 ( B52): PlayerScoreLookupSize
+2899 ( B53): WorkshopItemCount
+2900 ( B54): SoundLastPlayed
+2901 ( B55): InitialSecondsUntilFastMoKeyWorks
+2902 ( B56): SecondsUntilFastMoKeyWorks
+2903 ( B57): ShipSeenPriority
+2904 ( B58): FastMoKeyPriority
+2905 ( B59): TutorialPriority
+2906 ( B5A): FastMoScale
+2907 ( B5B): MissileSlowMoScale
+2908 ( B5C): SleepSeconds
+2909 ( B5D): FramesBeforeReset
+2910 ( B5E): SecondsUntilEarliestPossibleFrameRateChange
+2911 ( B5F): SlowMoVisualsStrength
+2912 ( B60): CanFastMo
+2913 ( B61): Gun
+2914 ( B62): LogoAlpha
+2915 ( B63): DialogueTop
+2916 ( B64): SecondsFastForwarding
+2917 ( B65): InitialDistanceToHome
+2918 ( B66): PracticeCompleteSignal
+2919 ( B67): MusicTimer
+2920 ( B68): BurstOverride
+2921 ( B69): ThisTipX
+2922 ( B6A): MovingFocus
+2923 ( B6B): MinViewSize
+2924 ( B6C): MinViewPower
+2925 ( B6D): GalaxyCenter
+2926 ( B6E): MovingFocusProgress
+2927 ( B6F): ProgressFraction
+2928 ( B70): TipOffsetFraction
+2929 ( B71): Highlight
+2930 ( B72): DisabledFor
+2931 ( B73): ConeAlpha
+2932 ( B74): AngryConeAlpha
+2933 ( B75): ConeFactor
+2934 ( B76): MeleeRange
+2935 ( B77): Repulsor
+2936 ( B78): PreciseCollision
+2937 ( B79): InteriorRevealed
+2938 ( B7A): BulletRadius
+2939 ( B7B): ReflectedByShield
+2940 ( B7C): TrailSprite
+2941 ( B7D): SlowMoBulletSpeedMultiplier
+2942 ( B7E): FirstStep
+2943 ( B7F): BulletHasEverMoved
+2944 ( B80): TrailSpriteLength
+2945 ( B81): DistanceTravelled
+2946 ( B82): SwappedTimer
+2947 ( B83): Override
+2948 ( B84): AnimationSpeed
+2949 ( B85): DesiredFrame
+2950 ( B86): NormalSecondsUntilClosing
+2951 ( B87): OpeningCost
+2952 ( B88): ForceOpen
+2953 ( B89): CrashDuration
+2954 ( B8A): ForeOnDestruction
+2955 ( B8B): StarboardOnDestruction
+2956 ( B8C): ModuleOnDestruction
+2957 ( B8D): SecondsUntilAutoOpenAgain
+2958 ( B8E): MissingThingName
+2959 ( B8F): LookTimer
+2960 ( B90): TurnDirection
+2961 ( B91): NormalInteriorTip
+2962 ( B92): TutorialInteriorTip
+2963 ( B93): SecondsUntilExplosion
+2964 ( B94): RadiusScale
+2965 ( B95): MyLid
+2966 ( B96): MyLoot
+2967 ( B97): Workshop
+2968 ( B98): LootTypeOverride
+2969 ( B99): Price
+2970 ( B9A): Opening
+2971 ( B9B): MyBox
+2972 ( B9C): Sounded
+2973 ( B9D): Setup
+2974 ( B9E): SecondsBetweenTurns
+2975 ( B9F): SecondsToBeamFor
+2976 ( BA0): SecondsUntilBeamFinishes
+2977 ( BA1): BeamDirection
+2978 ( BA2): BeamDistance
+2979 ( BA3): BaseSprite
+2980 ( BA4): OnSprite
+2981 ( BA5): OffSprite
+2982 ( BA6): DirectionCount
+2983 ( BA7): Directions
+2984 ( BA8): DirectionIndex
+2985 ( BA9): SentryDanger
+2986 ( BAA): InitialSecondsToReturn
+2987 ( BAB): SecondsUntilReturn
+2988 ( BAC): ColourOffset
+2989 ( BAD): RedAngle
+2990 ( BAE): BlueAngle
+2991 ( BAF): GreenAngle
+2992 ( BB0): Burst
+2993 ( BB1): DestinationX
+2994 ( BB2): DestinationY
+2995 ( BB3): EffectImageIndex
+2996 ( BB4): UnpoweredDamageMask
+2997 ( BB5): PoweredDamageMask
+2998 ( BB6): NormalSprite
+2999 ( BB7): StuckSprite
+3000 ( BB8): DefaultAimRange
+3001 ( BB9): SovereignAimRange
+3002 ( BBA): ShotSpeed
+3003 ( BBB): IsWeapon
+3004 ( BBC): SecondsOfSlipstreamLeft
+3005 ( BBD): SecondsOfSlipstreamMax
+3006 ( BBE): RadiusColour
+3007 ( BBF): RadiusOfEffect
+3008 ( BC0): BeamWidth
+3009 ( BC1): TrapFore
+3010 ( BC2): TrapStarboard
+3011 ( BC3): TeleportDirection
+3012 ( BC4): TeleportDistance
+3013 ( BC5): TriggerRadius
+3014 ( BC6): TimerSeconds
+3015 ( BC7): SecondsUntilDetonation
+3016 ( BC8): MaxLaunchSpeed
+3017 ( BC9): LootBox
+3018 ( BCA): StealthArc
+3019 ( BCB): SecondsFromOff
+3020 ( BCC): ParentName
+3021 ( BCD): DockedState
+3022 ( BCE): LeftSide
+3023 ( BCF): RightSide
+3024 ( BD0): PlayerSide
+3025 ( BD1): PlayerInner
+3026 ( BD2): InnerLimit
+3027 ( BD3): MiddleLimit
+3028 ( BD4): OuterLimit
+3029 ( BD5): DetectionLineX
+3030 ( BD6): DetectionLineY
+3031 ( BD7): DetectionLineLength
+3032 ( BD8): DetectionFactorFromDistance
+3033 ( BD9): DetectionFactorFromHeat
+3034 ( BDA): DetectionFraction
+3035 ( BDB): DetectionLength
+3036 ( BDC): DetectionDirection
+3037 ( BDD): HeatDetectionThreshold
+3038 ( BDE): LoseRange
+3039 ( BDF): LoseRangeStandard
+3040 ( BE0): RadiusSprite
+3041 ( BE1): RadiusSpriteWidth
+3042 ( BE2): DistanceToTarget
+3043 ( BE3): JudgementErrorX
+3044 ( BE4): JudgementErrorY
+3045 ( BE5): NormalUseTip
+3046 ( BE6): AutopilotInteriorTip
+3047 ( BE7): SecondsUntilReact
+3048 ( BE8): MinPatrolRadius
+3049 ( BE9): MaxPatrolRadius
+3050 ( BEA): ShipHadEnemiesButIsNowSecure
+3051 ( BEB): Tension
+3052 ( BEC): MoveFreely
+3053 ( BED): Used
+3054 ( BEE): DrawSensor
+3055 ( BEF): SensorColour
+3056 ( BF0): WarningAlpha
+3057 ( BF1): SensorRoomSprite
+3058 ( BF2): SecondsUntilReveal
+3059 ( BF3): TeleporterRoomSprite
+3060 ( BF4): HackedParticles
+3061 ( BF5): Torque
+3062 ( BF6): LastThingToSetThrust
+3063 ( BF7): Readout
+3064 ( BF8): ThrustAngle
+3065 ( BF9): ThrustPerThruster
+3066 ( BFA): AnimationFrame
+3067 ( BFB): AnimationRate
+3068 ( BFC): NumberOfFrames
+3069 ( BFD): MyCone
+3070 ( BFE): SecondsDetected
+3071 ( BFF): Controls
+3072 ( C00): Annotation
+3073 ( C01): AnnotationColour
+3074 ( C02): AnnotationCanFade
+3075 ( C03): Sound
+3076 ( C04): DialogueFile
+3077 ( C05): DialogueType
+3078 ( C06): SwitchAnimTime
+3079 ( C07): ExplosiveAnnotationAlpha
+3080 ( C08): AlertSpriteFrames
+3081 ( C09): Draw
+3082 ( C0A): LaserScale
+3083 ( C0B): ModuleLastFrame
+3084 ( C0C): ReadyToFire
+3085 ( C0D): Turning
+3086 ( C0E): EverRecognizedPlayer
+3087 ( C0F): SwapperTimer
+3088 ( C10): SecondsSpentExploding
+3089 ( C11): ExplosionTime
+3090 ( C12): NormalScale
+3091 ( C13): ApparentScale
+3092 ( C14): DeathRadius
+3093 ( C15): InsideAStationsRadiusLastFrame
+3094 ( C16): SensorRangeAlpha
+3095 ( C17): SensorRangeFlashMargin
+3096 ( C18): SensorRangeSpriteWidth
+3097 ( C19): SensorRangeScale
+3098 ( C1A): ScanSprite
+3099 ( C1B): ScanSpriteWidth
+3100 ( C1C): ScanFraction
+3101 ( C1D): CurrentScanRange
+3102 ( C1E): ScanTime
+3103 ( C1F): ExteriorColour
+3104 ( C20): Collision
+3105 ( C21): DamageDestructionTime
+3106 ( C22): HotSprite
+3107 ( C23): MyInterior
+3108 ( C24): HeatGainFactor
+3109 ( C25): ShipMatchRange
+3110 ( C26): SecondsToStayScanned
+3111 ( C27): SecondsSinceScanned
+3112 ( C28): SurfaceLog
+3113 ( C29): SecondsUntilClusterErrand
+3114 ( C2A): ErrandTimer
+3115 ( C2B): MaximumErrandOffset
+3116 ( C2C): SecondsBetweenErrands
+3117 ( C2D): MyLift
+3118 ( C2E): AlarmSecondsLeft
+3119 ( C2F): HighestSecurityLootModule
+3120 ( C30): SecondsToDelayDeparture
+3121 ( C31): PlayerSpeedLimit
+3122 ( C32): NeedModulesToDrawLastStep
+3123 ( C33): ViewSizeAboveWhichToDrawAsIcon
+3124 ( C34): PlayerShipCollisionPossibleLastStep
+3125 ( C35): DrawnAsIconLastStep
+3126 ( C36): MissileCloseLastStep
+3127 ( C37): MissileClose
+3128 ( C38): TargetedByOtherShipLastStep
+3129 ( C39): IconWidth
+3130 ( C3A): IconLength
+3131 ( C3B): BodyCount
+3132 ( C3C): ScramblerCount
+3133 ( C3D): TimerOffset
+3134 ( C3E): TradeRouteDestination
+3135 ( C3F): HideInteriorOnceSurfaceIsReady
+3136 ( C40): WingWidth
+3137 ( C41): CollisionGridChanged
+3138 ( C42): ModuleDrawn
+3139 ( C43): InVisionRange
+3140 ( C44): Steps
+3141 ( C45): StepsToLog
+3142 ( C46): TotalThrustNeeded
+3143 ( C47): ThrustDirections
+3144 ( C48): PathfindingInitialised
+3145 ( C49): CargoCount
+3146 ( C4A): ObjectiveCargoIndex
+3147 ( C4B): DistanceCheckInterval
+3148 ( C4C): FirstFreeRoom
+3149 ( C4D): NearestAirlockSoFar
+3150 ( C4E): CurrentSegmentIndex
+3151 ( C4F): SectorDepth
+3152 ( C50): KeycardsPlaced
+3153 ( C51): Scramblers
+3154 ( C52): Bodies
+3155 ( C53): ModuleActivationCheck
+3156 ( C54): StayScannedFor
+3157 ( C55): ZoomAlpha
+3158 ( C56): SecondsLived
+3159 ( C57): ThrustIndex
+3160 ( C58): Initialised
+3161 ( C59): xStartOffset
+3162 ( C5A): yStartOffset
+3163 ( C5B): RemainingTimeToHit
+3164 ( C5C): SetMyOwnColour
+3165 ( C5D): Additive
+3166 ( C5E): xFlip
+3167 ( C5F): yFlip
+3168 ( C60): OldNearestBlob
+3169 ( C61): CurrentNearestBlob
+3170 ( C62): ZoomOutSuccessor
+3171 ( C63): ZoomInSuccessor
+3172 ( C64): WidthToCover
+3173 ( C65): HeightToCover
+3174 ( C66): MinWidth
+3175 ( C67): DeliverText
+3176 ( C68): GiftText
+3177 ( C69): StationLightsTimer
+3178 ( C6A): InUse
+3179 ( C6B): GiveMissionsWithinRadius
+3180 ( C6C): HologramAngle
+3181 ( C6D): RockDistanceMultiplier
+3182 ( C6E): RockScaleMultiplier
+3183 ( C6F): SecondsForAnnotationsToFade
+3184 ( C70): SpawnRange
+3185 ( C71): ExteriorAlphaSignal
+3186 ( C72): MyRock
+3187 ( C73): SecondsToHangOnToRocks
+3188 ( C74): DockingAirlock
+3189 ( C75): NormalBuildingOffset
+3190 ( C76): BuildingOffset
+3191 ( C77): Capturable
+3192 ( C78): AngularVelocity
+3193 ( C79): OrbitDistance
+3194 ( C7A): AngleFromStation
+3195 ( C7B): DesiredStrength
+3196 ( C7C): StrengthAdjustmentRate
+3197 ( C7D): FadeTime
+3198 ( C7E): ShaderSupported
+3199 ( C7F): ShaderHandleScanlineStrength
+3200 ( C80): ShaderHandlePhosphorGlow
+3201 ( C81): ShaderHandlePhosphorDarkness
+3202 ( C82): CycleTime
+3203 ( C83): GlintTime
+3204 ( C84): ShaderHandleSaturation
+3205 ( C85): ShaderHandleHorizontalRatio
+3206 ( C86): ShaderHandleMinRadius
+3207 ( C87): ShaderHandleMaxRadius
+3208 ( C88): ShaderHandleMinSaturation
+3209 ( C89): ShaderHandleMaxSaturation
+3210 ( C8A): MaxStrength
+3211 ( C8B): ShaderHandleDirection
+3212 ( C8C): ShaderHandleGreenOffset
+3213 ( C8D): ShaderHandleBlueOffset
+3214 ( C8E): OffsetFore
+3215 ( C8F): OffsetStarboard
+3216 ( C90): x
+3217 ( C91): y
+3218 ( C92): id
+3219 ( C93): object_index
+3220 ( C94): view_hview
+3221 ( C95): view_hport
+3222 ( C96): current_hour
+3223 ( C97): current_minute
+3224 ( C98): current_second
+3225 ( C99): view_angle
+3226 ( C9A): view_wport
+3227 ( C9B): view_wview
+3228 ( C9C): depth
+3229 ( C9D): background_colour
+3230 ( C9E): application_surface
+3231 ( C9F): image_alpha
+3232 ( CA0): mouse_x
+3233 ( CA1): mouse_y
+3234 ( CA2): image_blend
+3235 ( CA3): room_speed
+3236 ( CA4): Rarities
+3237 ( CA5): keyboard_string
+3238 ( CA6): sprite_index
+3239 ( CA7): image_index
+3240 ( CA8): image_speed
+3241 ( CA9): RandomIndices
+3242 ( CAA): image_angle
+3243 ( CAB): keyboard_lastkey
+3244 ( CAC): visible
+3245 ( CAD): mouse_lastbutton
+3246 ( CAE): working_directory
+3247 ( CAF): PlayerScore
+3248 ( CB0): DataArray
+3249 ( CB1): DataBlock
+3250 ( CB2): ResponseTextArray
+3251 ( CB3): TextBlockArray
+3252 ( CB4): ErrorText
+3253 ( CB5): undefined
+3254 ( CB6): CurrentTextBlocks
+3255 ( CB7): CurrentResponseText
+3256 ( CB8): CurrentResponseHeaders
+3257 ( CB9): ResponseHeaders
+3258 ( CBA): image_xscale
+3259 ( CBB): image_yscale
+3260 ( CBC): RandomDirections
+3261 ( CBD): Buddies
+3262 ( CBE): sprite_width
+3263 ( CBF): ReachedFaction
+3264 ( CC0): FactionQueues
+3265 ( CC1): current_year
+3266 ( CC2): current_month
+3267 ( CC3): current_day
+3268 ( CC4): RandomizedStation
+3269 ( CC5): Indices
+3270 ( CC6): room_width
+3271 ( CC7): room_height
+3272 ( CC8): ItemInfo
+3273 ( CC9): GiftFriends
+3274 ( CCA): UniqueFriends
+3275 ( CCB): Gifts
+3276 ( CCC): SelectedGift
+3277 ( CCD): image_number
+3278 ( CCE): DiscountedItems
+3279 ( CCF): OverpricedItems
+3280 ( CD0): ThisMercenaryArray
+3281 ( CD1): ThisArray
+3282 ( CD2): HardMissions
+3283 ( CD3): view_xview
+3284 ( CD4): view_yview
+3285 ( CD5): ThingsToTeleport
+3286 ( CD6): StashedItems
+3287 ( CD7): ItemsToStash
+3288 ( CD8): ToStash
+3289 ( CD9): AirlockSegments
+3290 ( CDA): GuardSegments
+3291 ( CDB): BossRandomization
+3292 ( CDC): GuardRandomization
+3293 ( CDD): MercRandomization
+3294 ( CDE): SortedSegments
+3295 ( CDF): SecureSegments
+3296 ( CE0): TopSegments
+3297 ( CE1): ForwardSegments
+3298 ( CE2): BottomSegments
+3299 ( CE3): SegmentIndices
+3300 ( CE4): ForeIndices
+3301 ( CE5): StarboardIndices
+3302 ( CE6): DestroyedModules
+3303 ( CE7): TotalAmmo
+3304 ( CE8): ToSell
+3305 ( CE9): MercenaryArray
+3306 ( CEA): ObjectList
+3307 ( CEB): DailyItems
+3308 ( CEC): RemainingItems
+3309 ( CED): bbox_right
+3310 ( CEE): bbox_left
+3311 ( CEF): ItemData
+3312 ( CF0): IndexArray
+3313 ( CF1): async_load
+3314 ( CF2): MetaData
+3315 ( CF3): Leaderboard
+3316 ( CF4): NewPlayerScore
+3317 ( CF5): ThisEntry
+3318 ( CF6): ThisLeaderboard
+3319 ( CF7): ThisPlayerScore
+3320 ( CF8): A
+3321 ( CF9): B
+3322 ( CFA): TraitFactionCounts
+3323 ( CFB): StationFactionCounts
+3324 ( CFC): StationFactionHeaps
+3325 ( CFD): StationFactionExtras
+3326 ( CFE): bbox_bottom
+3327 ( CFF): bbox_top
+3328 ( D00): Array
+3329 ( D01): instance_count
+3330 ( D02): current_time
+3331 ( D03): ItemArray
+3332 ( D04): FieldArray
+3333 ( D05): view_yport
+3334 ( D06): alarm
+3335 ( D07): fps_real
+3336 ( D08): TagArray
+3337 ( D09): PlayerEntry
+3338 ( D0A): LastEntry
+3339 ( D0B): HitableThings
+3340 ( D0C): HitableDistance
+3341 ( D0D): NewHitableThings
+3342 ( D0E): NewHitableDistance

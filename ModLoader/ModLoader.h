@@ -19,6 +19,10 @@ public:
 	static void SubscribeHookPost(const char* hookName, HS_HookPostCallback callback, void* userData);
 	static RValue* CallScript(const char* scriptName,
 		uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
+	static RValue* CallEngineScript(const char* builtinName,
+		uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
+	static void EnsureEngineScriptMap();
+	static std::unordered_map<std::string, uint32_t> EngineScriptMap;
 	static int GetVarId(const char* name);
 	static void EnsureVariableMap();
 	static std::unordered_map<std::string, uint32_t> VariableMap;

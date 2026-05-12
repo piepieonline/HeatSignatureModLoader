@@ -40,6 +40,7 @@ static void            Config_FreeString(HS_ConfigString s)                     
 
 std::map<std::string, HookBase*> ModLoader::HookMap{};
 std::unordered_map<std::string, uint32_t> ModLoader::VariableMap{};
+std::unordered_map<std::string, uint32_t> ModLoader::EngineScriptMap{};
 
 // ---------------------------------------------------------------------------
 // SEH-isolated helpers — no C++ objects with destructors allowed in scope
@@ -273,6 +274,84 @@ RValue* ModLoader::CallScript(const char* scriptName,
     return detour(self, other, result, argc, argv);
 }
 
+// Engine built-in registry: an array of pointers starting at
+// moduleBase + 0x10C4738, terminated by a null entry. Each entry is
+// { const char* name; uint32_t funcPtr } — funcPtr is passed straight to
+// the dispatcher at +0xCA7F30 as the built-in function reference.
+struct EngineScriptEntry
+{
+    const char* name;
+    uint32_t    funcPtr;
+};
+
+static constexpr uint32_t kEngineScriptTableRVA = 0x10C4738;
+static constexpr size_t   kEngineScriptMaxScan  = 5000;
+
+void ModLoader::EnsureEngineScriptMap()
+{
+    static std::atomic<bool> s_built{ false };
+    if (s_built.load(std::memory_order_acquire)) return;
+
+    static std::mutex s_mutex;
+    std::lock_guard<std::mutex> lock(s_mutex);
+    if (s_built.load()) return;
+
+    if (HookBase::moduleBase == 0)
+    {
+        Log("ModLoader", "EngineScriptMap: module base not resolved");
+        return;
+    }
+
+    auto table = reinterpret_cast<EngineScriptEntry**>(HookBase::moduleBase + kEngineScriptTableRVA);
+    std::unordered_map<std::string, uint32_t> map;
+    size_t i = 0;
+    for (; i < kEngineScriptMaxScan; ++i)
+    {
+        EngineScriptEntry* entry = table[i];
+        if (!entry) break;
+        if (!entry->name) continue;
+        map.emplace(entry->name, entry->funcPtr);
+    }
+
+    if (map.empty())
+    {
+        Log("ModLoader", "EngineScriptMap: empty after scanning %zu slots from +0x%X",
+            i, kEngineScriptTableRVA);
+        return;
+    }
+
+    EngineScriptMap = std::move(map);
+    s_built.store(true, std::memory_order_release);
+    Log("ModLoader", "EngineScriptMap: built %zu entries from +0x%X",
+        EngineScriptMap.size(), kEngineScriptTableRVA);
+}
+
+RValue* ModLoader::CallEngineScript(const char* builtinName,
+    uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv)
+{
+    if (!builtinName)
+        return result;
+
+    if (HookBase::moduleBase == 0)
+    {
+        Log("ModLoader", "CallEngineScript: module base not resolved");
+        return result;
+    }
+
+    EnsureEngineScriptMap();
+
+    auto it = EngineScriptMap.find(builtinName);
+    if (it == EngineScriptMap.end())
+    {
+        Log("ModLoader", "CallEngineScript: unknown built-in '%s'", builtinName);
+        return result;
+    }
+
+    using EngineDispatcher_t = RValue*(__cdecl*)(uintptr_t*, uintptr_t*, RValue*, int, uint32_t, RValue**);
+    auto dispatcher = reinterpret_cast<EngineDispatcher_t>(HookBase::moduleBase + 0xCA7F30);
+    return dispatcher(self, other, result, argc, it->second, argv);
+}
+
 #pragma pack(push, 1)
 struct PropertyDesc
 {
@@ -430,6 +509,9 @@ void ModLoader::LoadMods()
             +[]() { g_hookBypassRequested = true; },
             +[](const char* name, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv) {
                 return ModLoader::CallScript(name, self, other, result, argc, argv);
+            },
+            +[](const char* name, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv) {
+                return ModLoader::CallEngineScript(name, self, other, result, argc, argv);
             },
             reinterpret_cast<HS_ResolveInstanceFn>(HookBase::moduleBase + 0xCBC420),
             reinterpret_cast<HS_GetVarFn>         (HookBase::moduleBase + 0xC99410),
