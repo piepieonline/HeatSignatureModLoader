@@ -1,5 +1,8 @@
 cmake_minimum_required(VERSION 3.26)
 
+cmake_policy(SET CMP0091 NEW)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 if (POLICY CMP0141)
   cmake_policy(SET CMP0141 NEW)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
@@ -14,7 +17,7 @@ generate_script_functions_header(
     ${SCRIPT_FUNCTIONS_GENERATED_DIR}/ScriptFunctions.generated.h
 )
 
-add_subdirectory(dxgi)
+add_subdirectory(d3d9)
 add_subdirectory(ModLoader)
 add_subdirectory(mods/ScreenRecorder)
 add_subdirectory(mods/DiscordRichPresence)
