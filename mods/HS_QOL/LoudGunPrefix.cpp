@@ -21,6 +21,12 @@ static void OnGenerateGunPost(const char* /*hookName*/, uintptr_t* self, uintptr
     auto weapon = HS::ResolveInstanceAs<HS::HS_Weapon>((uint32_t*)argv[0], g_api);
     if (!weapon.valid()) return;
 
+    if (weapon.Mysterious || weapon.PersonalMissionItem) 
+    {
+        Log("Skipping loud gun as it was mysterious or a personal mission item");
+        return;
+    }
+
     std::string current = weapon.Name;
     if (current.empty()) return;
 
