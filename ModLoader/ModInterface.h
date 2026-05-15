@@ -45,6 +45,17 @@ typedef double (*HS_GetTimeScaleFn)();
 typedef void (*HS_ImGuiDrawFn)(void* userData);
 typedef void (*HS_RegisterImGuiDrawFn)(HS_ImGuiDrawFn callback, void* userData);
 
+// Registers a callback that contributes items to the loader-owned
+// ImGui::BeginMainMenuBar(). The callback runs between Begin/EndMainMenuBar
+// each frame and should issue ImGui::BeginMenu / MenuItem / EndMenu calls
+// only — it must NOT call BeginMainMenuBar itself. Safe to call from any
+// thread; runs on the game's render thread.
+//
+// The bar is hidden when no callback actually draws an item. Once hidden it
+// re-appears the frame a new callback registers; if a callback toggles
+// itself off and later wants to draw again, re-register to force a probe.
+typedef void (*HS_RegisterImGuiMainMenuFn)(HS_ImGuiDrawFn callback, void* userData);
+
 // Returns the host's ImGuiContext*. Mods must call ImGui::SetCurrentContext
 // with this value once before issuing any ImGui calls so they share the
 // host's globals (which would otherwise be per-DLL).
@@ -128,6 +139,7 @@ struct HS_ModApi
     HS_SubscribeHookPostFn   SubscribeHookPost;
     HS_GetTimeScaleFn        GetTimeScale;
     HS_RegisterImGuiDrawFn   RegisterImGuiDraw;
+    HS_RegisterImGuiMainMenuFn RegisterImGuiMainMenu;
     HS_GetImGuiContextFn     GetImGuiContext;
     HS_GetImGuiAllocatorsFn  GetImGuiAllocators;
     HS_GetGameWindowFn       GetGameWindow;

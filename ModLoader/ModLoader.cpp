@@ -540,6 +540,9 @@ void ModLoader::LoadMods()
             +[](HS_ImGuiDrawFn cb, void* userData) {
                 ImGuiHook::RegisterDraw(cb, userData);
             },
+            +[](HS_ImGuiDrawFn cb, void* userData) {
+                ImGuiHook::RegisterMainMenu(cb, userData);
+            },
             +[]() -> void* { return ImGuiHook::GetContext(); },
             +[](void** a, void** f, void** ud) { ImGuiHook::GetAllocators(a, f, ud); },
             &FindGameWindow,

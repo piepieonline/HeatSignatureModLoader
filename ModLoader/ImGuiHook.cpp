@@ -42,6 +42,9 @@ namespace
     std::mutex                                          g_drawMu;
     std::vector<std::pair<HS_ImGuiDrawFn, void*>>       g_drawCallbacks;
 
+    std::mutex                                          g_mainMenuMu;
+    std::vector<std::pair<HS_ImGuiDrawFn, void*>>       g_mainMenuCallbacks;
+
     // /EHsc forbids __try in functions that have C++ object unwinding, so the
     // SEH wrapper around each mod callback lives in its own helper.
     DWORD InvokeDrawSafe(HS_ImGuiDrawFn fn, void* userData)
@@ -103,6 +106,42 @@ namespace
             ImGui_ImplDX9_NewFrame();
             ImGui_ImplWin32_NewFrame();
             ImGui::NewFrame();
+
+            std::vector<std::pair<HS_ImGuiDrawFn, void*>> menuSnapshot;
+            {
+                std::lock_guard<std::mutex> lk(g_mainMenuMu);
+                menuSnapshot = g_mainMenuCallbacks;
+            }
+
+            // Gate the menu bar on whether any callback drew an item.
+            // We can't cancel BeginMainMenuBar mid-frame, so we use one-frame
+            // latency: show the bar if it had items last frame, and re-probe
+            // for one frame whenever a new callback registers. Anything past
+            // that requires re-triggering by another registration.
+            static bool   s_hadItems       = false;
+            static size_t s_lastCallbackCt = 0;
+
+            const bool probe   = menuSnapshot.size() > s_lastCallbackCt;
+            const bool showBar = s_hadItems || probe;
+            s_lastCallbackCt = menuSnapshot.size();
+
+            if (showBar && ImGui::BeginMainMenuBar())
+            {
+                const float startX = ImGui::GetCursorPosX();
+                for (auto& cb : menuSnapshot)
+                {
+                    DWORD seh = InvokeDrawSafe(cb.first, cb.second);
+                    if (seh != 0)
+                        Log("main-menu callback raised SEH 0x%08lX",
+                            static_cast<unsigned long>(seh));
+                }
+                s_hadItems = ImGui::GetCursorPosX() > startX;
+                ImGui::EndMainMenuBar();
+            }
+            else if (!showBar)
+            {
+                s_hadItems = false;
+            }
 
             std::vector<std::pair<HS_ImGuiDrawFn, void*>> snapshot;
             {
@@ -355,6 +394,13 @@ namespace ImGuiHook
         if (!callback) return;
         std::lock_guard<std::mutex> lk(g_drawMu);
         g_drawCallbacks.emplace_back(callback, userData);
+    }
+
+    void RegisterMainMenu(HS_ImGuiDrawFn callback, void* userData)
+    {
+        if (!callback) return;
+        std::lock_guard<std::mutex> lk(g_mainMenuMu);
+        g_mainMenuCallbacks.emplace_back(callback, userData);
     }
 
     void* GetContext()

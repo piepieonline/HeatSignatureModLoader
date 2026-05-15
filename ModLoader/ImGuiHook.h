@@ -11,6 +11,13 @@ namespace ImGuiHook
     // Mod-facing draw registration. Safe to call from any thread.
     void RegisterDraw(HS_ImGuiDrawFn callback, void* userData);
 
+    // Registers a callback that contributes items to the shared
+    // ImGui::BeginMainMenuBar() the loader renders each frame. Callbacks run
+    // between Begin/EndMainMenuBar — they should issue ImGui::BeginMenu /
+    // ImGui::MenuItem / ImGui::EndMenu calls but must NOT call
+    // BeginMainMenuBar themselves.
+    void RegisterMainMenu(HS_ImGuiDrawFn callback, void* userData);
+
     // Returns the shared ImGuiContext* (created lazily on first EndScene).
     // May return nullptr if EndScene hasn't fired yet — mods should call this
     // from their first registered draw callback rather than from ModInit if
