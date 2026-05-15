@@ -5,7 +5,7 @@
 static HS_GetGameWindowFn g_getGameWindow = nullptr;
 static HS_RequestBypassFn g_requestBypass = nullptr;
 
-static void OnUpdateCursorPosition(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+static void OnUpdateCursorPosition(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
     HWND hwnd = g_getGameWindow();
     if (!hwnd || GetForegroundWindow() != hwnd)

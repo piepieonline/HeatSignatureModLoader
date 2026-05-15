@@ -18,9 +18,9 @@ public:
 	static void SubscribeHook(const char* hookName, HS_HookCallback callback, void* userData);
 	static void SubscribeHookPost(const char* hookName, HS_HookPostCallback callback, void* userData);
 	static RValue* CallScript(const char* scriptName,
-		uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
+		CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv);
 	static RValue* CallEngineScript(const char* builtinName,
-		uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
+		CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv);
 	static void EnsureEngineScriptMap();
 	static std::unordered_map<std::string, uint32_t> EngineScriptMap;
 	static int GetVarId(const char* name);
@@ -37,7 +37,7 @@ public:
 		new Hook<GMLScript_t>(
 			"draw_text",
 			0xCD8350,
-			+[](uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv) -> RValue*
+			+[](CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv) -> RValue*
 			{
 				auto hook = ModLoader::HookMap["draw_text"];
 				// ModLoader::LogDrawText(argc, argv); // fires every frame

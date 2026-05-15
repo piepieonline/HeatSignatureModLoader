@@ -50,7 +50,7 @@ struct HookBase {
     std::vector<std::pair<HS_HookPostCallback, void*>> postSubscribers;
 
     // Returns true if any subscriber requested a bypass (skip original call).
-    bool NotifyPreSubscribers(uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv)
+    bool NotifyPreSubscribers(CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv)
     {
         g_hookBypassRequested = false;
         for (auto& sub : preSubscribers)
@@ -58,7 +58,7 @@ struct HookBase {
         return g_hookBypassRequested;
     }
 
-    void NotifyPostSubscribers(uintptr_t* self, uintptr_t* other, RValue* returnValue, int argc, RValue** argv)
+    void NotifyPostSubscribers(CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv)
     {
         for (auto& sub : postSubscribers)
             sub.first(hookName.c_str(), self, other, returnValue, argc, argv, sub.second);

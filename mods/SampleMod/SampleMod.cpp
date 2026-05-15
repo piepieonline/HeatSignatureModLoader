@@ -4,7 +4,7 @@
 static HS_LogFn g_log = nullptr;
 static bool g_showPopup = false;
 
-static void OnAcceptMission(const char*, uintptr_t*, uintptr_t*, RValue*, int, RValue**, void*)
+static void OnAcceptMission(const char*, CInstance* /* self */, CInstance* /* other */, RValue* /* result */, int /* argCount */, RValue** /* args[] */, void* /* userData */)
 {
     g_showPopup = true;
     g_log("SampleMod", "Mission accepted!");

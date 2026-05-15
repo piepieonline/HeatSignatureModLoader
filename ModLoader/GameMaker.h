@@ -1,7 +1,18 @@
 #pragma once
 #include <stdint.h>
+#include <stddef.h>
 
 struct RValue;
+
+// GameMaker engine instance object. Used as the `self` / `other` pointer
+// in script function calls. Only the `id` field is interpreted by mods;
+// the preceding bytes are opaque engine state. Field offset is verified
+// against decompiled `GetVar` (see docs/decomp/eng_GetVar_C99410.txt).
+struct CInstance {
+    uint8_t  pad_0x00[0x78];
+    uint32_t id;
+};
+static_assert(offsetof(CInstance, id) == 0x78, "CInstance::id offset mismatch");
 
 struct YYString {
     const char* text;
@@ -25,7 +36,7 @@ struct RValue {
     uint32_t type;
 };
 
-using GMLScript_t = RValue*(__cdecl*)(uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv);
+using GMLScript_t = RValue*(__cdecl*)(CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv);
 
 static const char* GetTypeName(int type)
 {

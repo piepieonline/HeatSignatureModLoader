@@ -23,11 +23,11 @@ typedef uint32_t (*HS_ModApiVersionFn)(void);
 typedef void (*HS_LogFn)(const char* prefix, const char* message);
 
 // Fires before a hooked function is invoked. Callbacks run on the game thread.
-typedef void (*HS_HookCallback)(const char* hookName, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv, void* userData);
+typedef void (*HS_HookCallback)(const char* hookName, CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv, void* userData);
 
 // Fires after a hooked function returns. returnValue is the GML RValue* the
 // function returned. Callbacks run on the game thread.
-typedef void (*HS_HookPostCallback)(const char* hookName, uintptr_t* self, uintptr_t* other, RValue* returnValue, int argc, RValue** argv, void* userData);
+typedef void (*HS_HookPostCallback)(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* userData);
 
 typedef void (*HS_SubscribeHookFn)(const char* hookName,
                                    HS_HookCallback callback,
@@ -68,7 +68,7 @@ typedef void (*HS_RequestBypassFn)();
 // Returns `result` unchanged if the script name is not in the offset table or
 // the hook cannot be installed.
 typedef RValue* (*HS_CallScriptFn)(const char* scriptName,
-                                   uintptr_t* self, uintptr_t* other,
+                                   CInstance* self, CInstance* other,
                                    RValue* result, int argc, RValue** argv);
 
 // Invoke a GameMaker engine built-in (e.g. draw_text, instance_create) by
@@ -77,7 +77,7 @@ typedef RValue* (*HS_CallScriptFn)(const char* scriptName,
 // engine's built-in registry, populated at startup. Returns `result`
 // unchanged if the name is unknown or the registry is not yet ready.
 typedef RValue* (*HS_CallEngineScriptFn)(const char* builtinName,
-                                         uintptr_t* self, uintptr_t* other,
+                                         CInstance* self, CInstance* other,
                                          RValue* result, int argc, RValue** argv);
 
 // Engine helpers — the four GameMaker built-ins mods most often need.

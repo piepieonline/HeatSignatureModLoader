@@ -117,9 +117,15 @@ protected:
 };
 
 template <typename T>
-T ResolveInstanceAs(uint32_t* argHandle, const HS_ModApi* api)
+T ResolveInstanceAs(uint32_t* instanceRValue, const HS_ModApi* api)
 {
-    return T(api->ResolveInstance(argHandle), api);
+    return T(api->ResolveInstance(instanceRValue), api);
+}
+
+template <typename T>
+T ResolveInstanceAs(uint32_t instanceId, const HS_ModApi* api)
+{
+    return T(instanceId, api);
 }
 
 } // namespace HS

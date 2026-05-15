@@ -4,9 +4,15 @@
 #include <cstdarg>
 #include <cstdio>
 #include <cstring>
+#include <cstddef>
 #include <string>
 
 #include "PropertyNames.h"
+
+#include <imgui.h>
+#include <vector>
+#include <filesystem>
+#include <HS/HS_Character.h>
 
 HS_EXPORT_MOD_API_VERSION()
 
@@ -29,7 +35,7 @@ static void Log(const char* prefix, const char* fmt, ...)
 
 static inline uint32_t* GetActiveContext()
 {
-    uint32_t* ctx = (uint32_t*)0x45ED614;
+    uint32_t* ctx = g_moduleBase + (uint32_t*)0x45ED614;
 
     while (ctx)
     {
@@ -160,7 +166,7 @@ static void LogRValue_SEH(const char* label, RValue* rv)
     }
 }
 
-static void LogGMLArgs_SEH(const char* fnName, uintptr_t* self, int argc, RValue** argv, RValue* result)
+static void LogGMLArgs_SEH(const char* fnName, CInstance* self, int argc, RValue** argv, RValue* result)
 {
     __try
     {
@@ -204,7 +210,7 @@ static void LogArgsAddress(int argc, uintptr_t** argv)
     LogArgsAddress_SEH(argc, argv);
 }
 
-static void LogGMLCall(const char* fnName, uintptr_t* self, int argc, RValue** argv, RValue* result = nullptr)
+static void LogGMLCall(const char* fnName, CInstance* self, int argc, RValue** argv, RValue* result = nullptr)
 {
     LogGMLArgs_SEH(fnName, self, argc, argv, result);
 }
@@ -254,7 +260,23 @@ using SetSlowMotionEffectStrength_t = uintptr_t* (__cdecl*)(int a1, int a2, uint
 // Hook callbacks
 // ---------------------------------------------------------------------------
 
-static void OnAcceptMissionPost(const char* hookName, uintptr_t* self, uintptr_t* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+static void DumpVars(int instance)
+{
+    for (const char* name : kPropertyNames)
+    {
+        RValue out{};
+        g_api->GetVarByName(instance, name, 0x80000000, &out);
+
+        if (GetTypeName(out.type) == std::string("UNKNOWN"))
+            continue;
+
+        char label[128];
+        sprintf_s(label, "%s:", name);
+        LogRValue(label, &out);
+    }
+}
+
+static void OnAcceptMissionPost(const char* hookName, CInstance* self, CInstance* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
     LogGMLCall(hookName, self, argc, argv, returnValue);
     /*
@@ -278,9 +300,30 @@ static void OnAcceptMissionPost(const char* hookName, uintptr_t* self, uintptr_t
     */
 }
 
-static void OnPlayAsCharacterPost(const char* hookName, uintptr_t* self, uintptr_t* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+static void OnPlayAsCharacterPost(const char* hookName, CInstance* self, CInstance* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
     LogGMLCall(hookName, self, argc, argv, returnValue);
+
+    // DumpVars(g_api->ResolveInstance((uint32_t*)argv[0]));
+    // DumpVars(44);
+
+    // auto a1 = g_api->ResolveInstance((uint32_t*)argv[0]);
+    // auto a2 = GetActiveContext();
+
+    int instance_handle = g_api->ResolveInstance((uint32_t*)argv[0]);
+    Log("DebugMod", "instance=0x%08X", instance_handle);
+
+    RValue BleedOutTime{};
+    g_api->GetVar(instance_handle, 704, 0x80000000, &BleedOutTime);
+    RValue SecondsUntilBleedOut{};
+    g_api->GetVar(instance_handle, 705, 0x80000000, &SecondsUntilBleedOut);
+
+    LogRValue("BleedOutTime", &BleedOutTime);
+    LogRValue("SecondsUntilBleedOut", &SecondsUntilBleedOut);
+
+    // Log("DebugMod", "cinstance=0x%08X", reinterpret_cast<int(__cdecl*)(int)>(g_moduleBase + 0xCA7F30)(instance_handle));
+    // Log("DebugMod", "cinstance=0x%08X", reinterpret_cast<int(__cdecl*)(int)>(g_moduleBase + 0xD25380)(instance_handle));
+    Log("DebugMod", "cinstance=0x%08X", reinterpret_cast<int(__cdecl*)(int)>(g_moduleBase + 0xC98DF0)(instance_handle));
 
     /*
     for (const auto& [name, id] : ModLoader::VariableMap)
@@ -298,28 +341,203 @@ static void OnPlayAsCharacterPost(const char* hookName, uintptr_t* self, uintptr
     */
 }
 
-static void OnPlayerIsDailyChallengerPost(const char* /*hookName*/, uintptr_t* self, uintptr_t* other, RValue* /*returnValue*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+struct GmArg
+{
+    RValue value;
+
+    static GmArg Real(double v)
+    {
+        GmArg a;
+        a.value.type = 0;
+        a.value.real = v;
+        return a;
+    }
+
+    static GmArg Str(const HS_ModApi* api, const char* s)
+    {
+        GmArg a;
+        a.value.type = 1;
+        api->SetString(&a.value, s);
+        return a;
+    }
+};
+
+class GmArgs
+{
+public:
+    std::vector<RValue> values;
+    std::vector<RValue*> ptrs;
+
+    void AddReal(double v)
+    {
+        RValue r{};
+        r.type = 0;
+        r.real = v;
+        values.push_back(r);
+    }
+
+    void AddStr(const HS_ModApi* api, const char* s)
+    {
+        RValue r{};
+        r.type = 1;
+        api->SetString(&r, s);
+        values.push_back(r);
+    }
+
+    RValue** Build()
+    {
+        ptrs.resize(values.size());
+
+        for (size_t i = 0; i < values.size(); i++)
+            ptrs[i] = &values[i];
+
+        return ptrs.data();
+    }
+
+    int Count() const
+    {
+        return (int)values.size();
+    }
+};
+
+static void OnPlayerIsDailyChallengerPost(const char* /*hookName*/, CInstance* self, CInstance* other, RValue* /*returnValue*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
     // LogGMLCall(hookName, self, argc, argv, returnValue);
 
     if (g_isDrawing)
     {
+        /*
         RValue argX{}, argY{};
         argX.real = 100.0; argX.type = 0;
         argY.real = 200.0; argY.type = 0;
 
+        RValue str{};
+        str.type = 1;
+        g_api->SetString(&str, "hello");
+
         RValue* argPtrs[3] = {
             &argX,
             &argY,
-            &g_nameVal,
+            &str,
         };
 
+        g_api->CallEngineScript("draw_text", self, other, &resBuf, 3, argPtrs);
+        */
+
+        GmArgs drawTextArgs;
+        drawTextArgs.AddReal(100);
+        drawTextArgs.AddReal(200);
+        drawTextArgs.AddStr(g_api, "test string");
+
+        auto argv = drawTextArgs.Build();
+
         RValue resBuf{};
-        g_api->CallScript("draw_text", self, other, &resBuf, 3, argPtrs);
+        g_api->CallEngineScript("draw_text", self, other, &resBuf, drawTextArgs.Count(), argv);
+
+        GmArgs a;
+
+        a.AddReal(100);
+        a.AddReal(200);
+        a.AddReal(300);
+        a.AddReal(400);
+        a.AddReal(1); // outline
+
+        RValue result{};
+
+        auto argvRect = a.Build();
+
+        g_api->CallEngineScript(
+            "draw_rectangle",
+            self,
+            other,
+            &result,
+            a.Count(),
+            argvRect
+        );
     }
 }
 
-static void OnGenerateGunPost(const char* hookName, uintptr_t* self, uintptr_t* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+static void gml_Script_CameraPanToXY(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    LogGMLCall(hookName, self, argc, argv, returnValue);
+}
+
+static void gml_Script_LoadGalaxy(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    LogGMLCall(hookName, self, argc, argv, returnValue);
+}
+
+static void gml_Script_DrawInventoryList(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    LogGMLCall(hookName, self, argc, argv, returnValue);
+}
+
+static void gml_Script_DrawMissionRating(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    // LogGMLCall(hookName, self, argc, argv, returnValue);
+
+    std::string text = argv[0]->str->text;
+
+    if ((text.find("Injuries Suffered") != std::string::npos) || // On lifetime stats
+    (text.find("Injuries suffered") != std::string::npos)) // On mission stats
+    {
+        // Log("DebugMod", "Found glory score");
+
+        // (HS_Character)
+        CInstance* selfC = reinterpret_cast<CInstance*>(self);
+
+        // Log("DebugMod", "Self ID: %d", selfC->id);
+
+        auto character = HS::ResolveInstanceAs<HS::HS_Character>(selfC->id, g_api);
+        if (!character.valid()) return;
+
+
+        /*
+        RValue BleedOutTime{};
+        g_api->GetVar(selfC->id, 704, 0x80000000, &BleedOutTime);
+        a.AddStr(g_api, ("Hello: " + std::to_string(BleedOutTime.real)).c_str());
+        */
+        RValue bleedTimeArg{};
+        bleedTimeArg.type = 0;
+        bleedTimeArg.real = character.BleedOutTime;
+
+        RValue* timeArgv[1] = { &bleedTimeArg };
+
+        RValue bleedTimeStr{};
+        g_api->CallScript(
+            "gml_Script_MinutesAndSeconds",
+            self,
+            other,
+            &bleedTimeStr,
+            1,
+            timeArgv
+        );
+
+        const char* timeText = (bleedTimeStr.str && bleedTimeStr.str->text)
+            ? bleedTimeStr.str->text
+            : "?";
+
+        GmArgs a;
+
+        a.AddStr(g_api, (std::string("Bleed Out Time: ") + timeText).c_str());
+        a.AddReal(argv[1]->real);
+
+        RValue result{};
+
+        auto argvRect = a.Build();
+
+        g_api->CallScript(
+            "gml_Script_DrawMissionRating",
+            self,
+            other,
+            &result,
+            a.Count(),
+            argvRect
+        );
+    }
+}
+
+static void OnGenerateGunPost(const char* hookName, CInstance* self, CInstance* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
     LogGMLCall(hookName, self, argc, argv, returnValue);
 
@@ -407,16 +625,171 @@ static void OnGenerateGunPost(const char* hookName, uintptr_t* self, uintptr_t* 
     //	ModLoader::LogRValue("Weapon Traits", &(traits.arr->data[i]));
 }
 
+static std::vector<std::string> g_galaxyFolders;
+
+static void LoadGalaxy(std::string name)
+{
+    GmArgs a;
+
+    a.AddStr(g_api, (name + "\\").c_str());
+
+    RValue result{};
+
+    auto argvRect = a.Build();
+
+    g_api->CallScript(
+        "gml_Script_LoadGalaxy",
+        0,
+        0,
+        &result,
+        a.Count(),
+        argvRect
+    );
+}
+
+static void RefreshGalaxyList()
+{
+    g_galaxyFolders.clear();
+
+    // %APPDATA%
+    const char* appData = std::getenv("APPDATA");
+    if (!appData)
+        return;
+
+    std::filesystem::path heatSignaturePath = std::filesystem::path(appData) / "Heat_Signature";
+
+    if (!std::filesystem::exists(heatSignaturePath) || !std::filesystem::is_directory(heatSignaturePath))
+        return;
+
+    // Iterate all subfolders
+    for (const auto& entry : std::filesystem::directory_iterator(heatSignaturePath))
+    {
+        if (!entry.is_directory())
+            continue;
+
+        std::filesystem::path galaxyFile = entry.path() / "Galaxy.txt";
+
+        // Check if Galaxy.txt exists
+        if (std::filesystem::exists(galaxyFile) && std::filesystem::is_regular_file(galaxyFile))
+        {
+            // Store folder name only
+            g_galaxyFolders.push_back(entry.path().filename().string());
+        }
+    }
+}
+
+static void OnImGuiDraw(void* /*userData*/)
+{
+    ImGui::Begin("DebugMod");
+    if (ImGui::Button("DumpVars()"))
+    {
+        /*
+        DumpVars(20);
+        DumpVars(25);
+        DumpVars(26);
+        DumpVars(41);
+        DumpVars(44);
+        */
+        // 
+    }
+    if (ImGui::Button("Move Camera"))
+    {
+        RValue result{};
+        // g_api->CallScript("gml_Script_EndManualZoom", 0, 0, &result, 0, nullptr);
+
+        /*
+        RValue argZoom{}, argPrioirity{};
+        argZoom.real = 100.0; argZoom.type = 0;
+        argPrioirity.real = 200.0; argPrioirity.type = 0;
+
+        RValue* argPtrs[2] = {
+            &argZoom,
+            & argPrioirity
+        };
+
+
+        g_api->CallScript("gml_Script_ZoomToViewSize", 0, 0, &result, 0, argPtrs);
+        */
+
+        g_isDrawing = true;
+        /*
+        int count = *(int*)(g_moduleBase + 0x4545368);
+        for (int i = 0; i < count; i++)
+        {
+            char* entry = *((char**)(g_moduleBase + 0x4545364) + i * 80);
+
+            if (!strcmp(entry, "@@GlobalScope@@"))
+            {
+                // found it
+                Log("DebugMod", "Found global scope");
+            }
+        }
+        */
+
+        /*
+        RValue argX{}, argY{}, argUkn{};
+        argX.real = -443467.687500; argX.type = 0;
+        argY.real = -10078.003906; argY.type = 0;
+        argUkn.real = 400000; argUkn.type = 0;
+
+        RValue* argPtrs[3] = {
+            &argX,
+            &argY,
+            &argUkn
+        };
+
+        g_api->CallScript("gml_Script_CameraPanToXY", GetActiveContext(), GetActiveContext(), &result, 0, argPtrs);
+        */
+
+        /*
+        RValue x{};
+        x.real = 0;
+        g_api->SetVarByName(44, "CenterX", 0, &x);
+        */
+    }
+
+    ImGui::End();
+    
+    ImGui::Begin("Load Galaxy");
+
+    if (ImGui::Button("Load Galaxy List"))
+    {
+        RefreshGalaxyList();
+    }
+
+    ImGui::Separator();
+
+    for (const std::string& folderName : g_galaxyFolders)
+    {
+        if (ImGui::Button(folderName.c_str()))
+        {
+            LoadGalaxy(folderName);
+        }
+    }
+
+    ImGui::End();
+}
+
 extern "C" __declspec(dllexport)
 void ModInit(const HS_ModApi* api)
 {
     g_api = api;
     g_moduleBase = (uintptr_t)GetModuleHandleA("Heat_Signature.exe");
 
+    void* alloc = nullptr; void* freeFn = nullptr; void* ud = nullptr;
+    api->GetImGuiAllocators(&alloc, &freeFn, &ud);
+    ImGui::SetAllocatorFunctions((ImGuiMemAllocFunc)alloc, (ImGuiMemFreeFunc)freeFn, ud);
+    ImGui::SetCurrentContext((ImGuiContext*)api->GetImGuiContext());
+
     api->SubscribeHookPost("gml_Script_AcceptMission",           &OnAcceptMissionPost,           nullptr);
     api->SubscribeHookPost("gml_Script_PlayAsCharacter",         &OnPlayAsCharacterPost,         nullptr);
     api->SubscribeHookPost("gml_Script_PlayerIsDailyChallenger", &OnPlayerIsDailyChallengerPost, nullptr);
     api->SubscribeHookPost("gml_Script_GenerateGun",             &OnGenerateGunPost,             nullptr);
+    api->SubscribeHookPost("gml_Script_LoadGalaxy",             &gml_Script_LoadGalaxy,             nullptr);
+    api->SubscribeHookPost("gml_Script_DrawMissionRating",             &gml_Script_DrawMissionRating,             nullptr);
+    // api->SubscribeHook("gml_Script_AnnotateCharacter",             &gml_Script_DrawInventoryList,             nullptr);
+    // api->SubscribeHookPost("gml_Script_CameraPanToXY",             &gml_Script_CameraPanToXY,             nullptr);
+    api->RegisterImGuiDraw(&OnImGuiDraw, nullptr);
 
     Log("DebugMod", "Initialized (moduleBase=0x%p)", (void*)g_moduleBase);
 

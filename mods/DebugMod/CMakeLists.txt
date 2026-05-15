@@ -11,6 +11,12 @@ target_include_directories(DebugMod PRIVATE
     ${CMAKE_SOURCE_DIR}/ModLoader
 )
 
+find_package(imgui CONFIG REQUIRED)
+
+target_link_libraries(DebugMod PRIVATE
+    imgui::imgui
+)
+
 set_target_properties(DebugMod PROPERTIES
     OUTPUT_NAME "DebugMod"
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin/mods

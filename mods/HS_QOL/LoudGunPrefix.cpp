@@ -5,7 +5,7 @@
 
 static const HS_ModApi* g_api = nullptr;
 
-static void OnGenerateGunPost(const char* /*hookName*/, uintptr_t* self, uintptr_t* other, RValue* /*returnValue*/, int argc, RValue** argv, void* /*userData*/)
+static void OnGenerateGunPost(const char* /*hookName*/, CInstance* self, CInstance* other, RValue* /*returnValue*/, int argc, RValue** argv, void* /*userData*/)
 {
     if (argc < 1 || !argv || !argv[0]) return;
 

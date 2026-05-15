@@ -257,7 +257,7 @@ void ModLoader::SubscribeHookPost(const char* hookName, HS_HookPostCallback call
 }
 
 RValue* ModLoader::CallScript(const char* scriptName,
-    uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv)
+    CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv)
 {
     auto it = HookMap.find(scriptName);
     if (it == HookMap.end())
@@ -274,27 +274,32 @@ RValue* ModLoader::CallScript(const char* scriptName,
     return detour(self, other, result, argc, argv);
 }
 
-// Engine built-in registry: an array of pointers starting at
-// moduleBase + 0x10C4738, terminated by a null entry. Each entry is
-// { const char* name; uint32_t funcPtr } — funcPtr is passed straight to
-// the dispatcher at +0xCA7F30 as the built-in function reference.
+#pragma pack(push, 1)
 struct EngineScriptEntry
 {
-    const char* name;
-    uint32_t    funcPtr;
+    char     name[0x40];
+    uint32_t funcPtr;
+    uint32_t argCount;
+    uint8_t  flags;
+    uint8_t  pad[3];
+    int32_t  unk; // initialized to -1
 };
+#pragma pack(pop)
 
-static constexpr uint32_t kEngineScriptTableRVA = 0x10C4738;
-static constexpr size_t   kEngineScriptMaxScan  = 5000;
+static constexpr uint32_t kEngineScriptBufferRVA = 0x4545364;
+static constexpr uint32_t kEngineScriptCountRVA = 0x4545368;
 
 void ModLoader::EnsureEngineScriptMap()
 {
     static std::atomic<bool> s_built{ false };
-    if (s_built.load(std::memory_order_acquire)) return;
+    if (s_built.load(std::memory_order_acquire))
+        return;
 
     static std::mutex s_mutex;
     std::lock_guard<std::mutex> lock(s_mutex);
-    if (s_built.load()) return;
+
+    if (s_built.load())
+        return;
 
     if (HookBase::moduleBase == 0)
     {
@@ -302,32 +307,59 @@ void ModLoader::EnsureEngineScriptMap()
         return;
     }
 
-    auto table = reinterpret_cast<EngineScriptEntry**>(HookBase::moduleBase + kEngineScriptTableRVA);
-    std::unordered_map<std::string, uint32_t> map;
-    size_t i = 0;
-    for (; i < kEngineScriptMaxScan; ++i)
+    auto bufferPtr =
+        reinterpret_cast<EngineScriptEntry**>(
+            HookBase::moduleBase + kEngineScriptBufferRVA);
+
+    auto countPtr =
+        reinterpret_cast<uint32_t*>(
+            HookBase::moduleBase + kEngineScriptCountRVA);
+
+    if (!bufferPtr || !*bufferPtr || !countPtr)
     {
-        EngineScriptEntry* entry = table[i];
-        if (!entry) break;
-        if (!entry->name) continue;
-        map.emplace(entry->name, entry->funcPtr);
+        Log("ModLoader", "EngineScriptMap: invalid globals");
+        return;
+    }
+
+    EngineScriptEntry* entries = *bufferPtr;
+    uint32_t count = *countPtr;
+
+    if (count == 0 || count > 50000)
+    {
+        Log("ModLoader", "EngineScriptMap: suspicious count %u", count);
+        return;
+    }
+
+    std::unordered_map<std::string, uint32_t> map;
+    map.reserve(count);
+
+    for (uint32_t i = 0; i < count; ++i)
+    {
+        EngineScriptEntry& entry = entries[i];
+
+        if (entry.name[0] == '\0')
+            continue;
+
+        map.emplace(entry.name, i); // Register the function ID, rather than the pointer (so we can use dispatch) // entry.funcPtr);
     }
 
     if (map.empty())
     {
-        Log("ModLoader", "EngineScriptMap: empty after scanning %zu slots from +0x%X",
-            i, kEngineScriptTableRVA);
+        Log("ModLoader", "EngineScriptMap: no entries found");
         return;
     }
 
     EngineScriptMap = std::move(map);
+
     s_built.store(true, std::memory_order_release);
-    Log("ModLoader", "EngineScriptMap: built %zu entries from +0x%X",
-        EngineScriptMap.size(), kEngineScriptTableRVA);
+
+    Log("ModLoader",
+        "EngineScriptMap: built %zu entries",
+        EngineScriptMap.size());
 }
 
 RValue* ModLoader::CallEngineScript(const char* builtinName,
-    uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv)
+    CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv)
 {
     if (!builtinName)
         return result;
@@ -341,15 +373,20 @@ RValue* ModLoader::CallEngineScript(const char* builtinName,
     EnsureEngineScriptMap();
 
     auto it = EngineScriptMap.find(builtinName);
+    uint32_t function_index;
     if (it == EngineScriptMap.end())
     {
         Log("ModLoader", "CallEngineScript: unknown built-in '%s'", builtinName);
         return result;
     }
+    else
+    {
+        function_index = it->second;
+    }
 
-    using EngineDispatcher_t = RValue*(__cdecl*)(uintptr_t*, uintptr_t*, RValue*, int, uint32_t, RValue**);
+    using EngineDispatcher_t = RValue*(__cdecl*)(CInstance*, CInstance*, RValue*, int, uint32_t, RValue**);
     auto dispatcher = reinterpret_cast<EngineDispatcher_t>(HookBase::moduleBase + 0xCA7F30);
-    return dispatcher(self, other, result, argc, it->second, argv);
+    return dispatcher(self, other, result, argc, function_index, argv);
 }
 
 #pragma pack(push, 1)
@@ -507,10 +544,10 @@ void ModLoader::LoadMods()
             +[](void** a, void** f, void** ud) { ImGuiHook::GetAllocators(a, f, ud); },
             &FindGameWindow,
             +[]() { g_hookBypassRequested = true; },
-            +[](const char* name, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv) {
+            +[](const char* name, CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv) {
                 return ModLoader::CallScript(name, self, other, result, argc, argv);
             },
-            +[](const char* name, uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv) {
+            +[](const char* name, CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv) {
                 return ModLoader::CallEngineScript(name, self, other, result, argc, argv);
             },
             reinterpret_cast<HS_ResolveInstanceFn>(HookBase::moduleBase + 0xCBC420),

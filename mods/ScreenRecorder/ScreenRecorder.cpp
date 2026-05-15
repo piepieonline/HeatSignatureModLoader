@@ -50,7 +50,7 @@ namespace
         ImGui::End();
     }
 
-    void OnAcceptMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+    void OnAcceptMission(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
     {
         if (g_recording.load(std::memory_order_acquire)) return;
         if (!g_recording_enabled.load(std::memory_order_acquire)) return;
@@ -58,26 +58,26 @@ namespace
         ToggleRecording();
     }
 
-    void OnCompleteMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+    void OnCompleteMission(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
     {
         if (!g_recording.load(std::memory_order_acquire)) return;
         Log("CompleteMission -> stop recording");
         ToggleRecording();
     }
 
-    void OnCancelMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+    void OnCancelMission(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
     {
         if (!g_recording.load(std::memory_order_acquire)) return;
         Log("CancelMission -> stop recording");
         ToggleRecording();
     }
 
-    void ShowInventoryMenu_Prefix(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+    void ShowInventoryMenu_Prefix(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
     {
         g_recording_paused.store(true);
     }
 
-    void HideInventoryMenu_Postfix(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*returnValue*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+    void HideInventoryMenu_Postfix(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*returnValue*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
     {
         // Skip a handful of frames so that any screen frames where the menu is
         // still fading out don't make it into the recording.

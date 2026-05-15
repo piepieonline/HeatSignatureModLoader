@@ -108,7 +108,7 @@ static void OnErrored(int errorCode, const char* message)
 
 // ── Hook callbacks ───────────────────────────────────────────────────────────
 
-static void OnAcceptMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** argv, void* /*userData*/)
+static void OnAcceptMission(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*result*/, int /*argc*/, RValue** argv, void* /*userData*/)
 {
     if (g_state == GameState::DailyChallenge)
     {
@@ -165,7 +165,7 @@ static void OnAcceptMission(const char* /*hookName*/, uintptr_t* /*self*/, uintp
     }
 }
 
-static void OnCompleteMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+static void OnCompleteMission(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
     if (g_state != GameState::DailyChallenge)
     {
@@ -174,7 +174,7 @@ static void OnCompleteMission(const char* /*hookName*/, uintptr_t* /*self*/, uin
     }
 }
 
-static void OnCancelMission(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
+static void OnCancelMission(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*result*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
     if (g_state != GameState::DailyChallenge)
     {
@@ -183,7 +183,7 @@ static void OnCancelMission(const char* /*hookName*/, uintptr_t* /*self*/, uintp
     }
 }
 
-static void OnPlayAsCharacter(const char* /*hookName*/, uintptr_t* /*self*/, uintptr_t* /*other*/, RValue* /*result*/, int argc, RValue** argv, void* /*userData*/)
+static void OnPlayAsCharacter(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*result*/, int argc, RValue** argv, void* /*userData*/)
 {
     if (argc < 1 || !argv || !argv[0]) return;
 

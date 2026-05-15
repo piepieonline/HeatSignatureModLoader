@@ -11,7 +11,7 @@ HookBase* g_universalSlots[kUniversalHookSlots] = {};
 namespace {
 
 template <size_t N>
-RValue* __cdecl UniversalDetour(uintptr_t* self, uintptr_t* other, RValue* result, int argc, RValue** argv)
+RValue* __cdecl UniversalDetour(CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv)
 {
     HookBase* hook = g_universalSlots[N];
     RValue* ret = result;
