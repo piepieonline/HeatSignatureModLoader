@@ -1,4 +1,5 @@
 #include "ModInterface.h"
+#include "GmArgs.h"
 
 #include <windows.h>
 #include <cstdarg>
@@ -340,65 +341,6 @@ static void OnPlayAsCharacterPost(const char* hookName, CInstance* self, CInstan
     }
     */
 }
-
-struct GmArg
-{
-    RValue value;
-
-    static GmArg Real(double v)
-    {
-        GmArg a;
-        a.value.type = 0;
-        a.value.real = v;
-        return a;
-    }
-
-    static GmArg Str(const HS_ModApi* api, const char* s)
-    {
-        GmArg a;
-        a.value.type = 1;
-        api->SetString(&a.value, s);
-        return a;
-    }
-};
-
-class GmArgs
-{
-public:
-    std::vector<RValue> values;
-    std::vector<RValue*> ptrs;
-
-    void AddReal(double v)
-    {
-        RValue r{};
-        r.type = 0;
-        r.real = v;
-        values.push_back(r);
-    }
-
-    void AddStr(const HS_ModApi* api, const char* s)
-    {
-        RValue r{};
-        r.type = 1;
-        api->SetString(&r, s);
-        values.push_back(r);
-    }
-
-    RValue** Build()
-    {
-        ptrs.resize(values.size());
-
-        for (size_t i = 0; i < values.size(); i++)
-            ptrs[i] = &values[i];
-
-        return ptrs.data();
-    }
-
-    int Count() const
-    {
-        return (int)values.size();
-    }
-};
 
 static void OnPlayerIsDailyChallengerPost(const char* /*hookName*/, CInstance* self, CInstance* other, RValue* /*returnValue*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {

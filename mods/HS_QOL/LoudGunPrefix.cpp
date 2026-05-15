@@ -1,6 +1,7 @@
 #include "LoudGunPrefix.h"
 #include "Log.h"
 #include "HS/HS_Weapon.h"
+#include "GmArgs.h"
 #include <string>
 
 static const HS_ModApi* g_api = nullptr;
@@ -9,12 +10,12 @@ static void OnGenerateGunPost(const char* /*hookName*/, CInstance* self, CInstan
 {
     if (argc < 1 || !argv || !argv[0]) return;
 
-    RValue traitArg{};
-    g_api->SetString(&traitArg, "Loud");
+    GmArgs args;
+    args.AddRValue(*argv[0]);
+    args.AddStr(g_api, "Loud");
 
-    RValue* args[2] = { argv[0], &traitArg };
     RValue challengerResult{};
-    g_api->CallScript("gml_Script_ItemHasTrait", self, other, &challengerResult, 2, args);
+    g_api->CallScript("gml_Script_ItemHasTrait", self, other, &challengerResult, args.Count(), args.Build());
 
     if (challengerResult.real <= 0.5) return;
 
