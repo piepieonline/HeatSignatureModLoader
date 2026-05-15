@@ -10,12 +10,22 @@ add_library(HS_QOL SHARED
     FixCursorLock.h
     LoudGunPrefix.cpp
     LoudGunPrefix.h
+    BleedOutTime.cpp
+    BleedOutTime.h
+    LoadGalaxy.cpp
+    LoadGalaxy.h
 )
 
 target_compile_features(HS_QOL PRIVATE cxx_std_17)
 
 target_include_directories(HS_QOL PRIVATE
     ${CMAKE_SOURCE_DIR}/ModLoader
+)
+
+find_package(imgui CONFIG REQUIRED)
+
+target_link_libraries(HS_QOL PRIVATE
+    imgui::imgui
 )
 
 set_target_properties(HS_QOL PROPERTIES

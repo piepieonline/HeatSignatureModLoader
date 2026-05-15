@@ -12,7 +12,6 @@
 
 #include <imgui.h>
 #include <vector>
-#include <filesystem>
 #include <HS/HS_Character.h>
 
 HS_EXPORT_MOD_API_VERSION()
@@ -414,71 +413,6 @@ static void gml_Script_DrawInventoryList(const char* hookName, CInstance* self, 
     LogGMLCall(hookName, self, argc, argv, returnValue);
 }
 
-static void gml_Script_DrawMissionRating(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
-{
-    // LogGMLCall(hookName, self, argc, argv, returnValue);
-
-    std::string text = argv[0]->str->text;
-
-    if ((text.find("Injuries Suffered") != std::string::npos) || // On lifetime stats
-    (text.find("Injuries suffered") != std::string::npos)) // On mission stats
-    {
-        // Log("DebugMod", "Found glory score");
-
-        // (HS_Character)
-        CInstance* selfC = reinterpret_cast<CInstance*>(self);
-
-        // Log("DebugMod", "Self ID: %d", selfC->id);
-
-        auto character = HS::ResolveInstanceAs<HS::HS_Character>(selfC->id, g_api);
-        if (!character.valid()) return;
-
-
-        /*
-        RValue BleedOutTime{};
-        g_api->GetVar(selfC->id, 704, 0x80000000, &BleedOutTime);
-        a.AddStr(g_api, ("Hello: " + std::to_string(BleedOutTime.real)).c_str());
-        */
-        RValue bleedTimeArg{};
-        bleedTimeArg.type = 0;
-        bleedTimeArg.real = character.BleedOutTime;
-
-        RValue* timeArgv[1] = { &bleedTimeArg };
-
-        RValue bleedTimeStr{};
-        g_api->CallScript(
-            "gml_Script_MinutesAndSeconds",
-            self,
-            other,
-            &bleedTimeStr,
-            1,
-            timeArgv
-        );
-
-        const char* timeText = (bleedTimeStr.str && bleedTimeStr.str->text)
-            ? bleedTimeStr.str->text
-            : "?";
-
-        GmArgs a;
-
-        a.AddStr(g_api, (std::string("Bleed Out Time: ") + timeText).c_str());
-        a.AddReal(argv[1]->real);
-
-        RValue result{};
-
-        auto argvRect = a.Build();
-
-        g_api->CallScript(
-            "gml_Script_DrawMissionRating",
-            self,
-            other,
-            &result,
-            a.Count(),
-            argvRect
-        );
-    }
-}
-
 static void OnGenerateGunPost(const char* hookName, CInstance* self, CInstance* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
     LogGMLCall(hookName, self, argc, argv, returnValue);
@@ -567,59 +501,6 @@ static void OnGenerateGunPost(const char* hookName, CInstance* self, CInstance* 
     //	ModLoader::LogRValue("Weapon Traits", &(traits.arr->data[i]));
 }
 
-static std::vector<std::string> g_galaxyFolders;
-
-static void LoadGalaxy(std::string name)
-{
-    GmArgs a;
-
-    a.AddStr(g_api, (name + "\\").c_str());
-
-    RValue result{};
-
-    auto argvRect = a.Build();
-
-    g_api->CallScript(
-        "gml_Script_LoadGalaxy",
-        0,
-        0,
-        &result,
-        a.Count(),
-        argvRect
-    );
-}
-
-static void RefreshGalaxyList()
-{
-    g_galaxyFolders.clear();
-
-    // %APPDATA%
-    const char* appData = std::getenv("APPDATA");
-    if (!appData)
-        return;
-
-    std::filesystem::path heatSignaturePath = std::filesystem::path(appData) / "Heat_Signature";
-
-    if (!std::filesystem::exists(heatSignaturePath) || !std::filesystem::is_directory(heatSignaturePath))
-        return;
-
-    // Iterate all subfolders
-    for (const auto& entry : std::filesystem::directory_iterator(heatSignaturePath))
-    {
-        if (!entry.is_directory())
-            continue;
-
-        std::filesystem::path galaxyFile = entry.path() / "Galaxy.txt";
-
-        // Check if Galaxy.txt exists
-        if (std::filesystem::exists(galaxyFile) && std::filesystem::is_regular_file(galaxyFile))
-        {
-            // Store folder name only
-            g_galaxyFolders.push_back(entry.path().filename().string());
-        }
-    }
-}
-
 static void OnImGuiDraw(void* /*userData*/)
 {
     ImGui::Begin("DebugMod");
@@ -691,25 +572,6 @@ static void OnImGuiDraw(void* /*userData*/)
     }
 
     ImGui::End();
-    
-    ImGui::Begin("Load Galaxy");
-
-    if (ImGui::Button("Load Galaxy List"))
-    {
-        RefreshGalaxyList();
-    }
-
-    ImGui::Separator();
-
-    for (const std::string& folderName : g_galaxyFolders)
-    {
-        if (ImGui::Button(folderName.c_str()))
-        {
-            LoadGalaxy(folderName);
-        }
-    }
-
-    ImGui::End();
 }
 
 extern "C" __declspec(dllexport)
@@ -727,8 +589,6 @@ void ModInit(const HS_ModApi* api)
     api->SubscribeHookPost("gml_Script_PlayAsCharacter",         &OnPlayAsCharacterPost,         nullptr);
     api->SubscribeHookPost("gml_Script_PlayerIsDailyChallenger", &OnPlayerIsDailyChallengerPost, nullptr);
     api->SubscribeHookPost("gml_Script_GenerateGun",             &OnGenerateGunPost,             nullptr);
-    api->SubscribeHookPost("gml_Script_LoadGalaxy",             &gml_Script_LoadGalaxy,             nullptr);
-    api->SubscribeHookPost("gml_Script_DrawMissionRating",             &gml_Script_DrawMissionRating,             nullptr);
     // api->SubscribeHook("gml_Script_AnnotateCharacter",             &gml_Script_DrawInventoryList,             nullptr);
     // api->SubscribeHookPost("gml_Script_CameraPanToXY",             &gml_Script_CameraPanToXY,             nullptr);
     api->RegisterImGuiDraw(&OnImGuiDraw, nullptr);

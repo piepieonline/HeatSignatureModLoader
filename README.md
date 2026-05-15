@@ -17,7 +17,7 @@ Mods installed into `./mods/` will automatically be loaded, and will automatical
 
 The mod loader will generate a configuration file on first run, which contains the following options
 	- `show_console`: Shows a console window with debug messages when the game is running. The log can always be found in `./ModLoader.log`
-	- `imgui_toggle_key`: The keyboard key to press to globally show and hide all UI overlays. Default is F7
+	- `imgui_toggle_key`: The keyboard key to press to globally show and hide all UI overlays, including the main menu bar. Default is F7
 	- `imgui_visible_default`: Should mod drawn UI elements be visible by default (can always be toggled with the above key)
 
 ## Writing a mod
