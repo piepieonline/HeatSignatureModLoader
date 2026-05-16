@@ -554,6 +554,7 @@ void ModLoader::LoadMods()
                 return ModLoader::CallEngineScript(name, self, other, result, argc, argv);
             },
             reinterpret_cast<HS_ResolveInstanceFn>(HookBase::moduleBase + 0xCBC420),
+            reinterpret_cast<HS_ResolveCInstanceFn>(HookBase::moduleBase + 0xC98DF0),
             reinterpret_cast<HS_GetVarFn>         (HookBase::moduleBase + 0xC99410),
             reinterpret_cast<HS_SetVarFn>         (HookBase::moduleBase + 0xC996F0),
             reinterpret_cast<HS_SetStringFn>      (HookBase::moduleBase + 0xCAB130),

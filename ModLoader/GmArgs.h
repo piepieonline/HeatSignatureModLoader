@@ -55,3 +55,14 @@ private:
     std::vector<RValue>  m_values;
     std::vector<RValue*> m_ptrs;
 };
+
+inline std::string CInstance::GetObjectName(const HS_ModApi* api) const
+{
+    if (!api) return {};
+    GmArgs args;
+    args.AddReal(type);
+    RValue out{};
+    api->CallEngineScript("object_get_name", const_cast<CInstance*>(this), nullptr, &out, 1, args.Build());
+    if (out.type != 1 || !out.str || !out.str->text) return {};
+    return std::string(out.str->text);
+}

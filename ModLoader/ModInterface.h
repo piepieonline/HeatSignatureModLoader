@@ -96,6 +96,10 @@ typedef RValue* (*HS_CallEngineScriptFn)(const char* builtinName,
 // suitable for GetVar/SetVar. GetVar/SetVar use GameMaker variable IDs (e.g.
 // 673 = displayName on a weapon). SetString assigns a C string into an RValue.
 typedef int (*HS_ResolveInstanceFn)(uint32_t* argHandle);
+// Resolves an integer instance handle (as returned by ResolveInstance) to the
+// underlying CInstance*. Returns nullptr if the handle does not refer to a
+// live instance.
+typedef CInstance* (*HS_ResolveCInstanceFn)(int instanceHandle);
 typedef int (*HS_GetVarFn)(int instance, int varId, int arrayIndex, RValue* out);
 typedef int (*HS_SetVarFn)(int instance, int varId, int arrayIndex, RValue* in);
 typedef int (*HS_SetStringFn)(RValue* dest, const char* text);
@@ -147,6 +151,7 @@ struct HS_ModApi
     HS_CallScriptFn          CallScript;
     HS_CallEngineScriptFn    CallEngineScript;
     HS_ResolveInstanceFn     ResolveInstance;
+    HS_ResolveCInstanceFn    ResolveCInstance;
     HS_GetVarFn              GetVar;
     HS_SetVarFn              SetVar;
     HS_SetStringFn           SetString;

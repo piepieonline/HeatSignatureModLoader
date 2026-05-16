@@ -84,6 +84,13 @@ protected:
             return out.real;
         }
 
+        operator RValue() const
+        {
+            RValue out{};
+            owner->m_api->GetVarByName(owner->m_handle, name, 0x80000000, &out);
+            return out;
+        }
+
         RealProperty& operator=(double v)
         {
             RValue tmp{};
