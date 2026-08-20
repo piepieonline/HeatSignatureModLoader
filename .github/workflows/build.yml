@@ -6,6 +6,10 @@ on:
   pull_request:
   workflow_dispatch:
 
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: windows-latest
@@ -17,8 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Cache vcpkg binary packages
-        uses: actions/cache@v4
+      - name: Restore vcpkg binary packages
+        id: vcpkg-cache
+        uses: actions/cache/restore@v4
         with:
           path: ${{ github.workspace }}\vcpkg-bincache
           key: vcpkg-x86-windows-static-${{ hashFiles('vcpkg.json') }}
@@ -27,14 +32,20 @@ jobs:
       - name: Configure CMake
         run: |
           cmake -B build `
-            -G "Visual Studio 17 2022" `
             -A Win32 `
             "-DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake" `
             -DVCPKG_TARGET_TRIPLET=x86-windows-static `
             -DCMAKE_CXX_STANDARD=17
 
+      - name: Save vcpkg binary packages
+        if: always() && steps.vcpkg-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}\vcpkg-bincache
+          key: vcpkg-x86-windows-static-${{ hashFiles('vcpkg.json') }}
+
       - name: Build
-        run: cmake --build build --config Release
+        run: cmake --build build --config Release --parallel
 
       - name: Collect output DLLs
         run: |
