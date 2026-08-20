@@ -12,6 +12,8 @@
 
 #include <imgui.h>
 #include <vector>
+#include <fstream>
+#include <unordered_set>
 #include <HS/HS_Character.h>
 
 HS_EXPORT_MOD_API_VERSION()
@@ -21,6 +23,13 @@ static uintptr_t        g_moduleBase = 0;
 
 static bool   g_isDrawing = false;
 static RValue g_nameVal;
+
+static bool g_isChallengeCharacter = false;
+
+// Item handles snapshotted from the player's Inventory at PlayAsCharacter time.
+// OnInteractWithPre uses this to allow "Teleport to you" only for items the
+// player genuinely owns, blocking cross-character/global pickups.
+static std::unordered_set<int> g_knownInventoryIds;
 
 static void Log(const char* prefix, const char* fmt, ...)
 {
@@ -170,8 +179,6 @@ static void LogGMLArgs_SEH(const char* fnName, CInstance* self, int argc, RValue
 {
     __try
     {
-        Log("DebugMod", "%s argc=%d", fnName, argc);
-        Log("DebugMod", "  self  id=0x%08X", (uint32_t)(uintptr_t)self);
         for (int i = 0; i < argc; i++)
         {
             char label[16];
@@ -210,8 +217,19 @@ static void LogArgsAddress(int argc, uintptr_t** argv)
     LogArgsAddress_SEH(argc, argv);
 }
 
-static void LogGMLCall(const char* fnName, CInstance* self, int argc, RValue** argv, RValue* result = nullptr)
+static void LogGMLCall(const char* fnName, CInstance* self, CInstance* other, int argc, RValue** argv, RValue* result = nullptr)
 {
+    Log("DebugMod", "%s argc=%d", fnName, argc);
+    if (self)
+    {
+        std::string objectTypeName = self->GetObjectName(g_api);
+        Log("DebugMod", "  self  addr=0x%08X  id=%d type=%s (%d)", (uint32_t)(uintptr_t)self, self->id, objectTypeName.c_str(), self->type);
+    }
+    if (other)
+    {
+        std::string objectTypeName = other->GetObjectName(g_api);
+        Log("DebugMod", "  other  addr=0x%08X  id=%d type=%s (%d)", (uint32_t)(uintptr_t)other, other->id, objectTypeName.c_str(), other->type);
+    }
     LogGMLArgs_SEH(fnName, self, argc, argv, result);
 }
 
@@ -276,9 +294,15 @@ static void DumpVars(int instance)
     }
 }
 
-static void OnAcceptMissionPost(const char* hookName, CInstance* self, CInstance* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+static void OnAcceptMissionPost(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
-    LogGMLCall(hookName, self, argc, argv, returnValue);
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
+
+    int instance_handle = g_api->ResolveInstance((uint32_t*)argv[0]);
+    CInstance* playerCInstance = g_api->ResolveCInstance(100140);
+    std::string objectTypeName = playerCInstance->GetObjectName(g_api);
+    Log("DebugMod", "  missionCInstance  addr=0x%08X  id=%d type=%s (%d)", (uint32_t)(uintptr_t)playerCInstance, playerCInstance->id, objectTypeName.c_str(), playerCInstance->type);
+
     /*
     if (argc < 1 || !argv || !argv[0]) return;
 
@@ -300,30 +324,90 @@ static void OnAcceptMissionPost(const char* hookName, CInstance* self, CInstance
     */
 }
 
-static void OnPlayAsCharacterPost(const char* hookName, CInstance* self, CInstance* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+static void OnPlayAsCharacterPost(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
-    LogGMLCall(hookName, self, argc, argv, returnValue);
-
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
+    HS::HS_Character character(argv[0]->real, g_api);
     // DumpVars(g_api->ResolveInstance((uint32_t*)argv[0]));
     // DumpVars(44);
 
     // auto a1 = g_api->ResolveInstance((uint32_t*)argv[0]);
     // auto a2 = GetActiveContext();
 
+    /*
+    RValue def1{};
+    g_api->GetVar(100016, 26, 0x80000000, &def1);
+    LogRValue("Defector 26", &def1);
+
+    g_api->GetVar(100016, 27, 0x80000000, &def1);
+    LogRValue("Defector 27", &def1);
+
+    g_api->GetVar(100016, 28, 0x80000000, &def1);
+    LogRValue("Defector 28", &def1);
+    */
+
     int instance_handle = g_api->ResolveInstance((uint32_t*)argv[0]);
-    Log("DebugMod", "instance=0x%08X", instance_handle);
-
-    RValue BleedOutTime{};
-    g_api->GetVar(instance_handle, 704, 0x80000000, &BleedOutTime);
-    RValue SecondsUntilBleedOut{};
-    g_api->GetVar(instance_handle, 705, 0x80000000, &SecondsUntilBleedOut);
-
-    LogRValue("BleedOutTime", &BleedOutTime);
-    LogRValue("SecondsUntilBleedOut", &SecondsUntilBleedOut);
 
     // Log("DebugMod", "cinstance=0x%08X", reinterpret_cast<int(__cdecl*)(int)>(g_moduleBase + 0xCA7F30)(instance_handle));
     // Log("DebugMod", "cinstance=0x%08X", reinterpret_cast<int(__cdecl*)(int)>(g_moduleBase + 0xD25380)(instance_handle));
-    Log("DebugMod", "cinstance=0x%08X", reinterpret_cast<int(__cdecl*)(int)>(g_moduleBase + 0xC98DF0)(instance_handle));
+    CInstance* playerCInstance = g_api->ResolveCInstance(instance_handle);
+    std::string objectTypeName = playerCInstance->GetObjectName(g_api);
+    Log("DebugMod", "  playerCInstance  addr=0x%08X  id=%d type=%s (%d)", (uint32_t)(uintptr_t)playerCInstance, playerCInstance->id, objectTypeName.c_str(), playerCInstance->type);
+
+    g_knownInventoryIds.clear();
+    for (int i = 0; i < 256; ++i)
+    {
+        RValue slot{};
+        if (!g_api->GetVarByName(instance_handle, "Inventory", i, &slot))
+            break;
+        if ((slot.type & 0xFF) != 0) // not REAL — past end / empty
+            continue;
+        int handle = static_cast<int>(slot.real);
+        if (handle > 0)
+            g_knownInventoryIds.insert(handle);
+    }
+    Log("DebugMod", "Snapshotted %zu inventory items for player %d",
+        g_knownInventoryIds.size(), instance_handle);
+
+    RValue challengeStation = character.ChallengeStation;
+    LogRValue("ChallengeStation", &challengeStation);
+
+    // If the challenge station is a real variable ID, it's a challenge mission
+    g_isChallengeCharacter = character.ChallengeStation >= 100000;
+
+
+    RValue DyingTimer = character.DyingTimer;
+    LogRValue("DyingTimer", &DyingTimer);
+    // {
+        /*
+        GmArgs args;
+        args.AddReal(argv[0]->real);
+        args.AddReal(32);
+        auto bArgs = args.Build();
+
+        RValue res{};
+        auto oGalaxy = g_api->ResolveCInstance(100016);
+        g_api->CallScript("gml_Script_AddCharacterTrait", playerCInstance, playerCInstance, &res, 2, bArgs);
+
+        GmArgs emptyArgs;
+        auto bEmptyArgs = emptyArgs.Build();
+        g_api->CallScript("gml_Script_SortCharacterTraits", playerCInstance, playerCInstance, &res, 0, bEmptyArgs);
+        */
+
+        // character.SecondsUntilGlitchGrabberReady = 1000;
+    // }
+
+    /*
+    for (int i = 0; i < 400; i++)
+    {
+        GmArgs oNArgs;
+        oNArgs.AddReal(i);
+        auto oNArgsBuilt = oNArgs.Build();
+        RValue oname{};
+        g_api->CallEngineScript("object_get_name", self, other, &oname, 1, oNArgsBuilt);
+        LogRValue("Object name", &oname);
+    }
+    */
 
     /*
     for (const auto& [name, id] : ModLoader::VariableMap)
@@ -343,7 +427,7 @@ static void OnPlayAsCharacterPost(const char* hookName, CInstance* self, CInstan
 
 static void OnPlayerIsDailyChallengerPost(const char* /*hookName*/, CInstance* self, CInstance* other, RValue* /*returnValue*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
 {
-    // LogGMLCall(hookName, self, argc, argv, returnValue);
+    // LogGMLCall(hookName, self, other, argc, argv, returnValue);
 
     if (g_isDrawing)
     {
@@ -400,22 +484,147 @@ static void OnPlayerIsDailyChallengerPost(const char* /*hookName*/, CInstance* s
 
 static void gml_Script_CameraPanToXY(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
-    LogGMLCall(hookName, self, argc, argv, returnValue);
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
 }
 
 static void gml_Script_LoadGalaxy(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
-    LogGMLCall(hookName, self, argc, argv, returnValue);
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
 }
 
 static void gml_Script_DrawInventoryList(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
-    LogGMLCall(hookName, self, argc, argv, returnValue);
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
 }
 
-static void OnGenerateGunPost(const char* hookName, CInstance* self, CInstance* /*other*/, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+static void gml_Script_DescriptionOfTrait(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
 {
-    LogGMLCall(hookName, self, argc, argv, returnValue);
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
+}
+
+static void gml_Script_AddTraitIfNotPresent(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
+}
+
+static void gml_Script_ObjectiveIsInPlayersInventory(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
+}
+
+static void gml_Script_KillEnemy(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
+}
+
+static void gml_Script_AddCharacterTrait(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
+    HS::HS_Character character(argv[0]->real, g_api);
+    std::string name = character.Name;
+
+    Log("DebugMod", "Adding trait to %s", name.c_str());
+
+    const uintptr_t mgrPtr =
+        *reinterpret_cast<uintptr_t*>(g_moduleBase + 0x453D610);
+    if (!mgrPtr) return;
+
+    // vtbl[1] is a __thiscall property-getter that returns a pointer to the
+    // requested RValue slot regardless of whether the inner CInstance is
+    // bound. See gml_Script_ConfigureCharacterTrait decomp lines 53/62/77/87.
+    const uintptr_t vtbl = *reinterpret_cast<uintptr_t*>(mgrPtr);
+    using GetPropFn = void* (__thiscall*)(uintptr_t self, int propId);
+    auto getProp = reinterpret_cast<GetPropFn>(
+        *reinterpret_cast<uintptr_t*>(vtbl + 4));
+
+    void* namesSlot = getProp(mgrPtr, 65); // CharacterTraitNames
+
+    // sub_CBBEA0(slot, intKey) — engine's array-element accessor, used
+    // throughout ConfigureCharacterTrait (lines 112/125/138/151).
+    using ArrayLookupFn = RValue* (__cdecl*)(void* slot, int index);
+    auto arrayLookup = reinterpret_cast<ArrayLookupFn>(
+        g_moduleBase + 0xCBBEA0);
+
+    const int traitNum = static_cast<int>(argv[1]->real);
+    RValue* nameRV = arrayLookup(namesSlot, traitNum);
+
+    const char* traitNameStr =
+        (nameRV && nameRV->str && nameRV->str->text)
+        ? nameRV->str->text
+        : "(unknown)";
+
+    Log("DebugMod", "AddCharacterTrait: %d -> %s", traitNum, traitNameStr);
+}
+
+static void gml_Script_SetRes(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    // argv[0]->real = 1920.0;
+    // argv[1]->real = 1080.0;
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
+}
+
+// Pre-hook for gml_Script_InteractWith. Blocks the call when the target is
+// farther from `self` than self.Radius — i.e. the "Teleport to you" beam.
+// Mirrors the same `distance > radius` test the inventory UI uses to flip the
+// button label from "Take" to "Teleport to you". When the player is close
+// enough to physically grab the item (Take), the call passes through unchanged.
+static void OnInteractWithPre(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    if (!g_isChallengeCharacter)
+    {
+        return;
+    }
+
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
+
+        int targetHandle = g_api->ResolveInstance((uint32_t*)argv[0]);
+
+        /*
+        if (targetHandle <= 0) return;
+
+        RValue px{}, py{}, pr{}, tx{}, ty{};
+        if (!g_api->GetVarByName((int)self->id, "x",      0x80000000, &px)) return;
+        if (!g_api->GetVarByName((int)self->id, "y",      0x80000000, &py)) return;
+        if (!g_api->GetVarByName((int)self->id, "Radius", 0x80000000, &pr)) return;
+        if (!g_api->GetVarByName(targetHandle,  "x",      0x80000000, &tx)) return;
+        if (!g_api->GetVarByName(targetHandle,  "y",      0x80000000, &ty)) return;
+
+        // Only act when all five vars are REAL (0). Anything else means we're
+        // not in a normal player-vs-handle pickup and we shouldn't interfere.
+        if ((px.type & 0xFF) != 0 || (py.type & 0xFF) != 0 ||
+            (pr.type & 0xFF) != 0 || (tx.type & 0xFF) != 0 || (ty.type & 0xFF) != 0)
+            return;
+
+        const double dx = tx.real - px.real;
+        const double dy = ty.real - py.real;
+        const double r  = pr.real;
+
+        if (dx * dx + dy * dy > r * r)
+        {
+            Log("DebugMod", "InteractWith blocked: dist^2=%.1f > radius^2=%.1f (target=%d)",
+                dx*dx + dy*dy, r*r, targetHandle);
+            g_api->RequestBypass();
+        }
+        */
+        auto interactiveItem = g_api->ResolveCInstance(argv[0]->real);
+
+        if (self->type == 137 && interactiveItem->type == 102)
+        {
+            if (g_knownInventoryIds.find(interactiveItem->id) == g_knownInventoryIds.end())
+            {
+                Log("DebugMod", "InteractWith blocked: item %d not in player's starting inventory (snapshot size=%zu)", interactiveItem->id, g_knownInventoryIds.size());
+                g_api->RequestBypass();
+            }
+            else
+            {
+                Log("DebugMod", "InteractWith allowed: item %d is in player's starting inventory", interactiveItem->id);
+            }
+        }
+}
+
+static void OnGenerateGunPost(const char* hookName, CInstance* self, CInstance* other, RValue* returnValue, int argc, RValue** argv, void* /*userData*/)
+{
+    LogGMLCall(hookName, self, other, argc, argv, returnValue);
 
     int instance_handle = g_api->ResolveInstance((uint32_t*)argv[0]);
     Log("DebugMod", "instance=0x%08X", instance_handle);
@@ -501,19 +710,114 @@ static void OnGenerateGunPost(const char* hookName, CInstance* self, CInstance* 
     //	ModLoader::LogRValue("Weapon Traits", &(traits.arr->data[i]));
 }
 
+
+
+static void DumpTypeProperties(int id)
+{
+    CInstance* inst = g_api->ResolveCInstance(id);
+    if (!inst)
+    {
+        Log("DebugMod", "DumpTypeProperties: instance %d not resolvable", id);
+        return;
+    }
+
+    std::string typeName = inst->GetObjectName(g_api);
+    if (typeName.empty())
+    {
+        Log("DebugMod", "DumpTypeProperties: instance %d has no object name (type=%u)", id, inst->type);
+        return;
+    }
+
+    CreateDirectoryA("D:\\temp", nullptr);
+    CreateDirectoryA("D:\\temp\\hs_types", nullptr);
+
+    char path[MAX_PATH];
+    sprintf_s(path, "D:\\temp\\hs_types\\HS_%s.h", typeName.c_str());
+
+    if (GetFileAttributesA(path) != INVALID_FILE_ATTRIBUTES)
+    {
+        Log("DebugMod", "DumpTypeProperties: %s already exists, skipping", path);
+        return;
+    }
+
+    std::ofstream out(path);
+    if (!out)
+    {
+        Log("DebugMod", "DumpTypeProperties: failed to open %s", path);
+        return;
+    }
+
+    out << "#pragma once\n"
+        << "#include \"Instance.h\"\n\n"
+        << "namespace HS {\n\n"
+        << "class HS_" << typeName << " : public Instance\n"
+        << "{\n"
+        << "public:\n"
+        << "    using Instance::Instance;\n\n";
+
+    int kept = 0;
+    for (const char* name : kPropertyNames)
+    {
+        RValue v{};
+        g_api->GetVarByName(id, name, 0x80000000, &v);
+
+        int type = v.type & 0xFF;
+        const char* propType = nullptr;
+        switch (type)
+        {
+        case 0: // REAL
+        case 5: // INT
+        case 6: // BOOL
+            propType = "RealProperty   ";
+            break;
+        case 1: // STRING
+            propType = "StringProperty ";
+            break;
+        case 2: // ARRAY
+        case 3: // PTR
+            propType = "RValueProperty ";
+            break;
+        default:
+            continue; // skip UNKNOWN / UNDEFINED
+        }
+
+        out << "    " << propType << " " << name
+            << "{ this, \"" << name << "\" };\n";
+        ++kept;
+    }
+
+    out << "\n};\n\n"
+        << "} // namespace HS\n";
+
+    Log("DebugMod", "DumpTypeProperties: wrote %s (%d properties)", path, kept);
+}
+
 static void OnImGuiDraw(void* /*userData*/)
 {
     ImGui::Begin("DebugMod");
-    if (ImGui::Button("DumpVars()"))
+    static int s_dumpId = 100016;
+    ImGui::InputInt("##DumpTypePropertiesId", &s_dumpId);
+    ImGui::SameLine();
+    if (ImGui::Button("DumpTypeProperties"))
     {
-        /*
-        DumpVars(20);
-        DumpVars(25);
-        DumpVars(26);
-        DumpVars(41);
-        DumpVars(44);
-        */
-        // 
+        DumpTypeProperties(s_dumpId);
+    }
+    if (ImGui::Button("DumpAllVars"))
+    {
+        for(int i = 100000; i < 105000; i++)
+            DumpTypeProperties(i);
+    }
+    static int s_getVarInstance = 100016;
+    static int s_getVarPropId   = 0;
+    ImGui::InputInt("Instance##GetVarInstance", &s_getVarInstance);
+    ImGui::InputInt("PropertyId##GetVarPropId", &s_getVarPropId);
+    if (ImGui::Button("GetVar"))
+    {
+        RValue out{};
+        g_api->GetVar(s_getVarInstance, s_getVarPropId, 0x80000000, &out);
+        char label[64];
+        sprintf_s(label, "instance=%d propId=%d:", s_getVarInstance, s_getVarPropId);
+        LogRValue(label, &out);
     }
     if (ImGui::Button("Move Camera"))
     {
@@ -588,7 +892,14 @@ void ModInit(const HS_ModApi* api)
     api->SubscribeHookPost("gml_Script_AcceptMission",           &OnAcceptMissionPost,           nullptr);
     api->SubscribeHookPost("gml_Script_PlayAsCharacter",         &OnPlayAsCharacterPost,         nullptr);
     api->SubscribeHookPost("gml_Script_PlayerIsDailyChallenger", &OnPlayerIsDailyChallengerPost, nullptr);
-    api->SubscribeHookPost("gml_Script_GenerateGun",             &OnGenerateGunPost,             nullptr);
+    // api->SubscribeHookPost("gml_Script_GenerateGun",             &OnGenerateGunPost,             nullptr);
+    api->SubscribeHook("gml_Script_SetRes",             &gml_Script_SetRes,             nullptr);
+    api->SubscribeHookPost("gml_Script_AddCharacterTrait",             &gml_Script_AddCharacterTrait,             nullptr);
+    api->SubscribeHookPost("gml_Script_AddTraitIfNotPresent",             &gml_Script_AddTraitIfNotPresent,             nullptr);
+    api->SubscribeHookPost("gml_Script_KillEnemy",             &gml_Script_KillEnemy,             nullptr);
+    // api->SubscribeHookPost("gml_Script_ObjectiveIsInPlayersInventory",             &gml_Script_ObjectiveIsInPlayersInventory,             nullptr);
+    api->SubscribeHook    ("gml_Script_InteractWith",                     &OnInteractWithPre,                           nullptr);
+    // api->SubscribeHookPost("gml_Script_DescriptionOfTrait",             &gml_Script_DescriptionOfTrait,             nullptr); // Takes trait name, returns trait desc (RValue strings)
     // api->SubscribeHook("gml_Script_AnnotateCharacter",             &gml_Script_DrawInventoryList,             nullptr);
     // api->SubscribeHookPost("gml_Script_CameraPanToXY",             &gml_Script_CameraPanToXY,             nullptr);
     api->RegisterImGuiDraw(&OnImGuiDraw, nullptr);

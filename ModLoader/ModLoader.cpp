@@ -561,7 +561,9 @@ void ModLoader::LoadMods()
             +[](const char* name) { return ModLoader::GetVarId(name); },
             +[](int instance, const char* name, int arrayIndex, RValue* out) -> int {
                 int id = ModLoader::GetVarId(name);
-                if (id < 0) { if (out) *out = RValue{}; return 0; }
+                if (id < 0) {
+                    if (out) { *out = RValue{}; out->type = 255; } return 0;
+                }
                 using GetVar_t = int(__cdecl*)(int, int, int, RValue*);
                 auto fn = reinterpret_cast<GetVar_t>(HookBase::moduleBase + 0xC99410);
                 return fn(instance, id, arrayIndex, out);
