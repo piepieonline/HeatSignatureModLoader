@@ -5,6 +5,7 @@
 #include "LoudGunPrefix.h"
 #include "BleedOutTime.h"
 #include "LoadGalaxy.h"
+#include "FastLoadCharacters.h"
 
 #include <imgui.h>
 #include <string>
@@ -27,6 +28,7 @@ void ModInit(const HS_ModApi* api)
     bool loudGunPrefix  = settings.ReadBool("loud_gun_prefix", true);
     bool bleedOutTime   = settings.ReadBool("bleed_out_time",  true);
     bool loadGalaxyMenu = settings.ReadBool("load_galaxy_menu",     false);
+    bool fastLoadChars  = settings.ReadBool("fast_load_characters", true);
 
     if (forceFocus)
     {
@@ -37,6 +39,7 @@ void ModInit(const HS_ModApi* api)
     if (loudGunPrefix)  LoudGunPrefix_Register(api);
     if (bleedOutTime)   BleedOutTime_Register(api);
     if (loadGalaxyMenu) LoadGalaxyMenu_Register(api);
+    if (fastLoadChars)  FastLoadCharacters_Register(api);
 
     Log("Initialized");
 }
