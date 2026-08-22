@@ -31,6 +31,22 @@
             "CMAKE_BUILD_TYPE": "Release",
             "HEATSIG_DIR": null
           }
+      },
+      {
+        "name": "linux-cross-base",
+        "displayName": "Linux cross-compile (clang-cl -> win32)",
+        "hidden": true,
+        "generator": "Ninja Multi-Config",
+        "binaryDir": "${sourceDir}/build-linux",
+        "cacheVariables": {
+          "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+          "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/cmake/toolchains/win32-clang-cl.cmake",
+          "VCPKG_TARGET_TRIPLET": "x86-windows-static-clangcl",
+          "VCPKG_OVERLAY_TRIPLETS": "${sourceDir}/cmake/vcpkg-triplets",
+          "VCPKG_MANIFEST_NO_DEFAULT_FEATURES": "ON",
+          "CMAKE_CXX_STANDARD": "17",
+          "HEATSIG_DIR": null
+        }
       }
     ]
 }

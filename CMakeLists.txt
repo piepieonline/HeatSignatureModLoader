@@ -17,9 +17,20 @@ generate_script_functions_header(
     ${SCRIPT_FUNCTIONS_GENERATED_DIR}/ScriptFunctions.generated.h
 )
 
+# ScreenRecorder needs ATL and the Media Foundation stack, which the
+# cross-compile SDK does not ship, so it is MSVC-only.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(_hs_screenrecorder_default ON)
+else()
+    set(_hs_screenrecorder_default OFF)
+endif()
+option(HS_BUILD_SCREENRECORDER "Build the ScreenRecorder mod" ${_hs_screenrecorder_default})
+
 add_subdirectory(d3d9)
 add_subdirectory(ModLoader)
-add_subdirectory(mods/ScreenRecorder)
+if(HS_BUILD_SCREENRECORDER)
+    add_subdirectory(mods/ScreenRecorder)
+endif()
 add_subdirectory(mods/DiscordRichPresence)
 add_subdirectory(mods/HS_QOL)
 add_subdirectory(mods/DebugMod)
@@ -32,7 +43,7 @@ set(MISC_FILES
 target_sources(ModLoader PRIVATE ${MISC_FILES})
 
 # Run and debug setup for VS
-if (WIN32)
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
     set(DEBUGGER_COMMAND "${HEATSIG_DIR}/Heat_Signature.exe")
     set(DEBUGGER_WORKDIR "${HEATSIG_DIR}")
     set(DEBUGGER_ARGS "")

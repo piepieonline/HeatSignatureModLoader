@@ -1,17 +1,30 @@
 {
   "dependencies": [
     "minhook",
-    "dxcam-cpp",
     {
       "name": "imgui",
-      "features": [ "dx9-binding", "win32-binding" ]
+      "features": [
+        "dx9-binding",
+        "win32-binding"
+      ]
     },
     "discord-rpc",
-    "nlohmann-json",
-    {
-      "name": "opencv4",
-      "default-features": false
+    "nlohmann-json"
+  ],
+  "features": {
+    "screen-recorder": {
+      "description": "Dependencies for the ScreenRecorder mod (MSVC only)",
+      "dependencies": [
+        "dxcam-cpp",
+        {
+          "name": "opencv4",
+          "default-features": false
+        }
+      ]
     }
+  },
+  "default-features": [
+    "screen-recorder"
   ],
   "builtin-baseline": "b1e15efef6758eaa0beb0a8732cfa66f6a68a81d"
 }

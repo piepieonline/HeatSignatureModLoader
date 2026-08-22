@@ -12,6 +12,7 @@ _deps
 CMakeUserPresets.json
 
 build
+build-linux
 out
 vcpkg_installed
 .vs

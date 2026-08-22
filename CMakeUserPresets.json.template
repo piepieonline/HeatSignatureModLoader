@@ -14,6 +14,18 @@
       "cacheVariables": {
         "HEATSIG_DIR": "<PATH TO HEAT SIGNATURE>"
       }
+    },
+    {
+      "name": "linux-cross",
+      "inherits": "linux-cross-base",
+      "environment": {
+        "VCPKG_ROOT": "<PATH TO VCPKG CHECKOUT>",
+        "XWIN_SDK_DIR": "<PATH TO XWIN SPLAT DIRECTORY>",
+        "PATH": "<PATH TO DIRECTORY CONTAINING ninja>:$penv{PATH}"
+      },
+      "cacheVariables": {
+        "HEATSIG_DIR": "<PATH TO HEAT SIGNATURE>"
+      }
     }
   ],
   "buildPresets": [
@@ -25,6 +37,16 @@
 	{
       "name": "local-release",
       "configurePreset": "x86-release",
+      "configuration": "Release"
+    },
+	{
+      "name": "linux-debug",
+      "configurePreset": "linux-cross",
+      "configuration": "Debug"
+    },
+	{
+      "name": "linux-release",
+      "configurePreset": "linux-cross",
       "configuration": "Release"
     }
   ]
