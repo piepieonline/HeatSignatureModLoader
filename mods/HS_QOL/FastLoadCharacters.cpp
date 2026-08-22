@@ -22,7 +22,7 @@ static int    g_rejectedContents   = 0;
 static int    g_rejectedRescue     = 0;
 static int    g_rejectedStatus     = 0;
 static int    g_rejectedInstance   = 0;
-static bool   g_loggedSample       = false;
+static bool   g_loggedUnreadable   = false;
 static std::chrono::steady_clock::time_point g_start;
 
 struct CharacterFile
@@ -144,11 +144,46 @@ static bool ReadCharacterFile(const std::filesystem::path& path, CharacterFile& 
     return true;
 }
 
+static std::filesystem::path EnvPath(const wchar_t* name)
+{
+    wchar_t buffer[MAX_PATH];
+    const DWORD length = GetEnvironmentVariableW(name, buffer, MAX_PATH);
+    if (length == 0 || length >= MAX_PATH) return {};
+    return std::filesystem::path(buffer, buffer + length);
+}
+
+// The game passes the folder relative to GameMaker's sandboxed save area, which
+// only the engine's own file functions prepend
+static std::filesystem::path ResolveCharacterPath(const std::wstring& given)
+{
+    std::error_code ec;
+    const std::filesystem::path direct(given);
+    if (std::filesystem::exists(direct, ec)) return direct;
+
+    static std::filesystem::path s_saveRoot;
+    static bool s_resolved = false;
+    if (!s_resolved)
+    {
+        s_resolved = true;
+        for (const wchar_t* variable : { L"APPDATA", L"LOCALAPPDATA" })
+        {
+            const std::filesystem::path root = EnvPath(variable) / L"Heat_Signature";
+            if (std::filesystem::exists(root / given, ec)) { s_saveRoot = root; break; }
+        }
+        Log("Save root for relative character paths: '%s'",
+            s_saveRoot.empty() ? "<not found>" : s_saveRoot.string().c_str());
+    }
+
+    if (s_saveRoot.empty()) return {};
+    return s_saveRoot / given;
+}
+
 static const CharacterFile* GetCharacterFile(const char* utf8Path)
 {
     const std::wstring wide = WidePath(utf8Path);
     if (wide.empty()) return nullptr;
-    const std::filesystem::path path(wide);
+    const std::filesystem::path path = ResolveCharacterPath(wide);
+    if (path.empty()) return nullptr;
 
     std::error_code ec;
     const std::uintmax_t size = std::filesystem::file_size(path, ec);
@@ -193,7 +228,6 @@ static void OnLoadCharactersPre(const char* /*hookName*/, CInstance* /*self*/, C
     g_rejectedRescue     = 0;
     g_rejectedStatus     = 0;
     g_rejectedInstance   = 0;
-    g_loggedSample       = false;
     g_start    = std::chrono::steady_clock::now();
 
     if (!g_inLoadCharacters)
@@ -226,16 +260,16 @@ static void OnLoadCharacterFromFilePre(const char* /*hookName*/, CInstance* self
 
     const CharacterFile* file = GetCharacterFile(argv[0]->str->text);
 
-    if (!g_loggedSample)
+    if (!file)
     {
-        g_loggedSample = true;
-        Log("LoadCharacters: first file '%s' -> read=%d status='%s' contents=%d rescuer=%d",
-            argv[0]->str->text, file ? 1 : 0,
-            file ? file->status.c_str() : "", file ? file->hasContents : 0,
-            file ? file->hasRescueAgent : 0);
+        g_rejectedUnreadable++;
+        if (!g_loggedUnreadable)
+        {
+            g_loggedUnreadable = true;
+            Log("Could not read character file '%s' - loading it normally", argv[0]->str->text);
+        }
+        return;
     }
-
-    if (!file)                { g_rejectedUnreadable++; return; }
     if (file->hasContents)    { g_rejectedContents++;   return; }
     if (file->hasRescueAgent) { g_rejectedRescue++;     return; }
     if (!GameWillDiscard(file->status, g_loadMode)) { g_rejectedStatus++; return; }
