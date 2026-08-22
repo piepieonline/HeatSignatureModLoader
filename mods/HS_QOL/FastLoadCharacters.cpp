@@ -17,6 +17,12 @@ static bool   g_inLoadCharacters = false;
 static double g_loadMode         = 0.0;
 static int    g_skipped          = 0;
 static int    g_total            = 0;
+static int    g_rejectedUnreadable = 0;
+static int    g_rejectedContents   = 0;
+static int    g_rejectedRescue     = 0;
+static int    g_rejectedStatus     = 0;
+static int    g_rejectedInstance   = 0;
+static bool   g_loggedSample       = false;
 static std::chrono::steady_clock::time_point g_start;
 
 struct CharacterFile
@@ -90,9 +96,9 @@ static void ParseLine(const std::string& text, CharacterFile& out)
 
     if (text.front() == '<')
     {
-        // Anything beyond the three scalar sections means the parse has global
-        // side effects (unique / workshop item registries, mission instances).
-        if (text != "<Character>" && text != "<Pod>" && text != "<Validation>")
+        // Other sections make the parse mark unique/workshop items in use globally
+        if (text != "<Header>" && text != "<Character>" &&
+            text != "<Pod>"    && text != "<Validation>")
             out.hasContents = true;
         return;
     }
@@ -124,33 +130,16 @@ static bool ReadCharacterFile(const std::filesystem::path& path, CharacterFile& 
     std::ifstream file(path, std::ios::binary);
     if (!file) return false;
 
-    bool inHeader = true;
-    bool encoded  = false;
     std::string line;
-    std::string text;
+    std::string decoded;
 
     while (std::getline(file, line))
     {
         if (!line.empty() && line.back() == '\r') line.pop_back();
-        if (line.empty()) { inHeader = false; continue; }
+        if (line.empty()) continue;
 
-        if (inHeader)
-        {
-            if (line.rfind("Encoded = ", 0) == 0)
-                encoded = line.compare(10, std::string::npos, "1") == 0;
-            continue;
-        }
-
-        if (encoded)
-        {
-            if (!Base64Decode(line, text)) continue;
-        }
-        else
-        {
-            text = line;
-        }
-
-        ParseLine(text, out);
+        // Plain lines carry "<" or " = ", never valid base64, so a decode proves encoding
+        ParseLine(Base64Decode(line, decoded) ? decoded : line, out);
     }
     return true;
 }
@@ -183,13 +172,10 @@ static const CharacterFile* GetCharacterFile(const char* utf8Path)
     return &slot;
 }
 
-// Mirrors the Status checks LoadCharacters runs once LoadCharacterFromFile has
-// returned: mode >= 1 keeps only Retired characters, otherwise Retired (when
-// mode is exactly 0), Dead and Lost are destroyed.
+// Mirrors the Status checks LoadCharacters runs once LoadCharacterFromFile returns
 static bool GameWillDiscard(const std::string& status, double mode)
 {
-    // An unrecognised file gives no status, and mode >= 1 discards everything
-    // that is not Retired — never let a failed read decide that.
+    // mode >= 1 discards everything not Retired, so a failed read must not decide
     if (status.empty()) return false;
     if (static_cast<int>(mode) >= 1) return status != "Retired";
     if (mode == 0.0 && status == "Retired") return true;
@@ -202,7 +188,17 @@ static void OnLoadCharactersPre(const char* /*hookName*/, CInstance* /*self*/, C
     g_loadMode = g_inLoadCharacters ? argv[0]->real : 0.0;
     g_skipped  = 0;
     g_total    = 0;
+    g_rejectedUnreadable = 0;
+    g_rejectedContents   = 0;
+    g_rejectedRescue     = 0;
+    g_rejectedStatus     = 0;
+    g_rejectedInstance   = 0;
+    g_loggedSample       = false;
     g_start    = std::chrono::steady_clock::now();
+
+    if (!g_inLoadCharacters)
+        Log("LoadCharacters: mode argument is not a real (argc=%d, type=%u) - not optimising",
+            argc, (argc >= 1 && argv && argv[0]) ? argv[0]->type : 0u);
 }
 
 static void OnLoadCharactersPost(const char* /*hookName*/, CInstance* /*self*/, CInstance* /*other*/, RValue* /*returnValue*/, int /*argc*/, RValue** /*argv*/, void* /*userData*/)
@@ -211,16 +207,17 @@ static void OnLoadCharactersPost(const char* /*hookName*/, CInstance* /*self*/, 
     {
         const auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::steady_clock::now() - g_start).count();
-        Log("LoadCharacters: skipped %d of %d character files in %lld ms",
-            g_skipped, g_total, static_cast<long long>(elapsed));
+        Log("LoadCharacters: skipped %d of %d character files in %lld ms "
+            "(mode=%g, kept: unreadable=%d contents=%d rescuer=%d status=%d instance=%d)",
+            g_skipped, g_total, static_cast<long long>(elapsed), g_loadMode,
+            g_rejectedUnreadable, g_rejectedContents, g_rejectedRescue, g_rejectedStatus, g_rejectedInstance);
     }
     g_inLoadCharacters = false;
 }
 
 static void OnLoadCharacterFromFilePre(const char* /*hookName*/, CInstance* self, CInstance* /*other*/, RValue* /*result*/, int argc, RValue** argv, void* /*userData*/)
 {
-    // LoadCharacterFromFile has ten other callers; only the station-entry bulk
-    // load creates instances it is about to throw away.
+    // Only the station-entry bulk load creates instances it is about to throw away
     if (!g_inLoadCharacters || !self) return;
     if (argc < 1 || !argv || !argv[0] || argv[0]->type != 1) return;
     if (!argv[0]->str || !argv[0]->str->text) return;
@@ -228,12 +225,23 @@ static void OnLoadCharacterFromFilePre(const char* /*hookName*/, CInstance* self
     g_total++;
 
     const CharacterFile* file = GetCharacterFile(argv[0]->str->text);
-    if (!file) return;
-    if (file->hasContents || file->hasRescueAgent) return;
-    if (!GameWillDiscard(file->status, g_loadMode)) return;
+
+    if (!g_loggedSample)
+    {
+        g_loggedSample = true;
+        Log("LoadCharacters: first file '%s' -> read=%d status='%s' contents=%d rescuer=%d",
+            argv[0]->str->text, file ? 1 : 0,
+            file ? file->status.c_str() : "", file ? file->hasContents : 0,
+            file ? file->hasRescueAgent : 0);
+    }
+
+    if (!file)                { g_rejectedUnreadable++; return; }
+    if (file->hasContents)    { g_rejectedContents++;   return; }
+    if (file->hasRescueAgent) { g_rejectedRescue++;     return; }
+    if (!GameWillDiscard(file->status, g_loadMode)) { g_rejectedStatus++; return; }
 
     HS::HS_Character character(self->id, g_api);
-    if (!character.valid()) return;
+    if (!character.valid()) { g_rejectedInstance++; return; }
 
     character.Status   = file->status;
     character.Forename = file->forename;
