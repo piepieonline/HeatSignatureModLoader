@@ -14,6 +14,8 @@ add_library(HS_QOL SHARED
     BleedOutTime.h
     LoadGalaxy.cpp
     LoadGalaxy.h
+    FastLoadCharacters.cpp
+    FastLoadCharacters.h
 )
 
 target_compile_features(HS_QOL PRIVATE cxx_std_17)
