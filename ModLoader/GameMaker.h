@@ -36,7 +36,8 @@ struct YYArray {
 struct RValue {
     union {
         double    real;
-        int       i32;
+        int64_t   i64;
+        int32_t   i32;
         void*     ptr;
         YYString* str;
         YYArray*  arr;
@@ -44,20 +45,37 @@ struct RValue {
     uint32_t unk08;
     uint32_t type;
 };
+static_assert(sizeof(RValue) == 0x10, "RValue size mismatch");
+
+enum class RValueKind : uint32_t
+{
+    Real      = 0,
+    String    = 1,
+    Array     = 2,
+    Pointer   = 3,
+    Undefined = 5,
+    Int32     = 7,
+    Int64     = 10
+};
+
+inline RValueKind GetRValueKind(const RValue& value)
+{
+    return static_cast<RValueKind>(value.type & 0x00ffffffu);
+}
 
 using GMLScript_t = RValue*(__cdecl*)(CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv);
 
 static const char* GetTypeName(int type)
 {
-    switch (type)
+    switch (static_cast<RValueKind>(type & 0x00ffffffu))
     {
-    case 0: return "REAL";
-    case 1: return "STRING";
-    case 2: return "ARRAY";
-    case 3: return "PTR";
-    case 5: return "INT";
-    case 6: return "BOOL";
-    case 7: return "UNDEFINED";
+    case RValueKind::Real:      return "REAL";
+    case RValueKind::String:    return "STRING";
+    case RValueKind::Array:     return "ARRAY";
+    case RValueKind::Pointer:   return "PTR";
+    case RValueKind::Undefined: return "UNDEFINED";
+    case RValueKind::Int32:     return "INT32";
+    case RValueKind::Int64:     return "INT64";
     default: return "UNKNOWN";
     }
 }

@@ -575,6 +575,7 @@ void ModLoader::LoadMods()
                 auto fn = reinterpret_cast<SetVar_t>(HookBase::moduleBase + 0xC996F0);
                 return fn(instance, id, arrayIndex, in);
             },
+            +[](int visible) { ImGuiHook::SetVisible(visible != 0); },
             modConfigApi
         });
 

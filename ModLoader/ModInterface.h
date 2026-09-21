@@ -11,7 +11,7 @@ extern "C" {
 // or any callback signature reachable through them) changes shape. Mods compiled
 // against a different value are rejected by the loader unless the user opts in
 // via `allow_version_mismatch` in ModLoader.json.
-#define HS_API_VERSION 2u
+#define HS_API_VERSION 3u
 
 // Mods must export `ModApiVersion()` returning HS_API_VERSION at the version
 // they were built for. The macro below is the canonical one-liner.
@@ -44,6 +44,10 @@ typedef double (*HS_GetTimeScaleFn)();
 // on the game's render thread. Keep work short.
 typedef void (*HS_ImGuiDrawFn)(void* userData);
 typedef void (*HS_RegisterImGuiDrawFn)(HS_ImGuiDrawFn callback, void* userData);
+
+// Makes the shared ImGui overlay visible or hidden. Thread-safe, so game-thread
+// hooks can reveal a window registered through RegisterImGuiDraw.
+typedef void (*HS_SetImGuiVisibleFn)(int visible);
 
 // Registers a callback that contributes items to the loader-owned
 // ImGui::BeginMainMenuBar(). The callback runs between Begin/EndMainMenuBar
@@ -158,6 +162,7 @@ struct HS_ModApi
     HS_GetVarIdFn            GetVarId;
     HS_GetVarByNameFn        GetVarByName;
     HS_SetVarByNameFn        SetVarByName;
+    HS_SetImGuiVisibleFn     SetImGuiVisible;
     HS_ModConfig             config;
 };
 
