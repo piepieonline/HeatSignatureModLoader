@@ -47,15 +47,26 @@ struct RValue {
 };
 static_assert(sizeof(RValue) == 0x10, "RValue size mismatch");
 
+// Matches YoYo's YYRValue.h; the top byte of RValue::type holds flags, not the kind.
 enum class RValueKind : uint32_t
 {
     Real      = 0,
     String    = 1,
     Array     = 2,
     Pointer   = 3,
+    Vec3      = 4,
     Undefined = 5,
+    Object    = 6,
     Int32     = 7,
-    Int64     = 10
+    Vec4      = 8,
+    Vec44     = 9,
+    Int64     = 10,
+    Accessor  = 11,
+    Null      = 12,
+    Bool      = 13,
+    Iterator  = 14,
+    Ref       = 15,
+    Unset     = 0x00ffffff
 };
 
 inline RValueKind GetRValueKind(const RValue& value)
@@ -73,9 +84,19 @@ static const char* GetTypeName(int type)
     case RValueKind::String:    return "STRING";
     case RValueKind::Array:     return "ARRAY";
     case RValueKind::Pointer:   return "PTR";
+    case RValueKind::Vec3:      return "VEC3";
     case RValueKind::Undefined: return "UNDEFINED";
+    case RValueKind::Object:    return "OBJECT";
     case RValueKind::Int32:     return "INT32";
+    case RValueKind::Vec4:      return "VEC4";
+    case RValueKind::Vec44:     return "VEC44";
     case RValueKind::Int64:     return "INT64";
+    case RValueKind::Accessor:  return "ACCESSOR";
+    case RValueKind::Null:      return "NULL";
+    case RValueKind::Bool:      return "BOOL";
+    case RValueKind::Iterator:  return "ITERATOR";
+    case RValueKind::Ref:       return "REF";
+    case RValueKind::Unset:     return "UNSET";
     default: return "UNKNOWN";
     }
 }
