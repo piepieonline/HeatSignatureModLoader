@@ -2,6 +2,8 @@
 
 A native code mod loader for [Heat Signature](https://www.heatsig.com/) (GameMaker Studio 1.4 / YYC). Mods are C++ DLLs that subscribe to GameMaker script hooks, draw ImGui overlays, and read/write GML variables through a stable C ABI.
 
+Any questions or thoughts, I can be found chilling on the discord server: [Official Suspicious Developments](https://discord.com/invite/3M8pfXp9aC)
+
 ## Installation
 
 1. Grab the latest release.
