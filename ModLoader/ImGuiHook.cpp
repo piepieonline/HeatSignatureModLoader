@@ -63,6 +63,24 @@ namespace
         ModLoader::Log("ImGuiHook", buf);
     }
 
+    bool IsSwallowedByImGui(UINT msg)
+    {
+        const ImGuiIO& io = ImGui::GetIO();
+        switch (msg)
+        {
+        case WM_LBUTTONDOWN: case WM_LBUTTONUP: case WM_LBUTTONDBLCLK:
+        case WM_RBUTTONDOWN: case WM_RBUTTONUP: case WM_RBUTTONDBLCLK:
+        case WM_MBUTTONDOWN: case WM_MBUTTONUP: case WM_MBUTTONDBLCLK:
+        case WM_XBUTTONDOWN: case WM_XBUTTONUP: case WM_XBUTTONDBLCLK:
+        case WM_MOUSEWHEEL:  case WM_MOUSEHWHEEL:
+            return io.WantCaptureMouse;
+        case WM_KEYDOWN: case WM_KEYUP: case WM_SYSKEYDOWN: case WM_SYSKEYUP: case WM_CHAR:
+            return io.WantTextInput;
+        default:
+            return false;
+        }
+    }
+
     LRESULT CALLBACK HookedWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     {
         if (g_backendsInitialized.load(std::memory_order_acquire) &&
@@ -70,6 +88,8 @@ namespace
         {
             if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
                 return 1;
+            if (IsSwallowedByImGui(msg))
+                return 0;
         }
         return g_hwndIsUnicode
             ? CallWindowProcW(g_originalWndProc, hwnd, msg, wParam, lParam)

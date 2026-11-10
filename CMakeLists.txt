@@ -35,6 +35,7 @@ add_subdirectory(mods/DiscordRichPresence)
 add_subdirectory(mods/HS_QOL)
 add_subdirectory(mods/DebugMod)
 add_subdirectory(mods/SampleMod)
+add_subdirectory(mods/HeatSignatureExplorer)
 
 set(MISC_FILES 
     README.md

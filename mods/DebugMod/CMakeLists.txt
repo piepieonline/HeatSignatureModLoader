@@ -2,7 +2,6 @@ project(DebugMod LANGUAGES CXX)
 
 add_library(DebugMod SHARED
     DebugMod.cpp
-    PropertyNames.h
 )
 
 target_compile_features(DebugMod PRIVATE cxx_std_17)
