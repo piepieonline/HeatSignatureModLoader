@@ -12,4 +12,4 @@ Script functions have the args `(uintptr_t* self, uintptr_t* other, RValue* resu
 
 ## Hooks
 
-New hooks can be added by name by reading `./docs/ScriptFunctions.txt`, which is a list of offsets and function names
+Hooks are resolved by name at runtime: `gml_Script_*` from the YYC function table, anything else from the engine built-in registry (see `ModLoader/GameFunctions.cpp`). `./docs/ScriptFunctions.txt` lists every script name and offset for reference only; the build does not read it.

@@ -4,11 +4,11 @@
 #include <utility>
 
 #include "ModLoader.h"
-#include "ScriptFunctions.generated.h"
-
-HookBase* g_universalSlots[kUniversalHookSlots] = {};
 
 namespace {
+
+HookBase* g_universalSlots[kUniversalHookSlots] = {};
+size_t g_nextUniversalSlot = 0;
 
 template <size_t N>
 RValue* __cdecl UniversalDetour(CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv)
@@ -34,48 +34,17 @@ const auto kDetourTable =
 
 } // namespace
 
-void* GetUniversalDetour(size_t index)
+HookBase* CreateUniversalScriptHook(const char* name, uintptr_t offset)
 {
-    return (index < kUniversalHookSlots) ? kDetourTable[index] : nullptr;
-}
+    if (g_nextUniversalSlot >= kUniversalHookSlots)
+        return nullptr;
 
-void InstallUniversalHookEntries()
-{
-    static_assert(kScriptFunctionCount <= kUniversalHookSlots,
-        "kUniversalHookSlots is smaller than kScriptFunctionCount; raise the slot count.");
+    auto* hook = new Hook<GMLScript_t>(
+        name,
+        offset,
+        kDetourTable[g_nextUniversalSlot],
+        /*alwaysLoad=*/false);
 
-    size_t slot = 0;
-    size_t skipped = 0;
-
-    for (size_t i = 0; i < kScriptFunctionCount; ++i)
-    {
-        const auto& entry = kScriptFunctions[i];
-
-        if (ModLoader::HookMap.find(entry.name) != ModLoader::HookMap.end())
-        {
-            ++skipped;
-            continue;
-        }
-
-        if (slot >= kUniversalHookSlots)
-        {
-            ModLoader::Log("ModLoader",
-                "UniversalHooks: out of slots, dropping '%s'", entry.name);
-            continue;
-        }
-
-        auto* hook = new Hook<GMLScript_t>(
-            entry.name,
-            entry.offset,
-            kDetourTable[slot],
-            /*alwaysLoad=*/false);
-
-        g_universalSlots[slot] = hook;
-        ModLoader::HookMap[entry.name] = hook;
-        ++slot;
-    }
-
-    ModLoader::Log("ModLoader",
-        "UniversalHooks: registered %zu lazy entries (%zu shared with hardcoded hooks)",
-        slot, skipped);
+    g_universalSlots[g_nextUniversalSlot++] = hook;
+    return hook;
 }

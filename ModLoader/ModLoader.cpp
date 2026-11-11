@@ -3,7 +3,8 @@
 #include "ImGuiHook.h"
 #include "GameWindow.h"
 #include "ModConfig.h"
-#include "UniversalHooks.h"
+#include "GameFunctions.h"
+#include "GameAddresses.h"
 
 #include <Windows.h>
 #include <atomic>
@@ -40,7 +41,6 @@ static void            Config_FreeString(HS_ConfigString s)                     
 
 std::map<std::string, HookBase*> ModLoader::HookMap{};
 std::unordered_map<std::string, uint32_t> ModLoader::VariableMap{};
-std::unordered_map<std::string, uint32_t> ModLoader::EngineScriptMap{};
 
 // ---------------------------------------------------------------------------
 // SEH-isolated helpers — no C++ objects with destructors allowed in scope
@@ -48,18 +48,14 @@ std::unordered_map<std::string, uint32_t> ModLoader::EngineScriptMap{};
 
 static const char* TimeScaleWalk_SEH(uintptr_t moduleBase, double* outResult)
 {
-    const uintptr_t kBaseRVA = 0x0453D610;
-    const uint32_t kDerefOffsets[] = { 0x60, 0x10, 0x3C4 };
-    const uint32_t kFinalOffset = 0x1B0;
-
     __try
     {
-        uint32_t ptr = *reinterpret_cast<uint32_t*>(moduleBase + kBaseRVA);
+        uint32_t ptr = *reinterpret_cast<uint32_t*>(moduleBase + GameAddresses::kTimeScaleBaseRVA);
         if (!ptr)
             return "base pointer null";
 
         int step = 0;
-        for (uint32_t off : kDerefOffsets)
+        for (uint32_t off : GameAddresses::kTimeScaleDerefOffsets)
         {
             ptr = *reinterpret_cast<uint32_t*>(ptr + off);
             if (!ptr)
@@ -71,7 +67,7 @@ static const char* TimeScaleWalk_SEH(uintptr_t moduleBase, double* outResult)
             }
             ++step;
         }
-        *outResult = *reinterpret_cast<double*>(ptr + kFinalOffset);
+        *outResult = *reinterpret_cast<double*>(ptr + GameAddresses::kTimeScaleFinalOffset);
         return nullptr;
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
@@ -218,18 +214,18 @@ void ModLoader::SubscribeHook(const char* hookName, HS_HookCallback callback, vo
         assert(false && "SubscribeHook must be called from ModInit on the load thread");
         return;
     }
-    auto it = HookMap.find(hookName);
-    if (it == HookMap.end())
+    HookBase* hook = FindOrCreateHook(hookName);
+    if (!hook)
     {
         Log("ModLoader", "Subscribe failed : unknown hook '%s'", hookName);
         return;
     }
-    if (!EnsureHookInstalled(it->second))
+    if (!EnsureHookInstalled(hook))
     {
         Log("ModLoader", "Subscribe failed : install of '%s' failed", hookName);
         return;
     }
-    it->second->preSubscribers.emplace_back(callback, userData);
+    hook->preSubscribers.emplace_back(callback, userData);
     Log("ModLoader", "Pre-subscriber registered for %s", hookName);
 }
 
@@ -241,152 +237,36 @@ void ModLoader::SubscribeHookPost(const char* hookName, HS_HookPostCallback call
         assert(false && "SubscribeHookPost must be called from ModInit on the load thread");
         return;
     }
-    auto it = HookMap.find(hookName);
-    if (it == HookMap.end())
+    HookBase* hook = FindOrCreateHook(hookName);
+    if (!hook)
     {
         Log("ModLoader", "SubscribePost failed: unknown hook '%s'", hookName);
         return;
     }
-    if (!EnsureHookInstalled(it->second))
+    if (!EnsureHookInstalled(hook))
     {
         Log("ModLoader", "SubscribePost failed: install of '%s' failed", hookName);
         return;
     }
-    it->second->postSubscribers.emplace_back(callback, userData);
+    hook->postSubscribers.emplace_back(callback, userData);
     Log("ModLoader", "Post-subscriber registered for %s", hookName);
 }
 
 RValue* ModLoader::CallScript(const char* scriptName,
     CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv)
 {
-    auto it = HookMap.find(scriptName);
-    if (it == HookMap.end())
+    HookBase* hook = FindOrCreateHook(scriptName);
+    if (!hook)
     {
         Log("ModLoader", "CallScript: unknown script '%s'", scriptName);
         return result;
     }
-    if (!EnsureHookInstalled(it->second))
+    if (!EnsureHookInstalled(hook))
     {
         Log("ModLoader", "CallScript: install of '%s' failed", scriptName);
         return result;
     }
-    auto detour = reinterpret_cast<GMLScript_t>(it->second->reference.hookFunction);
-    return detour(self, other, result, argc, argv);
-}
-
-#pragma pack(push, 1)
-struct EngineScriptEntry
-{
-    char     name[0x40];
-    uint32_t funcPtr;
-    uint32_t argCount;
-    uint8_t  flags;
-    uint8_t  pad[3];
-    int32_t  unk; // initialized to -1
-};
-#pragma pack(pop)
-
-static constexpr uint32_t kEngineScriptBufferRVA = 0x4545364;
-static constexpr uint32_t kEngineScriptCountRVA = 0x4545368;
-
-void ModLoader::EnsureEngineScriptMap()
-{
-    static std::atomic<bool> s_built{ false };
-    if (s_built.load(std::memory_order_acquire))
-        return;
-
-    static std::mutex s_mutex;
-    std::lock_guard<std::mutex> lock(s_mutex);
-
-    if (s_built.load())
-        return;
-
-    if (HookBase::moduleBase == 0)
-    {
-        Log("ModLoader", "EngineScriptMap: module base not resolved");
-        return;
-    }
-
-    auto bufferPtr =
-        reinterpret_cast<EngineScriptEntry**>(
-            HookBase::moduleBase + kEngineScriptBufferRVA);
-
-    auto countPtr =
-        reinterpret_cast<uint32_t*>(
-            HookBase::moduleBase + kEngineScriptCountRVA);
-
-    if (!bufferPtr || !*bufferPtr || !countPtr)
-    {
-        Log("ModLoader", "EngineScriptMap: invalid globals");
-        return;
-    }
-
-    EngineScriptEntry* entries = *bufferPtr;
-    uint32_t count = *countPtr;
-
-    if (count == 0 || count > 50000)
-    {
-        Log("ModLoader", "EngineScriptMap: suspicious count %u", count);
-        return;
-    }
-
-    std::unordered_map<std::string, uint32_t> map;
-    map.reserve(count);
-
-    for (uint32_t i = 0; i < count; ++i)
-    {
-        EngineScriptEntry& entry = entries[i];
-
-        if (entry.name[0] == '\0')
-            continue;
-
-        map.emplace(entry.name, i); // Register the function ID, rather than the pointer (so we can use dispatch) // entry.funcPtr);
-    }
-
-    if (map.empty())
-    {
-        Log("ModLoader", "EngineScriptMap: no entries found");
-        return;
-    }
-
-    EngineScriptMap = std::move(map);
-
-    s_built.store(true, std::memory_order_release);
-
-    Log("ModLoader",
-        "EngineScriptMap: built %zu entries",
-        EngineScriptMap.size());
-}
-
-RValue* ModLoader::CallEngineScript(const char* builtinName,
-    CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv)
-{
-    if (!builtinName)
-        return result;
-
-    if (HookBase::moduleBase == 0)
-    {
-        Log("ModLoader", "CallEngineScript: module base not resolved");
-        return result;
-    }
-
-    EnsureEngineScriptMap();
-
-    auto it = EngineScriptMap.find(builtinName);
-    uint32_t function_index;
-    if (it == EngineScriptMap.end())
-    {
-        Log("ModLoader", "CallEngineScript: unknown built-in '%s'", builtinName);
-        return result;
-    }
-    else
-    {
-        function_index = it->second;
-    }
-
-    using EngineDispatcher_t = RValue*(__cdecl*)(CInstance*, CInstance*, RValue*, int, uint32_t, RValue**);
-    auto dispatcher = reinterpret_cast<EngineDispatcher_t>(HookBase::moduleBase + 0xCA7F30);
-    return dispatcher(self, other, result, argc, function_index, argv);
+    return hook->Invoke(self, other, result, argc, argv);
 }
 
 #pragma pack(push, 1)
@@ -412,9 +292,7 @@ static std::unordered_map<std::string, uint32_t> BuildMap(uintptr_t tableAddr, u
     return map;
 }
 
-// The engine stores a pointer to the variable-table struct at moduleBase +
-// 0x453D5B8, populated by sub_C7F050. struct[4] = entry count, struct[5] =
-// pointer to the PropertyDesc* array. Read lazily on first lookup.
+// Read lazily on first lookup; see GameAddresses::kVariableTableStructRVA.
 void ModLoader::EnsureVariableMap()
 {
     static std::atomic<bool> s_built{ false };
@@ -424,10 +302,10 @@ void ModLoader::EnsureVariableMap()
     std::lock_guard<std::mutex> lock(s_mutex);
     if (s_built.load()) return;
 
-    auto structPtr = *reinterpret_cast<uint32_t**>(HookBase::moduleBase + 0x453D5B8);
+    auto structPtr = *reinterpret_cast<uint32_t**>(HookBase::moduleBase + GameAddresses::kVariableTableStructRVA);
     if (!structPtr)
     {
-        Log("ModLoader", "VariableMap: struct at moduleBase+0x453D5B8 not yet populated");
+        Log("ModLoader", "VariableMap: struct at moduleBase+0x%X not yet populated", static_cast<unsigned>(GameAddresses::kVariableTableStructRVA));
         return;
     }
 
@@ -551,13 +429,13 @@ void ModLoader::LoadMods()
                 return ModLoader::CallScript(name, self, other, result, argc, argv);
             },
             +[](const char* name, CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv) {
-                return ModLoader::CallEngineScript(name, self, other, result, argc, argv);
+                return ModLoader::CallScript(name, self, other, result, argc, argv);
             },
-            reinterpret_cast<HS_ResolveInstanceFn>(HookBase::moduleBase + 0xCBC420),
-            reinterpret_cast<HS_ResolveCInstanceFn>(HookBase::moduleBase + 0xC98DF0),
-            reinterpret_cast<HS_GetVarFn>         (HookBase::moduleBase + 0xC99410),
-            reinterpret_cast<HS_SetVarFn>         (HookBase::moduleBase + 0xC996F0),
-            reinterpret_cast<HS_SetStringFn>      (HookBase::moduleBase + 0xCAB130),
+            reinterpret_cast<HS_ResolveInstanceFn>(HookBase::moduleBase + GameAddresses::kResolveInstanceRVA),
+            reinterpret_cast<HS_ResolveCInstanceFn>(HookBase::moduleBase + GameAddresses::kResolveCInstanceRVA),
+            reinterpret_cast<HS_GetVarFn>         (HookBase::moduleBase + GameAddresses::kGetVarRVA),
+            reinterpret_cast<HS_SetVarFn>         (HookBase::moduleBase + GameAddresses::kSetVarRVA),
+            reinterpret_cast<HS_SetStringFn>      (HookBase::moduleBase + GameAddresses::kSetStringRVA),
             +[](const char* name) { return ModLoader::GetVarId(name); },
             +[](int instance, const char* name, int arrayIndex, RValue* out) -> int {
                 int id = ModLoader::GetVarId(name);
@@ -565,14 +443,14 @@ void ModLoader::LoadMods()
                     if (out) { *out = RValue{}; out->type = 255; } return 0;
                 }
                 using GetVar_t = int(__cdecl*)(int, int, int, RValue*);
-                auto fn = reinterpret_cast<GetVar_t>(HookBase::moduleBase + 0xC99410);
+                auto fn = reinterpret_cast<GetVar_t>(HookBase::moduleBase + GameAddresses::kGetVarRVA);
                 return fn(instance, id, arrayIndex, out);
             },
             +[](int instance, const char* name, int arrayIndex, RValue* in) -> int {
                 int id = ModLoader::GetVarId(name);
                 if (id < 0) return 0;
                 using SetVar_t = int(__cdecl*)(int, int, int, RValue*);
-                auto fn = reinterpret_cast<SetVar_t>(HookBase::moduleBase + 0xC996F0);
+                auto fn = reinterpret_cast<SetVar_t>(HookBase::moduleBase + GameAddresses::kSetVarRVA);
                 return fn(instance, id, arrayIndex, in);
             },
             +[](int visible) { ImGuiHook::SetVisible(visible != 0); },
@@ -616,7 +494,7 @@ void ModLoader::CreateHooks()
         HookMap[hook->hookName] = hook;
     }
 
-    InstallUniversalHookEntries();
+    RegisterGameFunctions();
 
     Log("ModLoader", "Hooks installed");
 }

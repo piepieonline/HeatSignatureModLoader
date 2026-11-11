@@ -10,13 +10,6 @@ endif()
 
 project(HeatSignatureModLoader)
 
-include(${CMAKE_SOURCE_DIR}/cmake/GenerateScriptFunctions.cmake)
-set(SCRIPT_FUNCTIONS_GENERATED_DIR ${CMAKE_BINARY_DIR}/generated)
-generate_script_functions_header(
-    ${CMAKE_SOURCE_DIR}/docs/ScriptFunctions.txt
-    ${SCRIPT_FUNCTIONS_GENERATED_DIR}/ScriptFunctions.generated.h
-)
-
 # ScreenRecorder needs ATL and the Media Foundation stack, which the
 # cross-compile SDK does not ship, so it is MSVC-only.
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")

@@ -12,8 +12,6 @@ find_package(minhook CONFIG REQUIRED)
 find_package(imgui CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)
 
-target_include_directories(ModLoader PRIVATE ${SCRIPT_FUNCTIONS_GENERATED_DIR})
-
 target_compile_features(ModLoader PRIVATE cxx_std_17)
 target_link_libraries(ModLoader PRIVATE
     minhook::minhook

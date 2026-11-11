@@ -66,6 +66,11 @@ struct HookBase {
 
     virtual ~HookBase() = default;
     virtual void CreateHook() = 0;
+
+    virtual RValue* Invoke(CInstance* self, CInstance* other, RValue* result, int argc, RValue** argv)
+    {
+        return reinterpret_cast<GMLScript_t>(reference.hookFunction)(self, other, result, argc, argv);
+    }
 };
 
 // Primary template (undefined)

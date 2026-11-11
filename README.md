@@ -26,7 +26,7 @@ The mod loader will generate a configuration file on first run, which contains t
 
 Mods are DLLs that export `ModInit(const HS_ModApi* api)` and `ModApiVersion()`. See `ModLoader/ModInterface.h` for the full ABI, and the bundled mods under `./mods/` for working examples.
 
-Available hooks are listed in `docs/ScriptFunctions.txt`; subscribe to any of them by name via `api->SubscribeHook` / `SubscribeHookPost`.
+Any `gml_Script_*` function or engine built-in (e.g. `draw_text`) can be hooked by name via `api->SubscribeHook` / `SubscribeHookPost`, and called by name via `api->CallScript`. Script names are listed in `docs/ScriptFunctions.txt` for reference; the loader finds them in the game at runtime.
 Built mods go in `./mods/` as `./mods/MyMod.dll`. If they use config, it will be stored in `./mods/MyMod.json`
 
 ## Building

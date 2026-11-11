@@ -78,19 +78,17 @@ typedef HWND (*HS_GetGameWindowFn)();
 // this invocation. Has no effect when called outside a pre-hook callback.
 typedef void (*HS_RequestBypassFn)();
 
-// Invoke a `gml_Script_*` function by name. Routes through the installed hook
-// so other mods' subscribers fire. Lazily installs the hook on first use.
-// Returns `result` unchanged if the script name is not in the offset table or
-// the hook cannot be installed.
+// Invoke a `gml_Script_*` function or an engine built-in (e.g. draw_text,
+// instance_create) by name. Routes through the installed hook so other mods'
+// subscribers fire. Lazily installs the hook on first use. Hook names for
+// SubscribeHook / SubscribeHookPost follow the same rules.
+// Returns `result` unchanged if the name is unknown, the hook cannot be
+// installed, or a built-in is called before the game has started running GML.
 typedef RValue* (*HS_CallScriptFn)(const char* scriptName,
                                    CInstance* self, CInstance* other,
                                    RValue* result, int argc, RValue** argv);
 
-// Invoke a GameMaker engine built-in (e.g. draw_text, instance_create) by
-// name. Built-ins use a different calling convention than gml_Script_* and
-// cannot be invoked through CallScript. Names are resolved against the
-// engine's built-in registry, populated at startup. Returns `result`
-// unchanged if the name is unknown or the registry is not yet ready.
+// Same as CallScript; kept so existing mods keep their ABI.
 typedef RValue* (*HS_CallEngineScriptFn)(const char* builtinName,
                                          CInstance* self, CInstance* other,
                                          RValue* result, int argc, RValue** argv);
